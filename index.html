@@ -1,12 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PokeBuilder</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poké Builder</title>
+    <link rel="stylesheet" href="./css/style.css" />
     <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg">
-</head>
-<body>
-    Ya Mom
-</body>
+  </head>
+  <body>
+    <!-- All content is within the main tag -->
+    <main class="main">
+      <!-- Header -->
+      <header class="header home">
+        <div class="container">
+          <h1 class="title">Poké Builder</h1>
+        </div>
+      </header>
+
+      <!-- Logo -->
+      <div class="logo">
+        <img src="./assets/" alt="Scyther" class="" />
+      </div>
+
+      <!-- Description -->
+      <div class="pokebuilder-description">
+        <h2>What is Poké Builder</h2>
+        <p>
+          Poké Builder is a site where users can come to create Pokémon teams
+          and see the effectiveness of each mon in their team. People need an
+          account to access team building; however, viewing Pokémon using our
+          Pokédex feature is allowed without an account!
+        </p>
+      </div>
+
+      <!--We have three redirectory links on the Pokebuilder/main page-->
+
+      <!-- Sign-up Section -->
+      <div class="sign-up">
+        <button class="signup-btn"><a href="signup.html" class="signup-btn">Sign-up</a></button>
+        <!--Login link-->
+        <p class="login-link"><u>Already have an account?</u><a href="login.html">Login</a></p>
+      </div>
+
+      <!-- Pokédex Button -->
+      <div class="pokedex">
+        <p class="pokedex-description">Need to search for some Pokemon?</br> Check out our Pokedex</p>
+        <button class="pokedex-btn"><a href="pokedex.html" class="pokedex-btn">Pokédex</a></button>     
+      </div>
+    </main>
+  </body>
 </html>

@@ -1,0 +1,181 @@
+/* ---------------- GENERAL STYLING ---------------------------- */
+body {
+    margin: 100px;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #2e2e2e;
+    color: #fff;
+  }
+
+  .main-pokedex {
+    background-color: whitesmoke;
+    color: goldenrod;
+  }
+  
+  /*Main*/
+  .main {
+    max-width: 900px;
+    margin: 0 auto;
+    /*sizing of main content*/
+    padding: 80px;
+    border: 20px solid #c00000;
+    background-color: #333;
+    text-align: center;
+    border-radius: 10px;
+  }
+  
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 0px;
+  }
+  
+  /*Pokebuilder title / implement pokemon font instead*/
+  .title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #fdd835;
+    text-shadow: 2px 2px #000;
+  }
+  
+  /* Logo - this is where the pokemon svg will go */
+  .logo {
+    margin: 20px 0;
+  }
+  
+
+  
+  /* Description of what Pokebuilder is*/
+  .pokebuilder-description {
+    margin: 20px 0;
+  }
+  
+  /*what is pokebuilder font size*/
+  .pokebuilder-description h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  
+  /*pokebuilder desc font size and color*/
+  .pokebuilder-description p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #ccc;
+  }
+  
+  /* Buttons */
+  .sign-up, .pokedex {
+    margin: 20px 0;
+  }
+  
+  .signup-btn, .pokedex-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .signup-btn {
+    background-color: #3b5998;
+    color: #fff;
+  }
+
+  /*sign up hover color*/
+  .signup-btn:hover {
+    background-color: #334d84;
+  }
+  
+  /*pokedex color and hover color*/
+  .pokedex-btn {
+    background-color: #ff4444;
+    color: #fff;
+  }
+  
+  .pokedex-btn:hover {
+    background-color: #e03b3b;
+  }
+  
+  /*Already have an account*/
+  /* Login Link */
+  .login-link {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #ccc;
+  }
+  
+  .login-link a {
+    color: #66ccff;
+    text-decoration: none;
+  }
+  
+  .login-link a:hover {
+    text-decoration: underline;
+  }
+  
+  .pokedex-description {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #ccc;
+    
+  }
+
+
+
+  /*------------------ SIGN UP STYLING ---------------------------*/
+  
+/* Container for the form and content */
+.signup-container {
+    width: 600px;
+    margin: 100px auto;
+    padding: 100px;
+    border: 20px solid #b22222;
+    background-color: #333; 
+    text-align: center;
+    border-radius: 10px;
+}
+
+/* Sign Up Title styling */
+.signup-title {
+    font-size: 2.5rem;
+    color: #FFD700; 
+    /*Blue shadow for pokemon font effect*/
+    text-shadow: 2px 2px #0000FF;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Form input styling */
+.signup-container input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #D3D3D3; 
+    font-size: 1.2rem;
+    text-align: center;
+    outline: none;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Sign up/submit button styling */
+.signup-container button {
+    width: 80%;
+    padding: 10px;
+    margin: 20px 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: #4682B4;
+    color: #FFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.signup-container button:hover {
+    background-color: #5B9BD5; /* Lighter blue appears when crusor hovers */
+}
+
+
