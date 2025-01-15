@@ -1,10 +1,12 @@
-import express from "express";
+
+const express = require('express');
+const path = require('path');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 8080;
 
 app.get('/', (req, res) => {
-  res.send('Welcome to my server!');
+  res.sendFile(path.join(__dirname,`/public/index.html`));
 });
 
 app.listen(port, () => {
