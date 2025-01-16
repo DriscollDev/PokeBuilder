@@ -22,8 +22,8 @@
     "express": "^4.21.2",
     "mysql": "^2.18.1"
   },
-  "description": "",
   "devDependencies": {
     "tailwindcss": "^3.4.17"
-  }
+  },
+  "description": ""
 }

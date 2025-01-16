@@ -3,49 +3,89 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--Tailwind link here-->
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Poké Builder</title>
-    <link rel="stylesheet" href="./css/style.css" />
-    <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg">
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
+    />
   </head>
-  <body>
-    <!-- All content is within the main tag -->
-    <main class="main">
+  <!--Body tag, this changes the entire docs body background-->
+  <body class="bg-gray-600 text-white font-sans min-h-screen flex items-center justify-center">
+<!--the main tag class controls the main content design, sizing-->
+    <main class="bg-gray-600 border-8 border-red-600 shadow-xl w-full max-w-4xl p-6">
       <!-- Header -->
-      <header class="header home">
-        <div class="container">
-          <h1 class="title">Poké Builder</h1>
-        </div>
+      <header class="text-center">
+        <h1 class="text-5xl font-bold text-yellow-400 drop-shadow-md">Poké Builder</h1>
       </header>
 
+<<<<<<< Updated upstream
       <!-- Logo -->
       <div class="logo">
         <img src="./scyther.gif" alt="Scyther" class="" />
       </div>
+=======
+      <!-- Content Area -->
+       <!--md:grid-cols-2 will create two columns, gap creates space between the elements within the main div-->
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <!-- Left Section of grid -->
+        <div class="flex flex-col items-center">
+          <!-- Scyther Image -->
+          <img
+            src="./assets/scyther.gif"
+            alt="Scyther"
+            class="h-40 transform scale-x-[-1]"
+          />
+>>>>>>> Stashed changes
 
-      <!-- Description -->
-      <div class="pokebuilder-description">
-        <h2>What is Poké Builder</h2>
-        <p>
-          Poké Builder is a site where users can come to create Pokémon teams
-          and see the effectiveness of each mon in their team. People need an
-          account to access team building; however, viewing Pokémon using our
-          Pokédex feature is allowed without an account!
-        </p>
-      </div>
+          <!-- Login Button -->
+          <div class="mt-6 text-center">
+            <button class="bg-blue-500 text-white px-6 py-2 rounded-lg text-lg font-bold hover:bg-blue-600 transition">
+              <a href="login.html">Login</a>
+            </button>
+            <p class="text-gray-300 mt-2 text-sm">
+              Don’t have an account? <a href="signup.html" class="text-blue-400 underline">Sign-Up</a>
+            </p>
+          </div>
 
-      <!--We have three redirectory links on the Pokebuilder/main page-->
+          <!-- Pokédex Section -->
+          <div class="mt-6 text-center">
+            <p class="text-white">
+              Need to search for some Pokémon?<br />Check out our Pokédex
+            </p>
+            <button class="bg-red-500 text-white px-6 py-2 mt-4 rounded-lg text-lg font-bold hover:bg-red-600 transition">
+              <a href="pokedex.html">Pokédex</a>
+            </button>
+          </div>
+        </div>
 
-      <!-- Sign-up Section -->
-      <div class="sign-up">
-        <button class="signup-btn"><a href="signup.html" class="signup-btn">Sign-up</a></button>
-        <!--Login link-->
-        <p class="login-link"><u>Already have an account?</u><a href="login.html">Login</a></p>
-      </div>
+        <!-- Right Section of grid -->
+        <div class="text-center md:text-left">
+          <!-- Description -->
+          <h2 class="text-3xl font-bold mb-4 text-center">What is Poké Builder</h2>
+          <p class="text-white leading-relaxed">
+            Poké Builder is a site where users can come to create Pokémon teams
+            and see the effectiveness of each mon in their team. People need an
+            account to access team building; however, viewing Pokémon using our
+            Pokédex feature is allowed without an account!
+          </p>
 
-      <!-- Pokédex Button -->
-      <div class="pokedex">
-        <p class="pokedex-description">Need to search for some Pokemon?</br> Check out our Pokedex</p>
-        <button class="pokedex-btn"><a href="pokedex.html" class="pokedex-btn">Pokédex</a></button>     
+          <!-- Pokémon Images -->
+          <div class="mt-6 flex justify-center space-x-4 gap-10">
+            <img
+              src="./assets/charizard-pokemon.gif"
+              alt="Charizard"
+              class="h-40 transform scale-x-[-1]"
+            />
+            <img
+              src="./assets/totodile-pokemon.gif"
+              alt="Totodile"
+              class="h-40"
+            />
+          </div>
+        </div>
       </div>
     </main>
   </body>
