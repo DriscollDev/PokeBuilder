@@ -33,23 +33,22 @@ app.use(express.static(publicDir))
 app.use(express.urlencoded({extended: 'false'}))
 app.use(express.json())
 
-app.set('view engine', 'hbs')
 
 
 
 
 
 app.get('/', (req, res) => {
-  res.render('index');
+  res.sendFile(path.join(__dirname + '/public/index.html'));
 });
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname,`/public/login.html`));
+ res.sendFile(path.join(__dirname + '/public/login.html'));
 });
 app.get('/signup', (req, res) => {
-  res.sendFile(path.join(__dirname,`/public/signup.html`));
+  res.sendFile(path.join(__dirname + '/public/signup.html'));
 });
 app.get('/pokedex', (req, res) => {
-  res.sendFile(path.join(__dirname,`/public/pokedex.html`));
+  res.sendFile(path.join(__dirname + '/public/pokedex.html'));
 });
 app.get('/test' , (req, res) => {
     
