@@ -3,6 +3,10 @@ const mysql = require("mysql2")
 const path = require("path")
 const dotenv = require('dotenv')
 const bcrypt = require("bcryptjs")
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const session = require('express-session');
+
 
 dotenv.config({ path: './.env'})
 
