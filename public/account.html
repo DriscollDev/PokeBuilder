@@ -11,18 +11,37 @@
       href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
     />
   </head>
-  <body class="bg-gray-700 text-white font-sans min-h-screen flex items-center justify-center">
-    <main class="bg-gray-800 border-4 border-red-600 rounded-lg shadow-xl w-full max-w-4xl p-6">
+  <body
+    class="bg-gray-700 text-white font-sans min-h-screen flex items-center justify-center"
+  >
+    <main
+      class="bg-gray-800 border-4 border-red-600 rounded-lg shadow-xl w-full max-w-4xl p-6"
+    >
       <!-- Title -->
-    
-     
 
       <!-- Content Wrapper -->
       <div class="flex flex-col md:flex-row items-center justify-between">
         <!-- Form Section -->
-        
+        <div class="bg-gray-300 p-6 rounded-md text-black w-full md:w-1/2">
+          <p class="text-lg font-bold mb-4">Trainer Name</p>
+          <p class="text-lg font-bold mb-4">Password: *******</p>
+          <p class="text-lg font-bold mb-4">Change Password</p>
+          <input
+            type="password"
+            placeholder="New Password"
+            class="w-full px-4 py-2 mb-4 text-black rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
+          <button
+            type="submit"
+            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded-lg transition"
+          >
+            Update Password
+          </button>
+        </div>
 
-
+        <!-- Trainer Character Image -->
+        <div class="w-full md:w-1/2 flex justify-center mt-8 md:mt-0">
+          <img src="./assets/n-pokemon.gif" alt="Trainer N" class="h-48" />
         </div>
       </div>
     </main>
