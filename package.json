@@ -2,9 +2,9 @@
   "name": "pokebuilder",
   "version": "1.0.0",
   "main": "app.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "nodemon app.js"
   },
