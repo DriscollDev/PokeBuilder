@@ -77,7 +77,7 @@ app.get('/pokedex', (req, res) => {
 
 app.post("/auth/login", (req, res)=> {
   const { username, password} = req.body
-
+  console.log(req.body)
   db.query('SELECT * FROM user WHERE username = ?', [username], async (error, result) => {
     
     if(error){
@@ -104,7 +104,7 @@ app.post("/auth/login", (req, res)=> {
 
 app.post("/auth/register", (req, res) => {    
   const { username, email, password, password_confirm } = req.body
-  //console.log(req.body)
+  console.log(req.body)
   //console.log(username, email, password, password_confirm)
 
   db.query('SELECT email FROM user WHERE email = ?', [email], async (error, result) => {
