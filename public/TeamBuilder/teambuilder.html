@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team Builder</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6"
+  >
+    <!-- Outer Container -->
+    <div class="w-[90%] max-w-3xl">
+      <!-- Title -->
+      <div class="flex justify-center mb-1">
+        <img
+          src="../assets/Team-Builder-1-28-2025.png"
+          alt="teambuilder"
+          class="w-[300px] md:w-[400px]"
+        />
+      </div>
+
+        <!-- Poké Ball Icon -->
+
+      <div class="flex items-center justify-center gap-3 mb-6">
+        <img
+          src="../assets/pokeball-removebg-preview.png"
+          alt="Poké Ball"
+          class="w-10 h-10"
+        />
+
+        <!-- Team Name Input -->
+        <input
+          type="text"
+          placeholder="Loading Team..."
+          class="bg-gray-300 text-gray-700 text-lg font-bold px-4 py-2 rounded-md w-[100%] text-center"
+        />
+      </div>
+      <!-- Pokémon cards/slots container-->
+      <div id="team-container" class="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <!-- Actual cards/slots-->
+        <div           
+          class="flex items-center justify-between bg-gray-500 p-3 rounded-md animate-pulse"
+        >
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-gray-400 rounded"></div>
+            <span class="font-mono text-gray-300 text-lg">Loading...</span>
+          </div>
+          <!--edit button within slot-->
+          <button
+            class="bg-gray-400 text-gray-300 font-mono text-sm px-3 py-1 rounded-md"
+          >
+            edit
+          </button>
+        </div>
+
+        <div
+          class="flex items-center justify-between bg-gray-500 p-3 rounded-md animate-pulse"
+        >
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-gray-400 rounded"></div>
+            <span class="font-mono text-gray-300 text-lg">Loading...</span>
+          </div>
+          <button
+            class="bg-gray-400 text-gray-300 font-mono text-sm px-3 py-1 rounded-md"
+          >
+            edit
+          </button>
+        </div>
+
+        <div
+          class="flex items-center justify-between bg-gray-500 p-3 rounded-md animate-pulse"
+        >
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-gray-400 rounded"></div>
+            <span class="font-mono text-gray-300 text-lg">Loading...</span>
+          </div>
+          <button
+            class="bg-gray-400 text-gray-300 font-mono text-sm px-3 py-1 rounded-md"
+          >
+            edit
+          </button>
+        </div>
+
+        <div
+          class="flex items-center justify-between bg-gray-500 p-3 rounded-md animate-pulse"
+        >
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-gray-400 rounded"></div>
+            <span class="font-mono text-gray-300 text-lg">Loading...</span>
+          </div>
+          <button
+            class="bg-gray-400 text-gray-300 font-mono text-sm px-3 py-1 rounded-md"
+          >
+            edit
+          </button>
+        </div>
+
+        <div
+          class="flex items-center justify-between bg-gray-500 p-3 rounded-md animate-pulse"
+        >
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-gray-400 rounded"></div>
+            <span class="font-mono text-gray-300 text-lg">Loading...</span>
+          </div>
+          <button
+            class="bg-gray-400 text-gray-300 font-mono text-sm px-3 py-1 rounded-md"
+          >
+            edit
+          </button>
+        </div>
+
+        <div
+          class="flex items-center justify-between bg-gray-500 p-3 rounded-md animate-pulse"
+        >
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-gray-400 rounded"></div>
+            <span class="font-mono text-gray-300 text-lg">Loading...</span>
+          </div>
+          <button
+            class="bg-gray-400 text-gray-300 font-mono text-sm px-3 py-1 rounded-md"
+          >
+            edit
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
