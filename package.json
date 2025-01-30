@@ -1,39 +1,35 @@
 {
   "name": "pokebuilder",
-  "version": "1.0.0",
-  "main": "app.js",
+  "version": "0.2.5",
+  "private": true,
   "type": "module",
   "scripts": {
-    "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "nodemon app.js"
+    "dev": "gen-express-app dev .express/www.js",
+    "start": "gen-express-app start .express/www.js",
+    "debug": "node --experimental-specifier-resolution=node .express/www.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DriscollDev/PokeBuilder.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/DriscollDev/PokeBuilder/issues"
-  },
-  "homepage": "https://github.com/DriscollDev/PokeBuilder#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dirname-filename-esm": "^1.1.1",
     "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
     "express": "^4.21.2",
+    "express-mysql-session": "^3.0.3",
     "express-session": "^1.18.1",
-    "hbs": "^4.2.0",
-    "mysql": "^2.18.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
     "mysql2": "^3.12.0",
-    "nodemon": "^3.1.9",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "pokedex-promise-v2": "^4.2.1"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.17"
-  },
-  "description": ""
+    "autoprefixer": "^10.4.20",
+    "gen-express-app": "^0.2.5",
+    "nodemon": "^3.1.9",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^4.0.1"
+  }
 }
