@@ -30,7 +30,7 @@ router.get('/api/pokemon/:generation', async (req, res) => {
     }
 });
 // Pokedex routes
-router.get('/', async (req, res) => {
+router.get('/dex', async (req, res) => {
     try {
         const [pokemon] = await db.execute(`
             SELECT 

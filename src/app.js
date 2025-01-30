@@ -8,13 +8,13 @@ import MySQLStore from 'express-mysql-session';
 const mySqlStore = MySQLStore(session);
 import passport from 'passport';
 
+import pool from './controllers/db.js';
 
 import homeRouter from './routers/homepage.js';
-import dashRouter from './routers/dashboard.js';
 import authRouter from './routers/auth.js';
-import pool from './controllers/db.js';
-import gameFilterRouter from './routers/gameFilter.js';
+import dashRouter from './routers/dashboard.js';
 import pokeRouter from './routers/pokeRouter.js';
+import testRouter from './routers/test.js';
 
 
 // app
@@ -49,8 +49,8 @@ app.use(passport.authenticate('session'));
 // routers
 app.use('/', homeRouter);
 app.use("/auth", authRouter);
-app.use('/dashboard',checkAuthenticated, dashRouter);
-app.use('/game-filter', gameFilterRouter);
-app.use('/pokedex', pokeRouter);
+app.use('/dash',checkAuthenticated, dashRouter);
+app.use('/poke', pokeRouter);
+app.use('/test', testRouter);
 
 export default app;

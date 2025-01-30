@@ -15,11 +15,11 @@ router.get('/register', function(req, res, next) {
 });
 
 router.post('/login', authController.loginUser, passport.authenticate('local', {
-    successRedirect: '/dashboard',
+    successRedirect: '/dash',
     failureRedirect: '/auth/login' }));
 
 router.post('/register', authController.registerUser, passport.authenticate('local', {
-    successRedirect: '/dashboard',
+    successRedirect: '/dash',
     failureRedirect: '/auth/register'
   }));
 

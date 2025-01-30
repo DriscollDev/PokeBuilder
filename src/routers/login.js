@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/auth', authController.loginUser, (req, res, next) => {
-  res.redirect("/dashboard");
+  res.redirect("/dash");
 });
 
 
