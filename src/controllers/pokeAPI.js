@@ -1,5 +1,12 @@
 import Pokedex from 'pokedex-promise-v2';
-const P = new Pokedex();
+const options = {
+    protocol: 'https',
+    //hostName: 'localhost:443',
+    versionPath: '/api/v2/',
+    cacheLimit: 100 * 1000, // 100s
+    timeout: 5 * 1000 // 5s
+  }
+const P = new Pokedex(options);
 
 const pokeAPI = {
     
@@ -68,8 +75,7 @@ const pokeAPI = {
                         species_name: speciesData.name,
                         is_legendary: speciesData.is_legendary,
                         is_mythical: speciesData.is_mythical,
-                        habitat: speciesData.habitat?.name || null,
-                        color: speciesData.color?.name || null
+                        habitat: speciesData.habitat?.name || null
                     };
                 } catch (error) {
                     console.error(`Error fetching data for ${entry.pokemon_species.name}:`, error.message);
