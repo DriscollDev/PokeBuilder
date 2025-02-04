@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,38 +14,43 @@
   <body
     class="bg-gray-700 text-white font-sans min-h-screen flex items-center justify-center"
   >
+    <!-- Return to Dashboard Button -->
+    <nav class="absolute top-6 left-4">
+      <a
+        href="/dash"
+        class="bg-red-600 text-white font-mono text-lg px-6 py-3 rounded-lg border-2 border-red-800 shadow-lg hover:bg-red-500 hover:border-red-700"
+      >
+        Return to Dashboard
+      </a>
+    </nav>
+
     <main
       class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6"
     >
-      <!-- Title -->
-    
-     
-
       <!-- Content Wrapper -->
-      <div class="flex flex-col md:flex-row items-center justify-between">
-        <!-- Form Section -->
+      <div class="flex flex-col md:flex-row items-center justify-between w-full max-w-4xl">
         
-
-        <div class="bg-gray-300 p-6 rounded-md text-black w-full md:w-1/2">
-          <p class="text-lg font-bold mb-4">Trainer Name</p>
-          <p class="text-lg font-bold mb-4">Password: *******</p>
-          <p class="text-lg font-bold mb-4">Change Password</p>
+        <!-- Expanded Form Section -->
+        <div class="bg-gray-300 p-10 rounded-lg text-black w-full md:w-3/5">
+          <p class="text-2xl font-bold mb-6">Trainer Name: </p>
+          <p class="text-2xl font-bold mb-6">Password: </p>
+          <p class="text-xl font-bold mb-4">Change Password</p>
           <input
             type="password"
             placeholder="New Password"
-            class="w-full px-4 py-2 mb-4 text-black rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            class="w-full px-5 py-3 mb-6 text-black rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-lg"
           />
           <button
             type="submit"
-            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded-lg transition"
+            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg transition text-lg"
           >
             Update Password
           </button>
         </div>
 
         <!-- Trainer Character Image -->
-        <div class="w-full md:w-1/2 flex justify-center mt-8 md:mt-0">
-          <img src="/images/n-pokemon.gif" alt="Trainer N" class="h-48" />
+        <div class="w-full md:w-2/5 flex justify-center mt-8 md:mt-0">
+          <img src="/images/n-pokemon.gif" alt="Trainer N" class="h-64" />
         </div>
       </div>
     </main>

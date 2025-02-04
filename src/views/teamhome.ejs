@@ -8,6 +8,15 @@
     <title>Team Builder</title>
 </head>
 <body class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6">
+    <!-- Breadcrumb Navigation -->
+    <nav class="absolute top-6 left-4">
+        <a
+          href="/dash"
+          class="bg-red-600 text-white font-mono text-lg px-4 py-3 rounded-lg border-2 border-red-800 shadow-lg hover:bg-red-500 hover:border-red-700"
+        >
+          Return to Dashboard
+        </a>
+      </nav>
 
     <!-- Outer Container -->
     <div class="w-[90%] max-w-lg">
@@ -33,13 +42,13 @@
             <div id="team-list" class="w-full text-white font-bold py-2 rounded-md transition animate-pulse">
                 <!-- Placeholder Teams (Will be replaced with real data) -->
                 <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse">
-                    Loading team...
+                    <a href="/team/builder">Loading Team...</a>
                 </div>
             </div>
 
             <!-- Create New Team -->
             <button class="w-full bg-blue-500 text-white font-bold py-2 rounded-md hover:bg-blue-600 transition">
-                <a href="../Pokedex/pokedex.html">Create a new team</a>
+                <a href="">Create a new team</a>
             </button>
         </div>
 

@@ -14,33 +14,64 @@
   <body
     class="bg-gray-600 border-8 border-red-600 w-full h-screen flex flex-col justify-center items-center p-6"
   >
-    <!-- Outer Container -->
+    <!-- Dashboard Container -->
     <div class="w-[90%] max-w-5xl p-6">
-      <div class="grid grid-cols-4 gap-4">
+      <div class="grid grid-cols-4 gap-4"> <!-- This puts the layout within the dashboard in a grid system of 4 columns and applies spacing using gap -->
+
+        <!------------------------ LEFT SIDE ----------------------------->
+
         <!-- User Info Panel -->
         <div
           class="bg-gray-300 p-4 rounded-md col-span-1 border-2 border-black flex flex-col space-y-4"
         >
           <!-- User Info Box -->
-          <div class="bg-gray-200 p-3 rounded-md border-2 border-black">
-            <h2 class="text-black font-bold text-lg text-center justify-between">
+          <div    
+            class="bg-gray-200 p-3 rounded-md border-2 border-black shadow-lg hover:bg-grey-500 hover:scale-105 hover:shadow-xl hover:brightness-110 transition-transform duration-200"
+          >
+            <h2
+              class="text-black font-bold text-lg text-center justify-between"
+            >
               <a href="/dash/user">User Info <span class="gear">⚙️</span></a>
             </h2>
           </div>
 
           <!-- Badges Box -->
-           <!--class="bg-gray-200 p-3 rounded-md border-2 border-black"-->
-          <div >
+          <!--class="bg-gray-200 p-3 rounded-md border-2 border-black"-->
+          <div>
             <h3 class="text-black font-bold text-center">Badges</h3>
             <div class="grid grid-cols-2 gap-2 mt-2">
-              <img src="./images/badges/pngwing.com.png" class="w-16 h-16" />
-              <img src="./images/badges/pngwing.com_1.png" class="w-16 h-16" />
-              <img src="./images/badges/pngwing.com_2.png" class="w-16 h-16" />
-              <img src="./images/badges/pngwing.com_3.png" class="w-16 h-16" />
-              <img src="./images/badges/pngwing.com_4.png" class="w-16 h-16" />
-              <img src="./images/badges/pngwing.com_5.png" class="w-16 h-16" />
-              <img src="./images/badges/pngwing.com_6.png" class="w-16 h-16" />
-              <img src="./images/badges/pngwing.com_8.png" class="w-16 h-16" />
+              <img
+                src="./images/badges/pngwing.com.png"
+                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+              />
+              <img
+                src="./images/badges/pngwing.com_1.png"
+                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+              />
+              <img
+                src="./images/badges/pngwing.com_2.png"
+                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+              />
+              <img
+                src="./images/badges/pngwing.com_3.png"
+                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+              />
+              <img
+                src="./images/badges/pngwing.com_4.png"
+                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+              />
+              <img
+                src="./images/badges/pngwing.com_5.png"
+                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+              />
+              <img
+                src="./images/badges/pngwing.com_6.png"
+                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+              />
+              <img
+                src="./images/badges/pngwing.com_8.png"
+                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+              />
             </div>
           </div>
         </div>
@@ -49,14 +80,20 @@
         <div
           class="bg-purple-400 p-4 rounded-md col-span-2 border-2 border-black"
         >
-          <h2 class="text-black font-bold text-lg text-center"><a href="/dash/teamhome">Team Builder</a></h2>
+          <h2
+            class="text-black font-bold text-lg text-center hover:bg-grey-500 hover:scale-105 hover:brightness-110 transition-transform duration-100"
+          >
+            <a href="/team">Team Builder</a>
+          </h2>
           <div class="mt-2 flex">
             <input
               type="text"
               class="ml-2 flex-grow p-1 rounded-md"
               placeholder="Search Team"
             />
-            <button class="bg-blue-500 text-white px-3 py-1 rounded-md">
+            <button
+              class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300"
+            >
               Search
             </button>
           </div>
@@ -69,7 +106,9 @@
               >
                 Loading teams...
               </div>
-              <button class="bg-blue-500 text-white px-3 py-1 rounded-md">
+              <button
+                class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300"
+              >
                 View
               </button>
             </div>
@@ -80,7 +119,9 @@
               >
                 Loading teams...
               </div>
-              <button class="bg-blue-500 text-white px-3 py-1 rounded-md">
+              <button
+                class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300"
+              >
                 View
               </button>
             </div>
@@ -91,7 +132,9 @@
               >
                 Loading teams...
               </div>
-              <button class="bg-blue-500 text-white px-3 py-1 rounded-md">
+              <button
+                class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300"
+              >
                 View
               </button>
             </div>
@@ -102,7 +145,9 @@
               >
                 Loading teams...
               </div>
-              <button class="bg-blue-500 text-white px-3 py-1 rounded-md gap-3">
+              <button
+                class="bg-blue-500 text-white px-3 py-1 rounded-md gap-3 hover:bg-blue-300"
+              >
                 View
               </button>
             </div>
@@ -113,7 +158,9 @@
               >
                 Loading teams...
               </div>
-              <button class="bg-blue-500 text-white px-3 py-1 rounded-md">
+              <button
+                class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300"
+              >
                 View
               </button>
             </div>
@@ -121,22 +168,25 @@
         </div>
 
         <!-- Side Buttons -->
-        <div class="flex flex-col space-y-6 col-span-1">
-          <button
-            class="w-full bg-red-500 text-white font-bold py-6 text-2xl rounded-lg border-2 border-black"
+        <div class="flex flex-col h-full col-span-1 gap-4">
+          <a
+            href="/poke/dex"
+            class="flex-grow w-full bg-red-500 text-white text-center font-bold py-6 text-2xl rounded-lg border-2 border-black items-center flex justify-center"
           >
-            <a href="/poke/dex">Pokedex</a>
-          </button>
-          <button
-            class="w-full bg-purple-600 text-white font-bold py-6 text-2xl rounded-lg border-2 border-black"
+            Pokedex
+          </a>
+          <a
+            href="/dash/help"
+            class="flex-grow w-full bg-purple-600 text-white font-bold py-6 text-2xl rounded-lg border-2 border-black items-center flex justify-center"
           >
-            <a href="/dash/help">Help</a>
-          </button>
-          <button
-            class="w-full bg-blue-700 text-white font-bold py-6 text-2xl rounded-lg border-2 border-black"
+            Help
+          </a>
+          <a
+            href="/dash/build"
+            class="flex-grow w-full bg-blue-700 text-white font-bold py-6 text-2xl rounded-lg border-2 border-black items-center flex justify-center"
           >
-            <a href="/dash/build">Team Building Help</a>
-          </button>
+            Team Building Help
+          </a>
         </div>
       </div>
     </div>
