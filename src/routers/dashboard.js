@@ -18,13 +18,12 @@ router.get('/build', function(req, res, next) {
   res.render("teambuilding", { title: 'Team Building Help' });
 })
 
+
 router.get('/user', function(req, res, next) {
   res.render("account", { title: 'Account Info' });
 })
 
-router.get('/teamhome', function(req, res, next) {
-  res.render("teamhome", { title: 'Team View' });
-})
+
 
 router.get('/team:teamid', function(req, res, next) {
   res.render("team", { title: 'Team View', team: req.params.teamid });

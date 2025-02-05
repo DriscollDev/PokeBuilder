@@ -1,49 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Help Page</title>
-    <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg">
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="flex justify-center items-center min-h-screen bg-gray-800">
+  </head>
+  <body class="flex justify-center items-center min-h-screen bg-gray-800">
+    <div
+      class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6"
+    >
+      <!-- Naviiiiii -->
 
-    <div class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6">
-          <!-- Replace Text with Image -->
-          <div class="flex justify-center mb-6">
-            <img src="/images/Help-1-28-2025.png" alt="Help" class="w-[300px] md:w-[400px]">
+      <nav class="absolute top-6 left-4">
+        <a
+          href="/dash"
+          class="bg-red-600 text-white font-mono text-lg px-4 py-3 rounded-lg border-2 border-red-800 shadow-lg hover:bg-red-500 hover:border-red-700"
+        >
+          Return to Dashboard
+        </a>
+      </nav>
+
+      <!-- Replace Text with Image -->
+      <div class="flex justify-center mb-6">
+        <img
+          src="/images/Help-1-28-2025.png"
+          alt="Help"
+          class="w-[300px] md:w-[400px]"
+        />
+      </div>
+
+      <!-- Help Section Container -->
+      <div class="flex flex-col items-center w-full">
+        <div class="grid grid-cols-3 gap-6 w-full max-w-5xl mt-8">
+          <!-- Pokédex Help -->
+          <div
+            class="bg-red-500 text-black font-bold p-6 rounded-lg border-2 border-black h-64 w-full flex flex-col justify-center"
+          >
+            <h2 class="text-xl text-center">Pokédex Help</h2>
+            <p class="text-sm text-center font-normal mt-2">
+              The Pokédex feature is here to help you search through Pokémon and
+              be able to see more about them. You can use filters to search
+              specific types or generations.
+            </p>
           </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Pokédex Help -->
-            <div class="bg-red-500 text-black p-4 rounded-lg shadow-lg">
-                <h2 class="text-xl text-center font-bold">Pokédex Help</h2>
-                <p class="mt-2 text-sm">
-                    The Pokédex feature is here to help you search through Pokémon and be able 
-                    to see more about them. You can use filters to search specific types or generations.
-                </p>
-            </div>
 
-            <!-- Team Building -->
-            <div class="bg-purple-400 text-black p-4 rounded-lg shadow-lg">
-                <h2 class="text-xl text-center font-bold">Team Building</h2>
-                <p class="mt-2 text-sm">
-                    Team building can take lots of time and work. The best way to work on building a team is 
-                    to think of a concept and search through Pokémon that can help fulfill that goal.
-                </p>
-            </div>
+          <!-- Team Building -->
+          <div
+            class="bg-purple-400 text-black font-bold p-6 rounded-lg border-2 border-black h-64 w-full flex flex-col justify-center"
+          >
+            <h2 class="text-xl text-center">Team Building</h2>
+            <p class="text-sm text-center font-normal mt-2">
+              Team building can take lots of time and work. The best way to work
+              on building a team is to think of a concept and search through
+              Pokémon that can help fulfill that goal.
+            </p>
+          </div>
 
-            <!-- Badges -->
-            <div class="bg-blue-500 text-black p-4 rounded-lg shadow-lg">
-                <h2 class="text-xl text-center font-bold">Badges</h2>
-                <p class="mt-2 text-sm">
-                    Badges are unlocked through making different kinds of teams. Each badge has different 
-                    requirements. Some will be based on types, weaknesses, or super effectiveness.
-                </p>
-            </div>
+          <!-- Badges -->
+          <div
+            class="bg-blue-500 text-black font-bold p-6 rounded-lg border-2 border-black h-64 w-full flex flex-col justify-center"
+          >
+            <h2 class="text-xl text-center">Badges</h2>
+            <p class="text-sm text-center font-normal mt-2">
+              Badges are unlocked through making different kinds of teams. Each
+              badge has different requirements. Some will be based off types,
+              weaknesses, or super effectiveness.
+            </p>
+          </div>
         </div>
+      </div>
     </div>
-
-</body>
+  </body>
 </html>

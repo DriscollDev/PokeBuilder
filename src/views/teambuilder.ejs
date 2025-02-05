@@ -14,6 +14,24 @@
   <body
     class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6"
   >
+  <body
+  class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6"
+>
+    <!-- Breadcrumb Naviiiiii -->
+    <nav class="absolute top-2 left-2 text-sm">
+      <div class="flex text-gray-400">
+        <a href="/dash" class="text-white hover:text-gray-300">Dashboard</a>
+        <span class="mx-2">\</span>
+        <a href="/team/" class="text-white hover:text-gray-300">Team Build Home</a>
+        <span class="mx-2">\</span>
+        <span class="text-gray-300">Team Builder</span>
+      </div>
+    </nav>
+  
+
+  <!-- Outer Container -->
+  <div class="w-[90%] max-w-3xl">
+
     <!-- Outer Container -->
     <div class="w-[90%] max-w-3xl">
       <!-- Title -->
@@ -35,11 +53,12 @@
         />
 
         <!-- Team Name Input -->
-        <input
-          type="text"
-          placeholder="Loading Team..."
-          class="bg-gray-300 text-gray-700 text-lg font-bold px-4 py-2 rounded-md w-[100%] text-center"
-        />
+        <div
+        class="bg-gray-300 text-gray-700 text-lg font-bold px-4 py-2 rounded-md w-[100%] animate-pulse text-center"
+      >
+        Loading team...
+      </div>
+
       </div>
       <!-- Pokémon cards/slots container-->
       <div id="team-container" class="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -48,8 +67,8 @@
           class="flex items-center justify-between bg-gray-500 p-3 rounded-md animate-pulse"
         >
           <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-gray-400 rounded"></div>
-            <span class="font-mono text-gray-300 text-lg">Loading...</span>
+            <div class="w-8 h-8 bg-gray-400 rounded "></div>
+            <span class="font-mono text-gray-300 text-lg ">Loading...</span>
           </div>
           <!--edit button within slot-->
           <button
