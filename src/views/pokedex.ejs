@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/stylesheets/pokestyle.css">
+    <link rel="stylesheet" href="/stylesheets/pokestyle.css" />
     <title>Pokédex</title>
     <link
       rel="icon"
@@ -53,29 +53,35 @@
     </div>
 
     <!-- Pokémon Display Container -->
-     <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
+    <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
     <div id="pokemonContainer" class="grid grid-cols-3 gap-6 mt-6 w-[80%]">
       <% pokemon.forEach(mon => { %>
-            <div class="pokedexbox relative">
-                <span class="pokedexnum">#<%= mon.pokedex_number %></span>
-                <img src="<%= mon.sprite_url %>" alt="<%= mon.name %>" class="pokeimage">
-                <h2 class="pokedexname"><%= mon.name %></h2>
-                <div class="pokedextypingdiv">
-                    <div class="pokedextype  <%= mon.primary_type.toLowerCase() %>">
-                        <span class="pokedextypestyle"><%= mon.primary_type %></span>
-                    </div>
-                    <% if (mon.secondary_type) { %>
-                        <div class="pokedextype <%= mon.secondary_type.toLowerCase() %>">
-                            <span class="pokedextypestyle"><%= mon.secondary_type %></span>
-                        </div>
-                    <% } %>
-                </div>
-            </div>
-        <% }) %>
+      <div class="pokedexbox relative">
+        <span class="pokedexnum">#<%= mon.pokedex_number %></span>
+        <img
+          src="<%= mon.sprite_url %>"
+          alt="<%= mon.name %>"
+          class="pokeimage"
+        />
+        <h2 class="pokedexname"><%= mon.name %></h2>
+        <div class="pokedextypingdiv">
+          <div class="pokedextype <%= mon.primary_type.toLowerCase() %>">
+            <span class="pokedextypestyle"><%= mon.primary_type %></span>
+          </div>
+          <% if (mon.secondary_type) { %>
+          <div class="pokedextype <%= mon.secondary_type.toLowerCase() %>">
+            <span class="pokedextypestyle"><%= mon.secondary_type %></span>
+          </div>
+          <% } %>
+        </div>
+      </div>
+      <% }) %>
     </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const searchInput = document.getElementById("searchInput");
+        const pokemonCard = document.getElementById(".pokedexbox");
+      })
+    </script>
   </body>
-
-
-</body>
-
 </html>
