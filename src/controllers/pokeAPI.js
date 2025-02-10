@@ -1,4 +1,5 @@
 import Pokedex from 'pokedex-promise-v2';
+import pool from './db.js';
 const options = {
     protocol: 'https',
     //hostName: 'localhost:443',
@@ -51,6 +52,19 @@ const pokeAPI = {
             res.json(formattedResponse);
         } catch (error) {
             console.error('Generation test error:', error);
+            next(error);
+        }
+    },
+
+    getPokemonFromDB: async (req, res, next) => {
+        try {
+            const [rows] = await pool.query('SELECT * FROM pokemon WHERE name = ?', [req.params.name]);
+            if (rows.length === 0) {
+                return res.status(404).json({ error: 'Pokemon not found' });
+            }
+            res.json(rows[0]);
+        } catch (error) {
+            console.error('Database query error:', error);
             next(error);
         }
     },
