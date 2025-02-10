@@ -87,9 +87,6 @@ const pokeAPI = {
                         dex_number: entry.entry_number,
                         sprite_url: pokemonData.sprites.front_default,
                         species_name: speciesData.name,
-                        is_legendary: speciesData.is_legendary,
-                        is_mythical: speciesData.is_mythical,
-                        habitat: speciesData.habitat?.name || null
                     };
                 } catch (error) {
                     console.error(`Error fetching data for ${entry.pokemon_species.name}:`, error.message);
