@@ -5,7 +5,11 @@ module.exports = {
     "./views/**/*.{js,jsx,ts,tsx,ejs}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        kode: ['Kode Mono', 'monospace'],
+      },
+    },
   },
   plugins: [],
-} 
+};

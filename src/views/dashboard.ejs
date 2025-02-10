@@ -11,184 +11,101 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Team Builder</title>
   </head>
-  <body
-    class="bg-gray-600 border-8 border-red-600 w-full h-screen flex flex-col justify-center items-center p-6"
-  >
-    <!-- Dashboard Container -->
-    <div class="w-[90%] max-w-5xl p-6">
-      <div class="grid grid-cols-4 gap-4"> <!-- This puts the layout within the dashboard in a grid system of 4 columns and applies spacing using gap -->
+  <body class="bg-gray-600 border-8 border-red-600 w-full h-screen p-6 flex justify-center">
+    
+    <!-- Main Grid Container -->
+    <div class="grid grid-cols-4 gap-4 w-full h-full">
+      
+      <!-- Dashboard Container (User Info + Badges) -->
+      <div class="bg-gray-300 p-4 rounded-md border-2 border-black flex flex-col space-y-4 h-full">
 
         <!------------------------ LEFT SIDE ----------------------------->
 
         <!-- User Info Panel -->
-        <div
-          class="bg-gray-300 p-4 rounded-md col-span-1 border-2 border-black flex flex-col space-y-4"
-        >
-          <!-- User Info Box -->
-          <div    
-            class="bg-gray-200 p-3 rounded-md border-2 border-black shadow-lg hover:bg-grey-500 hover:scale-105 hover:shadow-xl hover:brightness-110 transition-transform duration-200"
-          >
-            <h2
-              class="text-black font-bold text-lg text-center justify-between"
-            >
-              <a href="/dash/user">User Info <span class="gear">⚙️</span></a>
-            </h2>
-          </div>
-
-          <!-- Badges Box -->
-          <!--class="bg-gray-200 p-3 rounded-md border-2 border-black"-->
-          <div>
-            <h3 class="text-black font-bold text-center">Badges</h3>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-              <img
-                src="./images/badges/pngwing.com.png"
-                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-              />
-              <img
-                src="./images/badges/pngwing.com_1.png"
-                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-              />
-              <img
-                src="./images/badges/pngwing.com_2.png"
-                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-              />
-              <img
-                src="./images/badges/pngwing.com_3.png"
-                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-              />
-              <img
-                src="./images/badges/pngwing.com_4.png"
-                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-              />
-              <img
-                src="./images/badges/pngwing.com_5.png"
-                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-              />
-              <img
-                src="./images/badges/pngwing.com_6.png"
-                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-              />
-              <img
-                src="./images/badges/pngwing.com_8.png"
-                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Team Builder Section -->
-        <div
-          class="bg-purple-400 p-4 rounded-md col-span-2 border-2 border-black"
-        >
-          <h2
-            class="text-black font-bold text-lg text-center hover:bg-grey-500 hover:scale-105 hover:brightness-110 transition-transform duration-100"
-          >
-            <a href="/team">Team Builder</a>
+        <div class="bg-gray-200 p-3 rounded-md border-2 border-black shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-200">
+          <h2 class="text-black font-bold text-lg text-center">
+            <a href="/dash/user">User Info <span class="gear">⚙️</span></a>
           </h2>
-          <div class="mt-2 flex">
-            <input
-              type="text"
-              class="ml-2 flex-grow p-1 rounded-md"
-              placeholder="Search Team"
-            />
-            <button
-              class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300"
-            >
-              Search
-            </button>
-          </div>
-
-          <!-- Team Display -->
-          <div id="team-list" class="mt-4 space-y-4">
-            <div class="flex justify-between p-2 rounded-md">
-              <div
-                class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse"
-              >
-                Loading teams...
-              </div>
-              <button
-                class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300"
-              >
-                View
-              </button>
-            </div>
-
-            <div class="flex justify-between p-2 rounded-md">
-              <div
-                class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse"
-              >
-                Loading teams...
-              </div>
-              <button
-                class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300"
-              >
-                View
-              </button>
-            </div>
-
-            <div class="flex justify-between p-2 rounded-md">
-              <div
-                class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse"
-              >
-                Loading teams...
-              </div>
-              <button
-                class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300"
-              >
-                View
-              </button>
-            </div>
-
-            <div class="flex justify-between p-2 rounded-md">
-              <div
-                class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse"
-              >
-                Loading teams...
-              </div>
-              <button
-                class="bg-blue-500 text-white px-3 py-1 rounded-md gap-3 hover:bg-blue-300"
-              >
-                View
-              </button>
-            </div>
-
-            <div class="flex justify-between p-2 rounded-md">
-              <div
-                class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse"
-              >
-                Loading teams...
-              </div>
-              <button
-                class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300"
-              >
-                View
-              </button>
-            </div>
-          </div>
         </div>
 
-        <!-- Side Buttons -->
-        <div class="flex flex-col h-full col-span-1 gap-4">
-          <a
-            href="/poke/dex"
-            class="flex-grow w-full bg-red-500 text-white text-center font-bold py-6 text-2xl rounded-lg border-2 border-black items-center flex justify-center"
-          >
-            Pokedex
-          </a>
-          <a
-            href="/dash/help"
-            class="flex-grow w-full bg-purple-600 text-white font-bold py-6 text-2xl rounded-lg border-2 border-black items-center flex justify-center"
-          >
-            Help
-          </a>
-          <a
-            href="/dash/build"
-            class="flex-grow w-full bg-blue-700 text-white font-bold py-6 text-2xl rounded-lg border-2 border-black items-center flex justify-center"
-          >
-            Team Building Help
-          </a>
+        <!-- Badges Box -->
+        <div class="bg-gray-200 p-3 rounded-md border-2 border-black flex-grow flex flex-col items-center">
+          <h3 class="text-black font-bold text-center">Badges</h3>
+          <div class="grid grid-cols-2 gap-20 py-10 mt-4 flex-grow items-center justify-center">
+            <img src="./images/badges/pngwing.com.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
+            <img src="./images/badges/pngwing.com_1.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
+            <img src="./images/badges/pngwing.com_2.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
+            <img src="./images/badges/pngwing.com_3.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
+            <img src="./images/badges/pngwing.com_4.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
+            <img src="./images/badges/pngwing.com_5.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
+            <img src="./images/badges/pngwing.com_6.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
+            <img src="./images/badges/pngwing.com_8.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
+            <img src="./images/badges/pngwing.com_9.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
+          </div>
         </div>
       </div>
+
+     <div class="bg-purple-400 p-4 rounded-md border-2 border-black col-span-2 h-full flex flex-col">
+        <h2 class="text-black font-bold text-lg text-center hover:scale-105 transition-transform duration-100">
+          <a href="/team">Team Builder</a>
+        </h2>
+        <div class="mt-2 flex">
+          <input type="text" class="ml-2 flex-grow p-1 rounded-md" placeholder="Search Team" />
+          <button class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300">Search</button>
+        </div>
+
+        <!-- Team Display -->
+        <div id="team-list" class="mt-4 space-y-4 flex-grow flex flex-col justify-between">
+          <div class="flex justify-between p-2 rounded-md flex-grow">
+            <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse flex-grow flex items-center justify-center">
+              Loading teams...
+            </div>
+            <button class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300">View</button>
+          </div>
+
+          <div class="flex justify-between p-2 rounded-md flex-grow">
+            <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse flex-grow flex items-center justify-center">
+              Loading teams...
+            </div>
+            <button class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300">View</button>
+          </div>
+
+          <div class="flex justify-between p-2 rounded-md flex-grow">
+            <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse flex-grow flex items-center justify-center">
+              Loading teams...
+            </div>
+            <button class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300">View</button>
+          </div>
+
+          <div class="flex justify-between p-2 rounded-md flex-grow">
+            <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse flex-grow flex items-center justify-center">
+              Loading teams...
+            </div>
+            <button class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300">View</button>
+          </div>
+
+          <div class="flex justify-between p-2 rounded-md flex-grow">
+            <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse flex-grow flex items-center justify-center">
+              Loading teams...
+            </div>
+            <button class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300">View</button>
+          </div>
+        </div>
+      </div>
+      <!-- Side Buttons (Pokedex, Help, Team Building) -->
+      <div class="flex flex-col h-full col-span-1 gap-4">
+        <a href="/poke/dex" class="flex-grow w-full bg-red-500 text-white text-center font-bold py-6 text-2xl rounded-lg border-2 border-black flex justify-center items-center hover:scale-105 transition-transform duration-100">
+          Pokedex
+        </a>
+        <a href="/dash/help" class="flex-grow w-full bg-purple-600 text-white font-bold py-6 text-2xl rounded-lg border-2 border-black flex justify-center items-center hover:scale-105 transition-transform duration-100">
+          Help
+        </a>
+        <a href="/dash/build" class="flex-grow w-full bg-blue-700 text-white font-bold py-6 text-2xl rounded-lg border-2 border-black flex justify-center items-center hover:scale-105 transition-transform duration-100">
+          Team Building Help
+        </a>
+      </div>
+
     </div>
+
   </body>
 </html>
