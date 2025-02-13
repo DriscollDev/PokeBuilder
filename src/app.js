@@ -32,7 +32,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(dirname(import.meta), "../", 'public')));
 
 let checkAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) { return next() }
+  if (req.isAuthenticated()) { 
+    console.log(req.session)
+    return next() 
+  }
   res.redirect("/auth/login")
 }
 
