@@ -1,5 +1,13 @@
 import Pokedex from 'pokedex-promise-v2';
-const P = new Pokedex();
+import pool from './db.js';
+const options = {
+    protocol: 'https',
+    //hostName: 'localhost:443',
+    versionPath: '/api/v2/',
+    cacheLimit: 100 * 1000, // 100s
+    timeout: 5 * 1000 // 5s
+  }
+const P = new Pokedex(options);
 
 const pokeAPI = {
     
@@ -48,6 +56,19 @@ const pokeAPI = {
         }
     },
 
+    getPokemonFromDB: async (req, res, next) => {
+        try {
+            const [rows] = await pool.query('SELECT * FROM pokemon WHERE name = ?', [req.params.name]);
+            if (rows.length === 0) {
+                return res.status(404).json({ error: 'Pokemon not found' });
+            }
+            res.json(rows[0]);
+        } catch (error) {
+            console.error('Database query error:', error);
+            next(error);
+        }
+    },
+
     getAllPokemon: async (req, res, next) => {
         try {
             const response = await P.getPokedexByName('national');
@@ -66,10 +87,6 @@ const pokeAPI = {
                         dex_number: entry.entry_number,
                         sprite_url: pokemonData.sprites.front_default,
                         species_name: speciesData.name,
-                        is_legendary: speciesData.is_legendary,
-                        is_mythical: speciesData.is_mythical,
-                        habitat: speciesData.habitat?.name || null,
-                        color: speciesData.color?.name || null
                     };
                 } catch (error) {
                     console.error(`Error fetching data for ${entry.pokemon_species.name}:`, error.message);

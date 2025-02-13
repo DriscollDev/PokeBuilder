@@ -1,49 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Team Builder</title>
-</head>
-<body class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6">
+  </head>
+  <body
+    class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6"
+  >
+    <!-- Back to Dash -->
+    <nav class="absolute top-6 left-4">
+      <a
+        href="/dash"
+        class="bg-red-600 text-white font-mono text-lg px-4 py-3 rounded-lg border-2 border-red-800 shadow-lg hover:bg-red-500 hover:border-red-700"
+      >
+        Return to Dashboard
+      </a>
+    </nav>
 
     <!-- Outer Container -->
     <div class="w-[90%] max-w-lg">
+      <!-- Title as an Image -->
+      <div class="flex justify-center mb-4">
+        <img
+          src="/images/Team-Builder-1-28-2025.png"
+          alt="Team Builder"
+          class="w-[600px]"
+        />
+      </div>
 
-        <!-- Title as an Image -->
-        <div class="flex justify-center mb-4">
-            <img src="/images/Team-Builder-1-28-2025.png" alt="Team Builder" class="w-[600px]">
+      <!-- Buttons Section -->
+      <div class="flex mt-8 flex-col space-y-1 items-center">
+        <!-- Search Team -->
+        <input
+          type="text"
+          placeholder="Search Teams"
+          class="bg-gray-300 text-gray-700 text-lg font-bold px-4 py-2 rounded-md w-[100%] text-center"
+        />
+
+        <!-- Team Name -->
+        <div
+          id="team-list"
+          class="w-full text-white font-bold py-2 rounded-md transition animate-pulse"
+        >
+          <!-- Placeholder Teams (Will be replaced with real data) -->
+          <div
+            class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse"
+          >
+            <a href="/team/builder">Loading Team...</a>
+          </div>
         </div>
 
-    
-        <!-- Buttons Section -->
-        <div class="flex mt-8 flex-col space-y-1 items-center">
-            <!-- Search Team -->
-            <input
-            type="text"
-            placeholder="Search Teams"
-            class="bg-gray-300 text-gray-700 text-lg font-bold px-4 py-2 rounded-md w-[100%] text-center"
-          />
-           
-            
-
-            <!-- Team Name -->
-            <div id="team-list" class="w-full text-white font-bold py-2 rounded-md transition animate-pulse">
-                <!-- Placeholder Teams (Will be replaced with real data) -->
-                <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse">
-                    Loading team...
-                </div>
-            </div>
-
-            <!-- Create New Team -->
-            <button class="w-full bg-blue-500 text-white font-bold py-2 rounded-md hover:bg-blue-600 transition">
-                <a href="../Pokedex/pokedex.html">Create a new team</a>
-            </button>
-        </div>
-
+        <!-- Create New Team Button -->
+        <button
+          id="createBtn"
+          class="w-full bg-blue-500 text-white font-bold py-2 rounded-md hover:bg-blue-600 "
+        >
+          Create a new team
+        </button>
+      </div>
     </div>
 
-</body>
+    <!-- FORM (Hidden by default) -->
+     <!-- hidden will be removed from the classList when clicked. .classList.remove('hidden') -->
+    <div
+      id="teamform"
+      class="hidden fixed inset-5 bg-gray-900 bg-opacity-50 flex justify-center items-center"
+    >
+      <div class="bg-gray-300 p-6 rounded-lg shadow-lg w-[90%] max-w-md">
+        <h2 class="text-xl font-bold text-center mb-4">New Team Information</h2>
+        <label class="block text-sm font-medium text-gray-700">Team Name</label>
+        <input
+          type="text"
+          class="w-full border p-2 rounded-md mb-3"
+          placeholder="Enter Team Name"
+        />
+
+        <!-- Generation drop down menu -->
+         <!--block -->
+        <label class="block text-sm font-medium text-gray-700"
+          >Generation</label
+        >
+        <select class="w-full border p-2 rounded-md mb-3">
+          <option>Generation 1</option>
+          <option>Generation 2</option>
+          <option>Generation 3</option>
+          <option>Generation 4</option>
+          <option>Generation 5</option>
+          <option>Generation 6</option>
+        </select>
+
+        <!--Team description -->
+
+        <label class="block text-sm font-medium text-gray-700"
+          >Team Description</label
+        >
+
+        <!-- text area in which description will go -->
+        <textarea
+          class="w-full border p-2 rounded-md mb-3"
+          placeholder="Reason for the team, format, game etc"
+        ></textarea>
+
+        <div class="flex justify-between">
+          <button
+            id="closeBtn"
+            class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+          >
+            Cancel
+          </button>
+          <button
+            id="createBtn"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          >
+            Create Team
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- js for btn to create new team -->
+    <script>
+        //Declaring constants
+        //refrencing these elements by their id in order to manipulate the document 
+      const createBtn = document.getElementById("createBtn");
+      const closeBtn = document.getElementById("closeBtn");
+      const teamform = document.getElementById("teamform");
+
+      // Opening the form
+      //When the createBtn is clicked triggering the eventlistener, the function removes the "hidden" class from teamform, making it visible.
+      createBtn.addEventListener("click", () => {
+        //The classList property returns the CSS classnames of an element.
+        teamform.classList.remove("hidden");
+      });
+
+      // Close form
+      //When the closeBtn is clicked triggering the eventlistener, the function ADDS the "hidden" class from teamform, making it dissappear.
+      closeBtn.addEventListener("click", () => {
+        teamform.classList.add("hidden");
+      });
+    </script>
+  </body>
 </html>
