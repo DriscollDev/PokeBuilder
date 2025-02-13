@@ -40,13 +40,15 @@ passport.use(
 
 // Serialize user for the session
 passport.serializeUser((user, cb) => {
+    //console.log("Serializing user", user);
     process.nextTick(() => {
-        cb(null, { userId: user.userId, username: user.username });
+        cb(null, { userID: user.userID, username: user.username });
     });
 });
 
 // Deserialize user from the session  
 passport.deserializeUser((user, cb) => {
+    //console.log("DeSerializing user", user);
     process.nextTick(() => {
         return cb(null, user);
     });
@@ -55,7 +57,7 @@ passport.deserializeUser((user, cb) => {
 const authController = {
     registerUser: async (req, res, next) => {
         const { username, password} = req.body;
-        console.log("Registering user", username, password);
+        //console.log("Registering user", username);
 
         // Input validation
         if (!username || !password) {
@@ -116,6 +118,10 @@ const authController = {
             }
             //req.session.passport.user.userID = user.userID;
             //req.session.save();
+            //console.log("------");
+            //console.log(req.session);
+            //console.log("------");
+
             next();
 
         } catch (err) {
