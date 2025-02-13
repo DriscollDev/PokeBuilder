@@ -98,9 +98,11 @@
       <!-- Modal content -->
       <div class="modal-content">
         <span class="close">&times;</span>
+        <h2 id="monDexNum"> # </h2>
         <h1 style="font-size: large;" id="monName"> Name </h1>
         <p id="monAbilities">Abilities: </p>
         <p id="monTypes">Types:  </p>
+        <img id="monSprite" src="" alt="Pokemon">
       </div>
 
     </div>
@@ -149,16 +151,19 @@
     var monTypes = document.getElementById("monTypes");
     // When the user clicks the button, open the modal 
     async function openModal(pokemonName) {
-      console.log(pokemonName);
+      console.log("GETTING POKEMON");
       const response = await fetch(`/poke/mon/${pokemonName}`,   {
         method: 'GET'
       });
       const pokemon = await response.json();
+      console.log("-----------------")
       console.log(pokemon);
       modal.style.display = "block";
+      monDexNum.innerHTML = `#${pokemon.dex_number}`;
       monName.innerHTML = pokemon.name;
-      monAbilities.innerHTML = `Abilities: ${pokemon.abilities.map(function(elem){return elem.ability.name;}).join(",")}`;
-      monTypes.innerHTML = `Types: ${pokemon.types.map(function(elem){return elem.type.name;}).join(",")}`;
+      monAbilities.innerHTML = `Abilities: ${pokemon.abilities.join(",")}`;
+      monTypes.innerHTML = `Types: ${pokemon.types.join(",")}`;
+      monSprite.src = pokemon.sprite_url;
     }
     
     // When the user clicks on <span> (x), close the modal
