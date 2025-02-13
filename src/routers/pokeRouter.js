@@ -1,6 +1,6 @@
 import express from 'express';
 import pokeAPI from '../controllers/pokeAPI.js';
-import db from '../controllers/db.js';  // Assuming you have a database connection setup
+import db from '../controllers/db.js'; 
 
 const router = express.Router();
 

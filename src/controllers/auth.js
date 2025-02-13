@@ -28,6 +28,7 @@ passport.use(
             }
 
             console.log(`User ${user.username} authenticated`);
+            //console.log(user);
             return cb(null, user);
 
         } catch (err) {
@@ -40,7 +41,7 @@ passport.use(
 // Serialize user for the session
 passport.serializeUser((user, cb) => {
     process.nextTick(() => {
-        cb(null, { id: user.id, username: user.username });
+        cb(null, { userId: user.userId, username: user.username });
     });
 });
 
@@ -53,17 +54,18 @@ passport.deserializeUser((user, cb) => {
 
 const authController = {
     registerUser: async (req, res, next) => {
-        const { username, email, password, password_confirm } = req.body;
+        const { username, password} = req.body;
+        console.log("Registering user", username, password);
 
         // Input validation
-        if (!username || !email || !password || !password_confirm) {
+        if (!username || !password) {
             return res.status(400).json({ error: 'All fields are required' });
         }
-
+        /*
         if (password !== password_confirm) {
             return res.status(400).json({ error: 'Passwords do not match' });
         }
-
+        */
         try {
             const conn = await pool.getConnection();
 
@@ -72,7 +74,7 @@ const authController = {
                 "SELECT username FROM user WHERE username = ?", 
                 [username]
             );
-
+            
             if (existingUsers.length > 0) {
                 pool.releaseConnection(conn);
                 return res.status(400).json({ error: "Username already exists" });
@@ -81,10 +83,9 @@ const authController = {
             // Hash password and create user
             const hash = await bcrypt.hash(password, 10);
             await conn.query(
-                "INSERT INTO user (username, email, password) VALUES (?, ?, ?)", 
-                [username, email, hash]
+                "INSERT INTO user (username, password) VALUES (?, ?)", 
+                [username, hash]
             );
-
             pool.releaseConnection(conn);
             next();
 
@@ -113,7 +114,8 @@ const authController = {
             if (!isMatch) {
                 return res.status(401).json({ error: "Invalid credentials" });
             }
-
+            //req.session.passport.user.userID = user.userID;
+            //req.session.save();
             next();
 
         } catch (err) {

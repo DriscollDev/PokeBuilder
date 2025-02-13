@@ -32,7 +32,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(dirname(import.meta), "../", 'public')));
 
 let checkAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) { return next() }
+  if (req.isAuthenticated()) { 
+    console.log(req.session)
+    return next() 
+  }
   res.redirect("/auth/login")
 }
 
@@ -53,5 +56,8 @@ app.use('/dash',checkAuthenticated, dashRouter);
 app.use('/poke', pokeRouter);
 app.use('/team',checkAuthenticated, teamRouter)
 
+//testing
+import testRouter from './routers/testRouter.js';
+app.use('/test', testRouter);
 
 export default app;
