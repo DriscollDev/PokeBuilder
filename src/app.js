@@ -56,8 +56,5 @@ app.use('/dash',checkAuthenticated, dashRouter);
 app.use('/poke', pokeRouter);
 app.use('/team',checkAuthenticated, teamRouter)
 
-//testing
-import testRouter from './routers/testRouter.js';
-app.use('/test', testRouter);
 
 export default app;
