@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/stylesheets/pokestyle.css">
+    <link rel="stylesheet" href="/stylesheets/pokestyle.css" />
     <title>Pokédex</title>
     <link
       rel="icon"
@@ -126,10 +126,14 @@
                 </div>
             </div>
         <% }) %>
-        
     </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const searchInput = document.getElementById("searchInput");
+        const pokemonCard = document.getElementById(".pokedexbox");
+      })
+    </script>
   </body>
-
 
   <script>
     // Get the modal
