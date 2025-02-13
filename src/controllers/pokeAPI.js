@@ -10,6 +10,32 @@ const P = new Pokedex(options);
 
 const pokeAPI = {
     
+    getFormattedPokemonByName: async (req, res, next) =>{
+        try{
+            const speciesResponse = await P.getPokemonSpeciesByName(req.params.name);
+            const pokeResponse = await P.getPokemonByName(req.params.name);
+
+            const formattedResponse = {
+                id: pokeResponse.id,
+                name: pokeResponse.name,
+                types: pokeResponse.types.map(type => type.type.name),
+                abilities: pokeResponse.abilities.map(ability => ability.ability.name),
+                dex_number: speciesResponse.pokedex_numbers[0].entry_number, //National dex num (need to get from specific dex which will be a filter)
+                sprite_url: pokeResponse.sprites.front_default
+            };
+            console.log("Sending Pokemon");
+            res.json(formattedResponse);
+
+
+        }
+        catch (error) {
+            console.error('Pokemon Fetch Error :', error);
+            next(error);
+        }
+        
+        
+    },
+
 
     getPokemon: async (req, res, next) => {
         const pokemon = await P.getPokemonByName(req.params.name);
