@@ -5,7 +5,7 @@ import db from '../controllers/db.js';
 const router = express.Router();
 
 
-router.get('/api/pokemon/:generation', async (req, res) => {
+router.get('/pokemon/:generation', async (req, res) => {
     try {
         const [pokemon] = await db.execute(`
             SELECT 
@@ -57,6 +57,6 @@ router.get('/dex', async (req, res) => {
     }
 });
 
-router.get('/:name', pokeAPI.getPokemon);
+router.get('/mon/:name', pokeAPI.getPokemon);
 
 export default router;
