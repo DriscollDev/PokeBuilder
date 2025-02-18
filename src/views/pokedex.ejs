@@ -108,33 +108,57 @@
     </div>
 
     <!-- Pokémon Display Container -->
-     <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
-    <div id="pokemonContainer" class="grid grid-cols-3 gap-6 mt-6 w-[60%]">
+    <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
+    <div id="pokemonContainer" class="grid grid-cols-3 gap-6 mt-6 w-[80%]">
       <% pokemon.forEach(mon => { %>
-        <!--onClick = "location.href='/poke/mon/<%= mon.name %>'"-->
-            <div class="pokedexbox relative" onClick="openModal('<%= mon.name %>')" >
-                <span class="pokedexnum">#<%= mon.pokedex_number %></span>
-                <img src="<%= mon.sprite_url %>" alt="<%= mon.name %>" class="pokeimage">
-                <h2 class="pokedexname"><%= mon.name %></h2>
-                <div class="pokedextypingdiv">
-                    <div class="pokedextype  <%= mon.primary_type.toLowerCase() %>">
-                        <span class="pokedextypestyle"><%= mon.primary_type %></span>
-                    </div>
-                    <% if (mon.secondary_type) { %>
-                        <div class="pokedextype <%= mon.secondary_type.toLowerCase() %>">
-                            <span class="pokedextypestyle"><%= mon.secondary_type %></span>
-                        </div>
-                    <% } %>
-                </div>
-            </div>
-        <% }) %>
+      <div class="pokedexbox relative">
+        <span class="pokedexnum">#<%= mon.pokedex_number %></span>
+        <img
+          src="<%= mon.sprite_url %>"
+          alt="<%= mon.name %>"
+          class="pokeimage"
+        />
+        <h2 class="pokedexname"><%= mon.name %></h2>
+        <div class="pokedextypingdiv">
+          <div class="pokedextype <%= mon.primary_type.toLowerCase() %>">
+            <span class="pokedextypestyle"><%= mon.primary_type %></span>
+          </div>
+          <% if (mon.secondary_type) { %>
+          <div class="pokedextype <%= mon.secondary_type.toLowerCase() %>">
+            <span class="pokedextypestyle"><%= mon.secondary_type %></span>
+          </div>
+          <% } %>
+        </div>
+      </div>
+      <% }) %>
     </div>
     <script>
+      //load HTML immediately without waiting for sprites and css to render
       document.addEventListener("DOMContentLoaded", () => {
         const searchInput = document.getElementById("searchInput");
-        const pokemonCard = document.getElementById(".pokedexbox");
-      })
+        const pokemonCards = document.querySelectorAll(".pokedexbox");
+
+        searchInput.addEventListener("input", () => {
+          const searchValue = searchInput.value.toLowerCase().trim();
+
+          pokemonCards.forEach((card) => {
+            const pokemonName = card.querySelector(".pokedexname").textContent.toLowerCase();
+            const pokedexNum = card.querySelector(".pokedexnum").textContent
+
+            
+            if (pokemonName.includes(searchValue) || pokedexNum.includes(searchValue)) { 
+
+              //initially had set to block, but the sprites were uncentering when id search
+              //search function sets display: block; when showing Pokémon cards again after filtering. However, your .pokedexbox elements use Flexbox for layout, meaning they need display: flex; instead of block
+              card.style.display = "flex";
+            } else {
+              card.style.display = "none";
+            }
+          });
+        });
+      });
     </script>
+    
   </body>
 
   <script>

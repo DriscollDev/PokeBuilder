@@ -3,37 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Team Builder</title>
+    <link rel="stylesheet" href="/stylesheets/pokestyle.css" />
     <link
       rel="icon"
       type="image/x-icon"
       href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
     />
+    <title>Team Builder</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body
     class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6"
   >
-  <body
-  class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6"
->
     <!-- Breadcrumb Naviiiiii -->
     <nav class="absolute top-2 left-2 text-sm">
       <div class="flex text-gray-400">
         <a href="/dash" class="text-white hover:text-gray-300">Dashboard</a>
         <span class="mx-2">\</span>
-        <a href="/team/" class="text-white hover:text-gray-300">Team Build Home</a>
+        <a href="/team/" class="text-white hover:text-gray-300"
+          >Team Build Home</a
+        >
         <span class="mx-2">\</span>
         <span class="text-gray-300">Team Builder</span>
       </div>
     </nav>
-  
 
-  <!-- Outer Container -->
-  <div class="w-[90%] max-w-3xl">
-
-    <!-- Outer Container -->
-    <div class="w-[90%] max-w-3xl">
+    <div class="w-[90%] max-w-5xl">
       <!-- Title -->
       <div class="flex justify-center mb-1">
         <img
@@ -43,111 +38,338 @@
         />
       </div>
 
-        <!-- Poké Ball Icon -->
+      <!-- Team Name Input -->
 
+      <!-- Poké Ball Icon & Team Name Loading -->
       <div class="flex items-center justify-center gap-3 mb-6">
         <img
           src="/images/pokeball-removebg-preview.png"
           alt="Poke Ball"
           class="w-10 h-10"
         />
-
-        <!-- Team Name Input -->
         <div
-        class="bg-gray-300 text-gray-700 text-lg font-bold px-4 py-2 rounded-md w-[100%] animate-pulse text-center"
+          class="bg-gray-300 text-gray-700 text-lg font-bold px-4 py-2 rounded-md w-[100%] animate-pulse text-center"
+        >
+          Loading team...
+        </div>
+      </div>
+      <!-- Buttons Container (Delete Team & Pokédex) -->
+      <div class="flex justify-between gap-4 mt-6 mb-4">
+        <button
+          id="deleteBtn"
+          class="w-full md:w-1/2 bg-red-600 text-white font-bold px-6 py-3 rounded-lg border-2 border-red-800 shadow-lg hover:bg-red-500 hover:border-red-700"
+        >
+          Delete Team
+        </button>
+        <a
+          href="/poke/dex"
+          id="pokedexBtn"
+          class="w-full md:w-1/2 bg-red-600 text-white font-bold px-6 py-3 rounded-lg border-2 border-red-800 shadow-lg hover:bg-red-500 hover:border-red-700 text-center"
+        >
+          Pokédex
+        </a>
+      </div>
+
+      <!-- Delete Confirmation Modal -->
+      <div
+        id="deleteModal"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
       >
-        Loading team...
+        <div
+          class="bg-red-700 p-6 rounded-xl text-center shadow-lg border-4 border-red-900 w-[350px]"
+        >
+          <h2 class="text-white text-xl font-bold mb-4 font-mono">
+            Are you sure you want to delete your team?
+          </h2>
+
+          <div class="flex justify-center gap-10 mt-4">
+            <button
+              id="confirmDelete"
+              class="bg-blue-500 text-white px-6 py-2 rounded-md font-bold hover:bg-blue-600 text-lg shadow-md border-2 border-blue-700"
+            >
+              Yes
+            </button>
+            <button
+              id="cancelDelete"
+              class="bg-red-500 text-white px-6 py-2 rounded-md font-bold hover:bg-red-600 text-lg shadow-md border-2 border-red-700"
+            >
+              No
+            </button>
+          </div>
+        </div>
       </div>
 
-      </div>
-      <!-- Pokémon cards/slots container-->
-      <div id="team-container" class="grid grid-cols-1 md:grid-cols-2 gap-2">
-        <!-- Actual cards/slots-->
-        <div           
-          class="flex items-center justify-between bg-gray-500 p-3 rounded-md animate-pulse"
-        >
-          <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-gray-400 rounded "></div>
-            <span class="font-mono text-gray-300 text-lg ">Loading...</span>
-          </div>
-          <!--edit button within slot-->
-          <button
-            class="bg-gray-400 text-gray-300 font-mono text-sm px-3 py-1 rounded-md"
+      <!-- Pokémon Cards/Slots Container -->
+      <div id="team-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Loading Slot (Now with Full-Width Moves) -->
+        <div class="bg-gray-300 p-4 rounded-lg flex items-center gap-6 w-full">
+          <!-- Left: Pokémon Sprite Placeholder -->
+          <div
+            class="w-40 h-40 bg-gray-400 rounded-md text-gray-700 text-lg font-bold px-4 py-2 rounded-md animate-pulse text-center"
           >
-            edit
-          </button>
+            Loading Pokemon...
+          </div>
+
+          <!-- Right: Moves & Buttons -->
+          <div class="flex flex-col flex-grow">
+            <!-- Moves Title -->
+            <h2 class="text-black text-lg font-bold mb-2 text-center">Moves</h2>
+            
+            <!-- Moves (2x2 Grid) -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+            </div>
+
+            <!-- Buttons / 1 -->
+            <div class="flex gap-3 mt-3">
+              <div
+                class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"
+              >
+                Edit
+              </div>
+              <!-- Edit Button -->
+              <div
+                class="w-full h-8 bg-red-500 rounded-xl text-center text-white font-bold"
+              >
+                Swap
+              </div>
+              <!-- Swap Button -->
+            </div>
+          </div>
         </div>
 
-        <div
-          class="flex items-center justify-between bg-gray-500 p-3 rounded-md animate-pulse"
-        >
-          <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-gray-400 rounded"></div>
-            <span class="font-mono text-gray-300 text-lg">Loading...</span>
-          </div>
-          <button
-            class="bg-gray-400 text-gray-300 font-mono text-sm px-3 py-1 rounded-md"
+        <div class="bg-gray-300 p-4 rounded-lg flex items-center gap-6 w-full">
+          <!-- Left: Pokémon Sprite Placeholder -->
+          <div
+            class="w-40 h-40 bg-gray-400 rounded-md text-gray-700 text-lg font-bold px-4 py-2 rounded-md animate-pulse text-center"
           >
-            edit
-          </button>
+            Loading Pokemon...
+          </div>
+
+          <!-- Right: Moves & Buttons -->
+          <div class="flex flex-col flex-grow">
+            <!-- Moves Title -->
+            <h2 class="text-black text-lg font-bold mb-2 text-center">Moves</h2>
+            
+            <!-- Moves (2x2 Grid) -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+            </div>
+
+
+            <!-- Buttons / 2 -->
+            <div class="flex gap-3 mt-3">
+              <div
+                class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"
+              >
+                Edit
+              </div>
+              <!-- Edit Button -->
+              <div
+                class="w-full h-8 bg-red-500 rounded-xl text-center text-white font-bold"
+              >
+                Swap
+              </div>
+              <!-- Swap Button -->
+            </div>
+          </div>
         </div>
 
-        <div
-          class="flex items-center justify-between bg-gray-500 p-3 rounded-md animate-pulse"
-        >
-          <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-gray-400 rounded"></div>
-            <span class="font-mono text-gray-300 text-lg">Loading...</span>
-          </div>
-          <button
-            class="bg-gray-400 text-gray-300 font-mono text-sm px-3 py-1 rounded-md"
+        <div class="bg-gray-300 p-4 rounded-lg flex items-center gap-6 w-full">
+          <!-- Left: Pokémon Sprite Placeholder -->
+          <div
+            class="w-40 h-40 bg-gray-400 rounded-md text-gray-700 text-lg font-bold px-4 py-2 rounded-md animate-pulse text-center"
           >
-            edit
-          </button>
+            Loading Pokemon...
+          </div>
+
+          <!-- Right: Moves & Buttons -->
+          <div class="flex flex-col flex-grow">
+            <!-- Moves Title -->
+            <h2 class="text-black text-lg font-bold mb-2 text-center">Moves</h2>
+            
+            <!-- Moves (2x2 Grid) -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+            </div>
+
+            <!-- Buttons / 3 -->
+            <div class="flex gap-3 mt-3">
+              <div
+                class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"
+              >
+                Edit
+              </div>
+              <!-- Edit Button -->
+              <div
+                class="w-full h-8 bg-red-500 rounded-xl text-center text-white font-bold"
+              >
+                Swap
+              </div>
+              <!-- Swap Button -->
+            </div>
+          </div>
         </div>
 
-        <div
-          class="flex items-center justify-between bg-gray-500 p-3 rounded-md animate-pulse"
-        >
-          <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-gray-400 rounded"></div>
-            <span class="font-mono text-gray-300 text-lg">Loading...</span>
-          </div>
-          <button
-            class="bg-gray-400 text-gray-300 font-mono text-sm px-3 py-1 rounded-md"
+        <div class="bg-gray-300 p-4 rounded-lg flex items-center gap-6 w-full">
+          <!-- Left: Pokémon Sprite Placeholder -->
+          <div
+            class="w-40 h-40 bg-gray-400 rounded-md text-gray-700 text-lg font-bold px-4 py-2 rounded-md animate-pulse text-center"
           >
-            edit
-          </button>
+            Loading Pokemon...
+          </div>
+
+          <!-- Right: Moves & Buttons -->
+          <div class="flex flex-col flex-grow">
+            <h2 class="text-black text-lg font-bold mb-2 text-center">Moves</h2>
+            
+            <!-- Moves (2x2 Grid) -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+            </div>
+
+            <!-- Buttons / 4 -->
+            <div class="flex gap-3 mt-3">
+              <div
+                class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"
+              >
+                Edit
+              </div>
+              <!-- Edit Button -->
+              <div
+                class="w-full h-8 bg-red-500 rounded-xl text-center text-white font-bold"
+              >
+                Swap
+              </div>
+              <!-- Swap Button -->
+            </div>
+          </div>
         </div>
 
-        <div
-          class="flex items-center justify-between bg-gray-500 p-3 rounded-md animate-pulse"
-        >
-          <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-gray-400 rounded"></div>
-            <span class="font-mono text-gray-300 text-lg">Loading...</span>
-          </div>
-          <button
-            class="bg-gray-400 text-gray-300 font-mono text-sm px-3 py-1 rounded-md"
+        <div class="bg-gray-300 p-4 rounded-lg flex items-center gap-6 w-full">
+          <!-- Left: Pokémon Sprite Placeholder -->
+          <div
+            class="w-40 h-40 bg-gray-400 rounded-md text-gray-700 text-lg font-bold px-4 py-2 rounded-md animate-pulse text-center"
           >
-            edit
-          </button>
+            Loading Pokemon...
+          </div>
+  
+          <div class="flex flex-col flex-grow">
+            <!-- Moves Title -->
+            <h2 class="text-black text-lg font-bold mb-2 text-center">Moves</h2>
+            
+            <!-- Moves (2x2 Grid) -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+            </div>
+
+            <!-- Buttons / 5 -->
+            <div class="flex gap-3 mt-3">
+              <div
+                class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"
+              >
+                Edit
+              </div>
+              <!-- Edit Button -->
+              <div
+                class="w-full h-8 bg-red-500 rounded-xl text-center text-white font-bold"
+              >
+                Swap
+              </div>
+              <!-- Swap Button -->
+            </div>
+          </div>
         </div>
 
-        <div
-          class="flex items-center justify-between bg-gray-500 p-3 rounded-md animate-pulse"
-        >
-          <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-gray-400 rounded"></div>
-            <span class="font-mono text-gray-300 text-lg">Loading...</span>
-          </div>
-          <button
-            class="bg-gray-400 text-gray-300 font-mono text-sm px-3 py-1 rounded-md"
+        <div class="bg-gray-300 p-4 rounded-lg flex items-center gap-6 w-full">
+          <!-- Left: Pokémon Sprite Placeholder -->
+          <div
+            class="w-40 h-40 bg-gray-400 rounded-md text-gray-700 text-lg font-bold px-4 py-2 rounded-md animate-pulse text-center"
           >
-            edit
-          </button>
+            Loading Pokemon...
+          </div>
+
+          <!-- Right: Moves & Buttons -->
+          <div class="flex flex-col flex-grow">
+            <!-- Moves Title -->
+            <h2 class="text-black text-lg font-bold mb-2 text-center">Moves</h2>
+            
+            <!-- Moves (2x2 Grid) -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+                <div class="w-full h-8 bg-gray-400 rounded"></div>
+            </div>
+
+            <!-- Buttons / 6 -->
+            <div class="flex gap-3 mt-3">
+              <div
+                class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"
+              >
+                Edit
+              </div>
+              <!-- Edit Button -->
+              <div
+                class="w-full h-8 bg-red-500 rounded-xl text-center text-white font-bold"
+              >
+                Swap
+              </div>
+              <!-- Swap Button -->
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
+    <script>
+      // Select buttons & modal
+      const deleteBtn = document.getElementById("deleteBtn");
+      const deleteModal = document.getElementById("deleteModal");
+      const confirmDelete = document.getElementById("confirmDelete");
+      const cancelDelete = document.getElementById("cancelDelete");
+      const body = document.body; // Target the body for freezing
+
+      // Show modal & freeze background
+      deleteBtn.addEventListener("click", () => {
+        deleteModal.classList.remove("hidden");
+        body.classList.add("freeze-scroll"); // Add class to freeze animations
+      });
+
+      // Show the modal when "Delete Team" is clicked
+      deleteBtn.addEventListener("click", () => {
+        deleteModal.classList.remove("hidden");
+      });
+      
+      // Hide modal & resume animations
+      cancelDelete.addEventListener("click", () => {
+        deleteModal.classList.add("hidden");
+        body.classList.remove("freeze-scroll"); // Remove freeze class
+      });
+
+      // Perform delete action when "Yes" is clicked
+      confirmDelete.addEventListener("click", () => {
+        deleteModal.classList.add("hidden");
+        body.classList.remove("freeze-scroll"); // Resume animations
+        // alert("Team has been deleted!"); Placeholder: Replace with actual delete function
+
+        //once deleted , should we route them to the pokedex? or team builder?
+      });
+    </script>
   </body>
 </html>
