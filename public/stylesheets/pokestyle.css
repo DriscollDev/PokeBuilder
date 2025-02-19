@@ -90,3 +90,11 @@ top: 17px;
 .dark { background-color: #705746; }
 .steel { background-color: #B7B7CE; }
 .fairy { background-color: #D685AD; }
+
+/* Freeze all animations & scrolling */
+.freeze-scroll * {
+    animation: none !important;
+    transition: none !important;
+    overflow: hidden;
+  }
+  

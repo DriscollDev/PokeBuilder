@@ -108,6 +108,7 @@
     </div>
 
     <!-- Pokémon Display Container -->
+
      <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
     <div id="pokemonContainer" class="grid grid-cols-3 gap-6 mt-6 w-[60%]">
       <% pokemon.forEach(mon => { %>
@@ -130,11 +131,32 @@
         <% }) %>
     </div>
     <script>
+      //load HTML immediately without waiting for sprites and css to render
       document.addEventListener("DOMContentLoaded", () => {
         const searchInput = document.getElementById("searchInput");
-        const pokemonCard = document.getElementById(".pokedexbox");
-      })
+        const pokemonCards = document.querySelectorAll(".pokedexbox");
+
+        searchInput.addEventListener("input", () => {
+          const searchValue = searchInput.value.toLowerCase().trim();
+
+          pokemonCards.forEach((card) => {
+            const pokemonName = card.querySelector(".pokedexname").textContent.toLowerCase();
+            const pokedexNum = card.querySelector(".pokedexnum").textContent
+
+            
+            if (pokemonName.includes(searchValue) || pokedexNum.includes(searchValue)) { 
+
+              //initially had set to block, but the sprites were uncentering when id search
+              //search function sets display: block; when showing Pokémon cards again after filtering. However, your .pokedexbox elements use Flexbox for layout, meaning they need display: flex; instead of block
+              card.style.display = "flex";
+            } else {
+              card.style.display = "none";
+            }
+          });
+        });
+      });
     </script>
+    
   </body>
 
   <script>
