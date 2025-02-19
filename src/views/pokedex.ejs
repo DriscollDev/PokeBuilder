@@ -11,6 +11,46 @@
       type="image/x-icon"
       href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
     />
+    <style>   
+      /* The Modal (background) */
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+      }
+
+      /* Modal Content */
+      .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+      }
+
+      /* The Close Button */
+      .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body
     class="bg-gray-200 border-8 border-red-600 shadow-xl w-full min-h-screen flex flex-col items-center py-6"
@@ -51,31 +91,44 @@
         Search
       </button>
     </div>
+    
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="monDexNum"> # </h2>
+        <h1 style="font-size: large;" id="monName"> Name </h1>
+        <p id="monAbilities">Abilities: </p>
+        <p id="monTypes">Types:  </p>
+        <img id="monSprite" src="" alt="Pokemon">
+      </div>
+
+    </div>
 
     <!-- Pokémon Display Container -->
-    <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
+
+     <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
     <div id="pokemonContainer" class="grid grid-cols-3 gap-6 mt-6 w-[60%]">
-      <% pokemon.forEach((mon) => { %>
-      <div class="pokedexbox relative">
-        <span class="pokedexnum">#<%= mon.pokedex_number %></span>
-        <img
-          src="<%= mon.sprite_url %>"
-          alt="<%= mon.name %>"
-          class="pokeimage"
-        />
-        <h2 class="pokedexname"><%= mon.name %></h2>
-        <div class="pokedextypingdiv">
-          <div class="pokedextype <%= mon.primary_type.toLowerCase() %>">
-            <span class="pokedextypestyle"><%= mon.primary_type %></span>
-          </div>
-          <% if (mon.secondary_type) { %>
-          <div class="pokedextype <%= mon.secondary_type.toLowerCase() %>">
-            <span class="pokedextypestyle"><%= mon.secondary_type %></span>
-          </div>
-          <% } %>
-        </div>
-      </div>
-      <% }) %>
+      <% pokemon.forEach(mon => { %>
+        <!--onClick = "location.href='/poke/mon/<%= mon.name %>'"-->
+            <div class="pokedexbox relative" onClick="openModal('<%= mon.name %>')" >
+                <span class="pokedexnum">#<%= mon.pokedex_number %></span>
+                <img src="<%= mon.sprite_url %>" alt="<%= mon.name %>" class="pokeimage">
+                <h2 class="pokedexname"><%= mon.name %></h2>
+                <div class="pokedextypingdiv">
+                    <div class="pokedextype  <%= mon.primary_type.toLowerCase() %>">
+                        <span class="pokedextypestyle"><%= mon.primary_type %></span>
+                    </div>
+                    <% if (mon.secondary_type) { %>
+                        <div class="pokedextype <%= mon.secondary_type.toLowerCase() %>">
+                            <span class="pokedextypestyle"><%= mon.secondary_type %></span>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        <% }) %>
     </div>
     <script>
       //load HTML immediately without waiting for sprites and css to render
@@ -105,4 +158,49 @@
     </script>
     
   </body>
+
+  <script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    var monName = document.getElementById("monName");
+    var monAbilities = document.getElementById("monAbilities");
+    var monTypes = document.getElementById("monTypes");
+    // When the user clicks the button, open the modal 
+    async function openModal(pokemonName) {
+      console.log("GETTING POKEMON");
+      const response = await fetch(`/poke/mon/${pokemonName}`,   {
+        method: 'GET'
+      });
+      const pokemon = await response.json();
+      console.log("-----------------")
+      console.log(pokemon);
+      modal.style.display = "block";
+      monDexNum.innerHTML = `#${pokemon.dex_number}`;
+      monName.innerHTML = pokemon.name;
+      monAbilities.innerHTML = `Abilities: ${pokemon.abilities.join(",")}`;
+      monTypes.innerHTML = `Types: ${pokemon.types.join(",")}`;
+      monSprite.src = pokemon.sprite_url;
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+    </script>
+
+</body>
+
 </html>

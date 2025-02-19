@@ -1,11 +1,11 @@
 import express from 'express';
 import pokeAPI from '../controllers/pokeAPI.js';
-import db from '../controllers/db.js';  // Assuming you have a database connection setup
+import db from '../controllers/db.js'; 
 
 const router = express.Router();
 
 
-router.get('/api/pokemon/:generation', async (req, res) => {
+router.get('/pokemon/:generation', async (req, res) => {
     try {
         const [pokemon] = await db.execute(`
             SELECT 
@@ -57,6 +57,7 @@ router.get('/dex', async (req, res) => {
     }
 });
 
-router.get('/:name', pokeAPI.getPokemon);
+router.get('/mon/:name', pokeAPI.getFormattedPokemonByName);
+
 
 export default router;
