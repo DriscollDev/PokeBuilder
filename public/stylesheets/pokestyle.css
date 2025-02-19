@@ -92,6 +92,7 @@ top: 17px;
 .steel { background-color: #B7B7CE; }
 .fairy { background-color: #D685AD; }
 
+
 @font-face {
     font-family: 'Quantico';
     src: url('../fonts/Quantico/Quantico-Regular.ttf');
@@ -104,3 +105,11 @@ top: 17px;
 body{
     font-family: 'Kode-Mono';
 }
+
+/* Freeze all animations & scrolling */
+.freeze-scroll * {
+    animation: none !important;
+    transition: none !important;
+    overflow: hidden;
+  }
+  

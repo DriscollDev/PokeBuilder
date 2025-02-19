@@ -57,6 +57,7 @@ router.get('/dex', async (req, res) => {
     }
 });
 
-router.get('/mon/:name', pokeAPI.getPokemon);
+router.get('/mon/:name', pokeAPI.getFormattedPokemonByName);
+
 
 export default router;

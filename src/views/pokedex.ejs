@@ -98,14 +98,17 @@
       <!-- Modal content -->
       <div class="modal-content">
         <span class="close">&times;</span>
+        <h2 id="monDexNum"> # </h2>
         <h1 style="font-size: large;" id="monName"> Name </h1>
         <p id="monAbilities">Abilities: </p>
         <p id="monTypes">Types:  </p>
+        <img id="monSprite" src="" alt="Pokemon">
       </div>
 
     </div>
 
     <!-- Pokémon Display Container -->
+
      <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
     <div id="pokemonContainer" class="grid grid-cols-3 gap-6 mt-6 w-[60%]">
       <% pokemon.forEach(mon => { %>
@@ -128,11 +131,32 @@
         <% }) %>
     </div>
     <script>
+      //load HTML immediately without waiting for sprites and css to render
       document.addEventListener("DOMContentLoaded", () => {
         const searchInput = document.getElementById("searchInput");
-        const pokemonCard = document.getElementById(".pokedexbox");
-      })
+        const pokemonCards = document.querySelectorAll(".pokedexbox");
+
+        searchInput.addEventListener("input", () => {
+          const searchValue = searchInput.value.toLowerCase().trim();
+
+          pokemonCards.forEach((card) => {
+            const pokemonName = card.querySelector(".pokedexname").textContent.toLowerCase();
+            const pokedexNum = card.querySelector(".pokedexnum").textContent
+
+            
+            if (pokemonName.includes(searchValue) || pokedexNum.includes(searchValue)) { 
+
+              //initially had set to block, but the sprites were uncentering when id search
+              //search function sets display: block; when showing Pokémon cards again after filtering. However, your .pokedexbox elements use Flexbox for layout, meaning they need display: flex; instead of block
+              card.style.display = "flex";
+            } else {
+              card.style.display = "none";
+            }
+          });
+        });
+      });
     </script>
+    
   </body>
 
   <script>
@@ -149,16 +173,19 @@
     var monTypes = document.getElementById("monTypes");
     // When the user clicks the button, open the modal 
     async function openModal(pokemonName) {
-      console.log(pokemonName);
+      console.log("GETTING POKEMON");
       const response = await fetch(`/poke/mon/${pokemonName}`,   {
         method: 'GET'
       });
       const pokemon = await response.json();
+      console.log("-----------------")
       console.log(pokemon);
       modal.style.display = "block";
+      monDexNum.innerHTML = `#${pokemon.dex_number}`;
       monName.innerHTML = pokemon.name;
-      monAbilities.innerHTML = `Abilities: ${pokemon.abilities.map(function(elem){return elem.ability.name;}).join(",")}`;
-      monTypes.innerHTML = `Types: ${pokemon.types.map(function(elem){return elem.type.name;}).join(",")}`;
+      monAbilities.innerHTML = `Abilities: ${pokemon.abilities.join(",")}`;
+      monTypes.innerHTML = `Types: ${pokemon.types.join(",")}`;
+      monSprite.src = pokemon.sprite_url;
     }
     
     // When the user clicks on <span> (x), close the modal
