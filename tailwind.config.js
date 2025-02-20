@@ -7,7 +7,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        kode: ['Kode Mono', 'monospace'],
+        kode: ['Kode-Mono', 'monospace'],
+        quantico: ['Quantico', 'monospace']
+
       },
     },
   },

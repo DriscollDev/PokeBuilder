@@ -103,6 +103,7 @@
         <p id="monAbilities">Abilities: </p>
         <p id="monTypes">Types:  </p>
         <img id="monSprite" src="" alt="Pokemon">
+        <ul id="monStats">Stats: </ul>
       </div>
 
     </div>
@@ -174,6 +175,8 @@
     var monName = document.getElementById("monName");
     var monAbilities = document.getElementById("monAbilities");
     var monTypes = document.getElementById("monTypes");
+    var monSprite = document.getElementById("monSprite");
+    var monStats = document.getElementById("monStats");
     // When the user clicks the button, open the modal 
     async function openModal(pokemonName) {
       console.log("GETTING POKEMON");
@@ -184,13 +187,14 @@
       console.log("-----------------")
       console.log(pokemon);
       modal.style.display = "block";
-      
-      document.getElementById("monDexNum").innerHTML = `#${pokemon.dex_number}`;
-      document.getElementById("monName").innerHTML = pokemon.name;
-      document.getElementById("monAbilities").innerHTML = `Abilities: ${pokemon.abilities.join(", ")}`;
-      document.getElementById("monTypes").innerHTML = `Types: ${pokemon.types.join(", ")}`;
-      document.getElementById("monSprite").src = pokemon.sprite_url;
-          
+
+      monDexNum.innerHTML = `#${pokemon.dex_number}`;
+      monName.innerHTML = pokemon.name;
+      monAbilities.innerHTML = `Abilities: ${pokemon.abilities.join(",")}`;
+      monTypes.innerHTML = `Types: ${pokemon.types.join(",")}`;
+      monSprite.src = pokemon.sprite_url;
+      monStats.innerHTML = `Stats: ${pokemon.stats.map(stat => `<li>${stat.name}: ${stat.base_stat}</li>`).join("")}`;
+
     }
     
     // When the user clicks on <span> (x), close the modal

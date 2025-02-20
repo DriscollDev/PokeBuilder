@@ -21,7 +21,13 @@ const pokeAPI = {
                 types: pokeResponse.types.map(type => type.type.name),
                 abilities: pokeResponse.abilities.map(ability => ability.ability.name),
                 dex_number: speciesResponse.pokedex_numbers[0].entry_number, //National dex num (need to get from specific dex which will be a filter)
-                sprite_url: pokeResponse.sprites.front_default
+                sprite_url: pokeResponse.sprites.front_default,
+                stats: pokeResponse.stats.map(stat => ({ 
+                    name: stat.stat.name,
+                    base_stat: stat.base_stat
+                }))
+                //Move pool. Need game version filter for this to work
+                //Evolutions
             };
             console.log("Sending Pokemon");
             res.json(formattedResponse);

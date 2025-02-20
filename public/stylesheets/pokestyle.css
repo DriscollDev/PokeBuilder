@@ -1,5 +1,6 @@
 
 .pokedexbox{
+font-family: 'Quantico';
 display: flex;
 width: 300px;
 height: 300px;
@@ -90,6 +91,20 @@ top: 17px;
 .dark { background-color: #705746; }
 .steel { background-color: #B7B7CE; }
 .fairy { background-color: #D685AD; }
+
+
+@font-face {
+    font-family: 'Quantico';
+    src: url('../fonts/Quantico/Quantico-Regular.ttf');
+  }
+  @font-face {
+    font-family: 'Kode-Mono';
+    src: url('../fonts/KodeMono/KodeMono-Medium.ttf');
+  }
+
+body{
+    font-family: 'Kode-Mono';
+}
 
 /* Freeze all animations & scrolling */
 .freeze-scroll * {
