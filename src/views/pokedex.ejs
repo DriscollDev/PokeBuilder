@@ -111,7 +111,7 @@
     <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
     <div id="pokemonContainer" class="grid grid-cols-3 gap-6 mt-6 w-[80%]">
       <% pokemon.forEach(mon => { %>
-      <div class="pokedexbox relative">
+        <div class="pokedexbox relative cursor-pointer" onclick="openModal('<%= mon.name %>')">
         <span class="pokedexnum">#<%= mon.pokedex_number %></span>
         <img
           src="<%= mon.sprite_url %>"
@@ -183,11 +183,13 @@
       console.log("-----------------")
       console.log(pokemon);
       modal.style.display = "block";
-      monDexNum.innerHTML = `#${pokemon.dex_number}`;
-      monName.innerHTML = pokemon.name;
-      monAbilities.innerHTML = `Abilities: ${pokemon.abilities.join(",")}`;
-      monTypes.innerHTML = `Types: ${pokemon.types.join(",")}`;
-      monSprite.src = pokemon.sprite_url;
+      
+      document.getElementById("monDexNum").innerHTML = `#${pokemon.dex_number}`;
+      document.getElementById("monName").innerHTML = pokemon.name;
+      document.getElementById("monAbilities").innerHTML = `Abilities: ${pokemon.abilities.join(", ")}`;
+      document.getElementById("monTypes").innerHTML = `Types: ${pokemon.types.join(", ")}`;
+      document.getElementById("monSprite").src = pokemon.sprite_url;
+          
     }
     
     // When the user clicks on <span> (x), close the modal
