@@ -113,23 +113,26 @@
      <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
     <div id="pokemonContainer" class="grid grid-cols-3 gap-6 mt-6 w-[60%]">
       <% pokemon.forEach(mon => { %>
-        <!--onClick = "location.href='/poke/mon/<%= mon.name %>'"-->
-            <div class="pokedexbox relative" onClick="openModal('<%= mon.name %>')" >
-                <span class="pokedexnum">#<%= mon.pokedex_number %></span>
-                <img src="<%= mon.sprite_url %>" alt="<%= mon.name %>" class="pokeimage">
-                <h2 class="pokedexname"><%= mon.name %></h2>
-                <div class="pokedextypingdiv">
-                    <div class="pokedextype  <%= mon.primary_type.toLowerCase() %>">
-                        <span class="pokedextypestyle"><%= mon.primary_type %></span>
-                    </div>
-                    <% if (mon.secondary_type) { %>
-                        <div class="pokedextype <%= mon.secondary_type.toLowerCase() %>">
-                            <span class="pokedextypestyle"><%= mon.secondary_type %></span>
-                        </div>
-                    <% } %>
-                </div>
-            </div>
-        <% }) %>
+        <div class="pokedexbox relative cursor-pointer" onclick="openModal('<%= mon.name %>')">
+        <span class="pokedexnum">#<%= mon.pokedex_number %></span>
+        <img
+          src="<%= mon.sprite_url %>"
+          alt="<%= mon.name %>"
+          class="pokeimage"
+        />
+        <h2 class="pokedexname"><%= mon.name %></h2>
+        <div class="pokedextypingdiv">
+          <div class="pokedextype <%= mon.primary_type.toLowerCase() %>">
+            <span class="pokedextypestyle"><%= mon.primary_type %></span>
+          </div>
+          <% if (mon.secondary_type) { %>
+          <div class="pokedextype <%= mon.secondary_type.toLowerCase() %>">
+            <span class="pokedextypestyle"><%= mon.secondary_type %></span>
+          </div>
+          <% } %>
+        </div>
+      </div>
+      <% }) %>
     </div>
     <script>
       //load HTML immediately without waiting for sprites and css to render
@@ -184,12 +187,14 @@
       console.log("-----------------")
       console.log(pokemon);
       modal.style.display = "block";
+
       monDexNum.innerHTML = `#${pokemon.dex_number}`;
       monName.innerHTML = pokemon.name;
       monAbilities.innerHTML = `Abilities: ${pokemon.abilities.join(",")}`;
       monTypes.innerHTML = `Types: ${pokemon.types.join(",")}`;
       monSprite.src = pokemon.sprite_url;
       monStats.innerHTML = `Stats: ${pokemon.stats.map(stat => `<li>${stat.name}: ${stat.base_stat}</li>`).join("")}`;
+
     }
     
     // When the user clicks on <span> (x), close the modal
