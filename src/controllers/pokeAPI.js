@@ -3,10 +3,14 @@ import pool from './db.js';
 const options = {
     protocol: 'https',
     versionPath: '/api/v2/',
-    cacheLimit: 100 * 1000, // 100s
-    timeout: 5 * 1000 // 5s
+    cacheLimit: 1000 * 1000, // 1000s
+    timeout: 15 * 1000 // 10s
   }
 const P = new Pokedex(options);
+
+function delay(ms) {
+    return new Promise(res => setTimeout(res, ms));
+}
 
 const pokeAPI = {
     
@@ -206,6 +210,51 @@ const pokeAPI = {
         } catch (error) {
             console.error('Generation fetch error:', error);
             throw error;
+        }
+    },
+
+    populateDB: async (req, res, next) => {
+        let missedMons = 0;
+        //Go through national dex, for each pokemon.
+            //Get important info through varieties and the index that has is_default set to true (should be 0)
+            //Put pokemon info into grid_mon. Pokemon ID, Name, SpriteURL
+            //Go through the pokedex_numbers value to get the entry_number, dex_name, and dex_id (sliced from url)
+                //Put the dex_num, dex_name, dex_id, pokemon_id (sliced from pokemon default variety url), and pokemon_name for each into grid_dex.
+            
+        try {
+            //const conn = pool.getConnection();
+            //Need to rewrite to avoid timeouts ig
+            const nationalDex = await P.getPokedexById(9);  
+            const pokemonPromises = nationalDex.pokemon_entries.map(async (entry) => {
+                try {
+                    const speciesData = await P.getPokemonSpeciesByName(entry.pokemon_species.name);
+                    const pokemonData = await P.getPokemonByName(speciesData.varieties.find(index => index.is_default === true).pokemon.name);
+                    return {
+                        id: pokemonData.id,
+                        name: entry.pokemon_species.name,
+                        sprite_url: pokemonData.sprites.front_default,
+                        dex_number: entry.entry_number,
+                        species_name: speciesData.name
+                    };
+                } catch (error) {
+                    missedMons++;
+                    console.log(`Error fetching data for ${entry.pokemon_species.name}:`, error.message);
+                    return null;
+                }
+            });
+            const pokemonDetails = await Promise.all(pokemonPromises);
+            const formattedResponse = {
+                pokemon: pokemonDetails
+                    .filter(p => p !== null)
+                    .sort((a, b) => a.dex_number - b.dex_number)
+            };
+            console.log("Missed Pokemon: ", missedMons);
+            res.json(formattedResponse);
+
+        }
+        catch(error){
+            console.log('Error:', error);
+            next(error);
         }
     }
 }
