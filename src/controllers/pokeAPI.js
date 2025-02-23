@@ -39,7 +39,7 @@ const pokeAPI = {
 
         }
         catch (error) {
-            console.error('Pokemon Fetch Error :', error);
+            console.log('Pokemon Fetch Error :', error);
             next(error);
         }
         
@@ -69,7 +69,7 @@ const pokeAPI = {
                             sprite_url: pokemonData.sprites.front_default
                         };
                     } catch (error) {
-                        console.error(`Error fetching details for ${pokemon.name}:`, error);
+                        console.log(`Error fetching details for ${pokemon.name}:`, error);
                         return null;
                     }
                 })
@@ -86,7 +86,7 @@ const pokeAPI = {
 
             res.json(formattedResponse);
         } catch (error) {
-            console.error('Generation test error:', error);
+            console.log('Generation test error:', error);
             next(error);
         }
     },
@@ -99,7 +99,7 @@ const pokeAPI = {
             }
             res.json(rows[0]);
         } catch (error) {
-            console.error('Database query error:', error);
+            console.log('Database query error:', error);
             next(error);
         }
     },
@@ -124,7 +124,7 @@ const pokeAPI = {
                         species_name: speciesData.name,
                     };
                 } catch (error) {
-                    console.error(`Error fetching data for ${entry.pokemon_species.name}:`, error.message);
+                    console.log(`Error fetching data for ${entry.pokemon_species.name}:`, error.message);
                     return null;
                 }
             });
@@ -161,8 +161,8 @@ const pokeAPI = {
                                     break; // Found valid Pokemon data
                                 }
                             } catch (varietyError) {
-                                console.error(`Failed to fetch variety ${variety.pokemon.name}:`, varietyError.message);
-                                console.error(`Variety URL: https://pokeapi.co/api/v2/pokemon/${variety.pokemon.name}`);
+                                console.log(`Failed to fetch variety ${variety.pokemon.name}:`, varietyError.message);
+                                console.log(`Variety URL: https://pokeapi.co/api/v2/pokemon/${variety.pokemon.name}`);
                             }
                         }
 
@@ -188,9 +188,9 @@ const pokeAPI = {
                         };
                     } catch (error) {
                         const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${pokemon.name}`;
-                        console.error(`Error fetching details for ${pokemon.name}:`, error.message);
-                        console.error(`Species URL: ${speciesUrl}`);
-                        console.error(`Varieties attempted: ${speciesData?.varieties.map(v => v.pokemon.name).join(', ')}`);
+                        console.log(`Error fetching details for ${pokemon.name}:`, error.message);
+                        console.log(`Species URL: ${speciesUrl}`);
+                        console.log(`Varieties attempted: ${speciesData?.varieties.map(v => v.pokemon.name).join(', ')}`);
                         return null;
                     }
                 });
@@ -208,55 +208,61 @@ const pokeAPI = {
                 pokemon: allPokemon
             };
         } catch (error) {
-            console.error('Generation fetch error:', error);
+            console.log('Generation fetch error:', error);
             throw error;
         }
     },
 
-    populateDB: async (req, res, next) => {
+    populateGridMon: async (req) => {
         let missedMons = 0;
-        //Go through national dex, for each pokemon.
-            //Get important info through varieties and the index that has is_default set to true (should be 0)
-            //Put pokemon info into grid_mon. Pokemon ID, Name, SpriteURL
-            //Go through the pokedex_numbers value to get the entry_number, dex_name, and dex_id (sliced from url)
-                //Put the dex_num, dex_name, dex_id, pokemon_id (sliced from pokemon default variety url), and pokemon_name for each into grid_dex.
-            
+        let addedMons = 0;
         try {
-            //const conn = pool.getConnection();
-            //Need to rewrite to avoid timeouts ig
-            const nationalDex = await P.getPokedexById(9);  
-            const pokemonPromises = nationalDex.pokemon_entries.map(async (entry) => {
+            const nationalDex = await P.getPokedexByName('kanto');
+            const allResponses = [];
+            console.log("Starting Pokemon population");
+            for (const entry of nationalDex.pokemon_entries) {
                 try {
                     const speciesData = await P.getPokemonSpeciesByName(entry.pokemon_species.name);
-                    const pokemonData = await P.getPokemonByName(speciesData.varieties.find(index => index.is_default === true).pokemon.name);
-                    return {
-                        id: pokemonData.id,
-                        name: entry.pokemon_species.name,
-                        sprite_url: pokemonData.sprites.front_default,
-                        dex_number: entry.entry_number,
-                        species_name: speciesData.name
-                    };
-                } catch (error) {
-                    missedMons++;
-                    console.log(`Error fetching data for ${entry.pokemon_species.name}:`, error.message);
-                    return null;
-                }
-            });
-            const pokemonDetails = await Promise.all(pokemonPromises);
-            const formattedResponse = {
-                pokemon: pokemonDetails
-                    .filter(p => p !== null)
-                    .sort((a, b) => a.dex_number - b.dex_number)
-            };
-            console.log("Missed Pokemon: ", missedMons);
-            res.json(formattedResponse);
+                    const pokemonData = await P.getPokemonByName(entry.pokemon_species.name);
 
+                    const testData = {
+                        id: pokemonData.id,
+                        name: speciesData.name,
+                        sprite_url: pokemonData.sprites.front_default,
+                        dex_entries: speciesData.pokedex_numbers.map(dex => ({
+                            entry_number: dex.entry_number,
+                            dex_name: dex.pokedex.name,
+                            dex_id: parseInt(dex.pokedex.url.split('/').slice(-2)[0])
+                        })),
+                        generation: speciesData.generation.name,
+                        types: pokemonData.types.map(type => ({
+                            slot: type.slot,
+                            type: type.type.name
+                        })),
+                        past_types: pokemonData.past_types ? pokemonData.past_types.map(pastType => ({
+                            generation: pastType.generation.name,
+                            types: pastType.types.map(type => ({
+                                slot: type.slot,
+                                type: type.type.name
+                            }))
+                        })) : []
+                    };
+                    allResponses.push(testData);
+                    addedMons++;
+                } catch (error) {
+                    console.log(`Error processing ${entry.pokemon_species.name}:`, error);
+                    missedMons++;
+                    continue;
+                }
+            }
+            console.log("Missed Pokemon: ", missedMons)
+            console.log("Added Pokemon: ", addedMons)
+            return allResponses;
+        } catch (error) {
+            console.log('Pokemon Fetch:', error);
+            throw error;
         }
-        catch(error){
-            console.log('Error:', error);
-            next(error);
-        }
-    }
+    },
 }
 
 export default pokeAPI;

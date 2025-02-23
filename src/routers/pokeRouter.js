@@ -26,7 +26,7 @@ router.get('/pokemon/:generation', async (req, res) => {
         connection.release();
         res.json(pokemon);
     } catch (error) {
-        console.error('Pokemon filter API error:', error);
+        console.log('Pokemon filter API error:', error);
         res.status(500).json({ error: 'Error fetching filtered Pokemon data' });
     }
 });
@@ -35,7 +35,7 @@ router.get('/pokemon/:generation', async (req, res) => {
 router.get('/dex', async (req, res) => {
     try {
         const conn = await pool.getConnection();
-        const [pokemon] = await db.execute(`
+        const [pokemon] = await conn.execute(`
             SELECT 
                 gm.pokemon_id,
                 gm.name,
@@ -55,7 +55,7 @@ router.get('/dex', async (req, res) => {
             pokemon: pokemon
         });
     } catch (error) {
-        console.error('Pokedex error:', error);
+        console.log('Pokedex error:', error);
         res.status(500).send('Error loading Pokédex');
     }
 });
@@ -92,6 +92,14 @@ router.get('/dex2/:game', async (req, res) => {
 
 router.get('/mon/:name', pokeAPI.getFormattedPokemonByName);
 
-router.get('/test', pokeAPI.populateDB);
+router.get('/test', async (req, res) => {
+    try {
+        const pokemon = await pokeAPI.populateGridMon(req);
+        res.json(pokemon)
+    } catch (error) {
+        console.log('Test route error:', error);
+        res.status(500).send('Error loading test Pokédex');
+    }
+});
 
 export default router;

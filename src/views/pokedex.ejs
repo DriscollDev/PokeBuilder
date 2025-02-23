@@ -113,7 +113,7 @@
      <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
     <div id="pokemonContainer" class="grid grid-cols-3 gap-6 mt-6 w-[60%]">
       <% pokemon.forEach(mon => { %>
-        <div class="pokedexbox relative cursor-pointer" onclick="openModal('<%= mon.name %>')">
+      <button class="pokedexbox relative cursor-pointer" onclick="openModal('<%= mon.name %>')" tabindex="0">
         <span class="pokedexnum">#<%= mon.pokedex_number %></span>
         <img
           src="<%= mon.sprite_url %>"
@@ -131,7 +131,7 @@
           </div>
           <% } %>
         </div>
-      </div>
+      </button>
       <% }) %>
     </div>
     <script>
@@ -201,6 +201,13 @@
     span.onclick = function() {
       modal.style.display = "none";
     }
+
+    // When the user hits escape, close the modal
+    document.addEventListener('keydown', function(event) {
+      if (event.key === "Escape") {
+        modal.style.display = "none";
+      }
+    });
     
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
