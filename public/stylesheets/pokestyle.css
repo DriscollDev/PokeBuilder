@@ -113,3 +113,67 @@ body{
     overflow: hidden;
   }
   
+
+.spcontainer{
+  display: flex;
+width: 493px;
+height: 940px;
+padding: 0px 34px;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 10px;
+flex-shrink: 0;
+border-radius: 20px;
+border: 3px solid #000;
+background: #D9D9D9;
+}
+
+.spimg{
+  width: 400px;
+height: 400px;
+flex-shrink: 0; 
+}
+
+.spstatcont{
+  display: flex;
+width: 577px;
+height: 390px;
+flex-direction: column;
+align-items: center;
+flex-shrink: 0;
+}
+
+.spmpouter{
+display: flex;
+width: 577px;
+height: 509px;
+padding: 10px 30px;
+flex-direction: column;
+align-items: center;
+gap: 10px;
+flex-shrink: 0;
+}
+
+.spmptable{
+  display: flex;
+  width: 577px;
+height: 432px;
+padding: 10px 20px;
+flex-direction: column;
+align-items: center;
+gap: 10px;
+flex-shrink: 0;
+}
+
+.spmatchups{
+  display: flex;
+  width: 685px;
+  height: 359px;
+  padding: 20px 34px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0; 
+}
