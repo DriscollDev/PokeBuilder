@@ -10,7 +10,7 @@ const userController = {
             pool.releaseConnection(conn);
             res.json(rows);
         } catch (error) {
-            console.error('Error fetching user :', error);
+            console.log('Error fetching user :', error);
             next(error);
         }
     },
@@ -21,7 +21,7 @@ const userController = {
             const [rows] = await pool.query('SELECT * FROM teams WHERE ownerID = ?', [req.user.id]);
             res.json(rows);
         } catch (error) {
-            console.error('Error fetching user teams:', error);
+            console.log('Error fetching user teams:', error);
             next(error);
         }
     },
@@ -31,7 +31,7 @@ const userController = {
             const [rows] = await pool.query('SELECT * FROM teams WHERE teamID = ?', [req.params.id]);
             res.json(rows);
         } catch (error) {
-            console.error('Error fetching team:', error);
+            console.log('Error fetching team:', error);
             next(error);
         }
     },
