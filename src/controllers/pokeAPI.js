@@ -265,4 +265,40 @@ const pokeAPI = {
     },
 }
 
+    getextraPokemon: async (req, res, next) => {
+        try {
+            const pokemonName = req.params.name.toLowerCase();
+            const data = await P.getPokemonByName(pokemonName);
+
+            // Extract necessary data
+            const pokemonData = {
+                id: data.id,
+                name: data.name.toUpperCase(),
+                height: `${data.height / 10} m`,
+                weight: `${data.weight / 10} kg`,
+                abilities: data.abilities.map(a => a.ability.name),
+                types: data.types.map(t => t.type.name),
+                sprite_url: data.sprites.front_default,
+                stats: {
+                    hp: data.stats.find(s => s.stat.name === "hp").base_stat,
+                    attack: data.stats.find(s => s.stat.name === "attack").base_stat,
+                    defense: data.stats.find(s => s.stat.name === "defense").base_stat,
+                    special_attack: data.stats.find(s => s.stat.name === "special-attack").base_stat,
+                    special_defense: data.stats.find(s => s.stat.name === "special-defense").base_stat,
+                    speed: data.stats.find(s => s.stat.name === "speed").base_stat
+                },
+                moves: data.moves.map(move => ({
+                    name: move.move.name,
+                    learned_by: move.version_group_details[0].move_learn_method.name 
+                }))
+            };
+
+            res.json(pokemonData);
+        } catch (error) {
+            console.error('Error fetching Pokémon data', error);
+             
+        }
+    }
+
+
 export default pokeAPI;
