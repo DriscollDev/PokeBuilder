@@ -27,12 +27,12 @@ const testConnection = async () => {
         console.log('Database connection established successfully');
         connection.release();
     } catch (error) {
-        console.error('Error connecting to the database:', error.message);
+        console.log('Error connecting to the database:', error.message);
         throw error;
     }
 };
 
 // Initial connection test
-testConnection().catch(console.error);
+testConnection().catch(console.log);
 
 export default pool

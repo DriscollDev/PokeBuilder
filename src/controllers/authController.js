@@ -32,7 +32,7 @@ passport.use(
             return cb(null, user);
 
         } catch (err) {
-            console.error('Authentication error:', err);
+            console.log('Authentication error:', err);
             return cb(err);
         }
     })
@@ -92,7 +92,7 @@ const authController = {
             next();
 
         } catch (err) {
-            console.error('Registration error:', err);
+            console.log('Registration error:', err);
             res.status(500).json({ error: 'Internal server error' });
         }
     },
@@ -125,7 +125,7 @@ const authController = {
             next();
 
         } catch (err) {
-            console.error('Login error:', err);
+            console.log('Login error:', err);
             res.status(500).json({ error: 'Internal server error' });
         }
     }
