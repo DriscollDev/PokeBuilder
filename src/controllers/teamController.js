@@ -100,8 +100,11 @@ const teamController = {
                 [ownerID, generation, name, description]
             );
             
-            redirect = '/team/builder/' + result.insertId;     
-            console.log('Team Created - ID:', res.teamID);
+            let redirect = '/team/builder/' + result.insertId;     
+            res.redirect(
+                redirect
+            );
+            //console.log('Team Created - ID:', res.teamID);
         } catch (error) {
             res.status(500).json({ error: error.message });
         }

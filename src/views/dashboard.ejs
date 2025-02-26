@@ -57,13 +57,13 @@
 
         <!-- Team Display -->
         <div id="team-list" class="mt-4 space-y-4 flex-grow flex flex-col justify-between">
-          <% if (Array.isArray(teams)) { %>
-            <% teams.forEach(function(team) { %>
+            <% if (Array.isArray(teams)) { %>
+            <% teams.slice(0, 5).forEach(function(team) { %>
               <div class="flex justify-between p-2 rounded-md flex-grow">
-                <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md flex-grow flex items-center justify-center">
-                  <a href="/team/builder/<%= team.teamID %>"><%= team.teamname %></a>
-                </div>
-                <a href="/team/builder/<%= team.teamID %>" class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300 flex items-center justify-center">View</a>
+              <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md flex-grow flex items-center justify-center">
+                <a href="/team/builder/<%= team.teamID %>"><%= team.teamname %></a>
+              </div>
+              <a href="/team/builder/<%= team.teamID %>" class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300 flex items-center justify-center">View</a>
               </div>
             <% }); %>
           <% } else { %>
