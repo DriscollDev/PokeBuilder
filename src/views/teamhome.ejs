@@ -44,43 +44,26 @@
           class="bg-gray-300 text-gray-700 text-lg font-bold px-4 py-2 rounded-md w-[100%] text-center"
         />
 
-        <!-- Team Name -->
         <div
           id="team-list"
-          class="w-full text-white font-bold py-2 rounded-md transition animate-pulse"
+          class="w-full text-white font-bold py-2 rounded-md transition"
         >
-          <!-- Placeholder Teams (Will be replaced with real data) -->
-          <div
-            class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse"
-          >
-            <a href="/team/builder">Loading Team...</a>
-          </div>
-        </div>
-
-         <!-- Team Name -->
-         <div
-         id="team-list"
-         class="w-full text-white font-bold py-2 rounded-md transition animate-pulse"
-       >
-         <!-- Placeholder Teams (Will be replaced with real data) -->
-         <div
-           class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse"
-         >
-           <a href="/team/builder">Loading Team...</a>
-         </div>
-       </div>
-
-        <!-- Team Name -->
-        <div
-          id="team-list"
-          class="w-full text-white font-bold py-2 rounded-md transition animate-pulse"
-        >
-          <!-- Placeholder Teams (Will be replaced with real data) -->
-          <div
-            class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse"
-          >
-            <a href="/team/builder">Loading Team...</a>
-          </div>
+                  
+            <!-- Placeholder Teams (Will be replaced with real data) -->
+            <% if (Array.isArray(teams)) { %>
+              <% teams.forEach(function(team) { %>
+              <div class="w-full text-white font-bold py-2 rounded-md transition">
+                <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md">
+                  <a href="/team/builder/<%= team.teamID %>"><%= team.teamname %></a>
+                </div>
+              </div>
+              
+              <% }) %>
+            <% } else { %>
+            <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse">
+              No teams available.
+            </div>
+            <% } %>
         </div>
 
         <!-- Create New Team Button -->
@@ -99,13 +82,15 @@
       id="teamform"
       class="hidden fixed inset-5 bg-gray-900 bg-opacity-50 flex justify-center items-center"
     >
-      <div class="bg-gray-300 p-6 rounded-lg shadow-lg w-[90%] max-w-md">
+      <form class="bg-gray-300 p-6 rounded-lg shadow-lg w-[90%] max-w-md" action="/team/builder/create" method="POST">
         <h2 class="text-xl font-bold text-center mb-4">New Team Information</h2>
         <label class="block text-sm font-medium text-gray-700">Team Name</label>
         <input
           type="text"
           class="w-full border p-2 rounded-md mb-3"
           placeholder="Enter Team Name"
+          name="name"
+          id="name"
         />
 
         <!-- Generation drop down menu -->
@@ -113,7 +98,7 @@
         <label class="block text-sm font-medium text-gray-700"
           >Generation</label
         >
-        <select class="w-full border p-2 rounded-md mb-3">
+        <select class="w-full border p-2 rounded-md mb-3" name="generation" id="generation">
           <option>Generation 1</option>
           <option>Generation 2</option>
           <option>Generation 3</option>
@@ -132,6 +117,8 @@
         <textarea
           class="w-full border p-2 rounded-md mb-3"
           placeholder="Reason for the team, format, game etc"
+          name="description"
+          id="description"
         ></textarea>
 
         <div class="flex justify-between">
@@ -144,11 +131,13 @@
           <button
             id="createBtn"
             class="bg-blue-500 text-white px-4 py-2 w-[70%] rounded-md hover:bg-blue-600"
+            type="submit"
+            name="submit"
           >
             Create Team
           </button>
         </div>
-      </div>
+      </form>
     </div>
 
     <!-- js for btn to create new team -->

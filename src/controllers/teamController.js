@@ -93,37 +93,36 @@ const teamController = {
     // Create a new team
     createTeam: async (req, res) => {
         try {
-            const { ownerID, generation, name, description } = req.body;
-
+            const {generation, name, description } = req.body;
+            const ownerID = req.session.passport.user.userID;
             const [result] = await pool.query(
-                'INSERT INTO teams (ownerID, generation, name, description) VALUES (?, ?, ?, ?)',
+                'INSERT INTO teams (ownerID, generation, teamname, description) VALUES (?, ?, ?, ?)',
                 [ownerID, generation, name, description]
             );
             
-            res.status(201).json({ 
-                message: 'Team created successfully',
-                teamID: result.insertId 
-            });
+            redirect = '/team/builder/' + result.insertId;     
+            console.log('Team Created - ID:', res.teamID);
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
     },
 
-    // Get all teams for a specific user
-    getTeamsByUser: async (req, res) => {
+    getTeamsByCurrentUser: async (req) => {
         try {
-            const { ownerID } = req.params;
-            
-            const [teams] = await pool.query(
+            const ownerID = req.session.passport.user.userID;
+            const conn = await pool.getConnection();   
+            const [teams] = await conn.execute(
                 'SELECT * FROM teams WHERE ownerID = ? ORDER BY created_at DESC',
                 [ownerID]
             );
-            
-            res.status(200).json(teams);
+            pool.releaseConnection(conn);
+            return teams;
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            console.log('Error fetching teams:', error);
+            throw error;
         }
     },
+
 
     // Get a specific team by ID
     getTeamById: async (req, res) => {
