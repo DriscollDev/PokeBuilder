@@ -13,7 +13,22 @@ flex-shrink: 0;
 border-radius: 20px;
 border: 10px solid #4F5049;
 background: #D9D9D9;
+z-index: 10 ;
+position: relative;
+    /* width: 100%;
+    max-width: 280px;
+    height: auto;
+    padding: 20px; */
 }
+
+
+/*cool lil hover for interactivenss // same feature ass tailwind logic for badges on dashboard*/
+.pokedexbox:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
+
 
 .pokeimage{
 width: 170px;
@@ -34,6 +49,7 @@ font-size: 40px;
 font-style: normal;
 font-weight: 400;
 line-height: normal;
+text-transform: capitalize;
 }
 
 .pokedextypingdiv{
@@ -56,7 +72,7 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 flex-shrink: 0;
-border-radius: 20px;
+border-radius: 10px;
 }
 .pokedextypestyle{
 color: #FFF;
@@ -66,12 +82,15 @@ font-size: 24px;
 font-style: normal;
 font-weight: 400;
 line-height: normal;
+text-transform: capitalize; /*capitalize first letter of type badge*/
 }
 .pokedexnum{
 position: absolute;
 left: 17px;
 top: 17px;
 }
+
+
 
 .normal { background-color: #A8A77A; }
 .fire { background-color: #EE8130; }
@@ -91,6 +110,69 @@ top: 17px;
 .dark { background-color: #705746; }
 .steel { background-color: #B7B7CE; }
 .fairy { background-color: #D685AD; }
+  
+
+
+/*STATS FOR POKE CARD HERE BOY*/
+.stat-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.stat-value {
+  width: 40px;
+  text-align: right;
+  font-weight: bold;
+}
+
+.stat-name {
+  width: 80px;
+  text-align: left;
+  font-weight: 500;
+}
+
+.stat-bar-container {
+  flex-grow: 1;
+  background-color: #d1d5db;
+  border-radius: 10px;
+  height: 8px;
+  position: relative;
+  max-width: 500px; 
+  overflow: hidden;  /*  Prevents bars spilling from container */
+}
+
+
+.stat-bar {
+  height: 100%;
+  border-radius: 10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+
+/* Filter Modal Container */
+#filterModal {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Filter title Styling */
+#filterModal h2 {
+  font-family: "Quantico", sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* Checkbox Styling */
+.filter-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #3b82f6;
+}
+
+
 
 
 @font-face {
