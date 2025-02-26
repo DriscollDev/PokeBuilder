@@ -11,46 +11,6 @@
       type="image/x-icon"
       href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
     />
-    <style>   
-      /* The Modal (background) */
-      .modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        padding-top: 100px; /* Location of the box */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-      }
-
-      /* Modal Content */
-      .modal-content {
-        background-color: #fefefe;
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-      }
-
-      /* The Close Button */
-      .close {
-        color: #aaaaaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-      }
-
-      .close:hover,
-      .close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-      }
-    </style>
   </head>
   <body
     class="bg-gray-200 border-8 border-red-600 shadow-xl w-full min-h-screen flex flex-col items-center py-6"
@@ -72,9 +32,169 @@
         class="w-[300px]"
       />
     </div>
+    <!-- inspiration : was watching a youtube video, and a cool site feature always is a dark mode toggle, maybe? <button id="darkModeToggle" class="fixed top-4 right-4 bg-gray-800 text-white px-4 py-2 rounded-md">
+      Toggle Dark Mode
+  </button> -->
 
-    <!-- Search Bar -->
+    <!-- filter here  -->
+    <button
+      id="filterButton"
+      class="bg-blue-500 text-white px-4 py-2 rounded-md font-bold shadow-md hover:bg-blue-600 transition"
+    >
+      Filters
+    </button>
 
+    <!-- Filter Modal  -->
+    <div
+      id="filterModal"
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 hidden"
+    >
+      <div
+        class="bg-gray-100 p-6 rounded-lg shadow-lg w-[90%] sm:w-[50%] lg:w-[30%] relative flex flex-col items-center"
+      >
+        <!-- Close filter button -->
+        <button
+          id="closeFilterModal"
+          class="absolute top-3 right-3 text-gray-700 hover:text-red-600 text-2xl font-bold"
+        >
+          &times;
+        </button>
+
+        <h2 class="text-center mb-4">Filters</h2>
+
+        <!-- Filter Section  filters icon instead of text most likely (Gen + Region) -->
+        <div class="flex justify-center space-x-8 px-4">
+          <!-- Generations Column -->
+          <div>
+            <h3 class="text-lg font-bold text-center mb-2">Generations</h3>
+            <div class="space-y-2 flex flex-col items-start">
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="gen1" />
+                Gen 1</label
+              >
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="gen2" />
+                Gen 2</label
+              >
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="gen3" />
+                Gen 3</label
+              >
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="gen4" />
+                Gen 4</label
+              >
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="gen5" />
+                Gen 5</label
+              >
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="gen6" />
+                Gen 6</label
+              >
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="gen7" />
+                Gen 7</label
+              >
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="gen8" />
+                Gen 8</label
+              >
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="gen9" />
+                Gen 9</label
+              >
+            </div>
+          </div>
+
+          <!-- Region Column -->
+          <div>
+            <h3 class="text-lg font-bold text-center mb-2">Region</h3>
+            <div class="space-y-2 flex flex-col items-start">
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="kanto" />
+                Kanto</label
+              >
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="johto" />
+                Johto</label
+              >
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="hoenn" />
+                Hoenn</label
+              >
+              <label class="filter-label"
+                ><input
+                  type="checkbox"
+                  class="filter-checkbox"
+                  value="sinnoh"
+                />
+                Sinnoh</label
+              >
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="unova" />
+                Unova</label
+              >
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="kalos" />
+                Kalos</label
+              >
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="alola" />
+                Alola</label
+              >
+              <label class="filter-label"
+                ><input type="checkbox" class="filter-checkbox" value="galar" />
+                Galar</label
+              >
+              <label class="filter-label"
+                ><input
+                  type="checkbox"
+                  class="filter-checkbox"
+                  value="paldea"
+                />
+                Paldea</label
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 flex flex-wrap justify-center gap-4">
+          <button
+            id="clearFilters"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md font-bold shadow-md hover:bg-blue-600 transition"
+          >
+            Clear Filters
+          </button>
+          <button
+            id="selectAll"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md font-bold shadow-md hover:bg-blue-600 transition"
+          >
+            Select All
+          </button>
+        </div>
+
+        <div class="mt-2 flex flex-wrap justify-center gap-4">
+          <button
+            id="applyFilter"
+            class="bg-blue-400 text-white px-4 py-2 rounded-md font-bold hover:bg-blue-500 transition"
+          >
+            Apply
+          </button>
+          <button
+            id="cancelFilter"
+            class="bg-red-500 text-white px-4 py-2 rounded-md font-bold hover:bg-red-600 transition"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!--Type filter will go here -->
+
+    <!--search bar-->
     <div
       class="flex justify-center gap-4 mt-4 text-lg font-bold px-4 py-2 rounded-md w-[70%]"
     >
@@ -91,29 +211,84 @@
         Search
       </button>
     </div>
-    
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
 
-      <!-- Modal content -->
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2 id="monDexNum"> # </h2>
-        <h1 style="font-size: large;" id="monName"> Name </h1>
-        <p id="monAbilities">Abilities: </p>
-        <p id="monTypes">Types:  </p>
-        <img id="monSprite" src="" alt="Pokemon">
-        <ul id="monStats">Stats: </ul>
+    <!-- Pokémon Modal (Hidden by Default, this controls the postioning of the modal and the blackout effect we see when it appears) -->
+    <div
+      id="myModal"
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 hidden"
+    >
+      <!-- Control the Modal features here-->
+      <div
+        class="bg-gray-300 border-8 border-red-500 rounded-xl shadow-lg p-6 w-[90%] sm:w-[60%] lg:w-[40%] relative animate-fadeIn"
+      >
+        <!-- Close pokemon modal Button -->
+        <button
+          id="closeModal"
+          class="absolute top-3 right-3 text-gray-700 hover:text-red-600 text-2xl font-bold"
+        >
+          &times;
+        </button>
+
+        <!-- Pokémon Header -->
+        <div class="text-center mb-4 absolute">
+          <h2 id="monDexNum">#</h2>
+        </div>
+        <div class="flex justify-center">
+          <img id="monSprite" src="" alt="Pokemon Sprite" class="w-60 h-60" />
+        </div>
+        <!-- Display Pokemon name -->
+        <div class="text-center mt-2">
+          <h1 id="monName" class="text-xl font-semibold text-gray-900">Name</h1>
+        </div>
+
+        <p id="monAbilities" class="text-center text-gray-700 font-medium mt-3">
+          Abilities:
+        </p>
+
+        <!-- Pokémon Types -->
+        <div
+          id="monTypesContainer"
+          class="flex justify-center space-x-3 mt-2 text-white"
+        >
+          <!-- Dynamically added type badges will go here -->
+        </div>
+
+        <!-- Pokémon Stats Section -->
+        <div class="mt-4">
+          <h3 class="text-md font-semibold text-gray-700 mb-2 text-center">
+            Base Stats
+          </h3>
+
+          <ul id="monStats" class="space-y-2">
+            <!-- Stats will be dynamically populated by JavaScript -->
+          </ul>
+        </div>
+
+        <!-- Buttons -->
+        <div class="mt-5 flex flex-col space-y-2">
+          <button
+            class="bg-red-500 text-white py-2 px-4 rounded-lg font-semibold shadow-md hover:bg-red-600 transition"
+          >
+            View Full Page of Pokémon
+          </button>
+          <button
+            class="bg-red-500 text-white py-2 px-4 rounded-lg font-semibold shadow-md hover:bg-red-600 transition"
+          >
+            Add Pokémon to Team
+          </button>
+        </div>
       </div>
-
     </div>
 
     <!-- Pokémon Display Container -->
 
-     <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
+    <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
     <div id="pokemonContainer" class="grid grid-cols-3 gap-6 mt-6 w-[60%]">
       <% pokemon.forEach(mon => { %>
-        <div class="pokedexbox relative cursor-pointer" onclick="openModal('<%= mon.name %>')">
+      <div
+        class="pokedexbox relative cursor-pointer"
+        onclick="openModal('<%= mon.name %>')"
+      >
         <span class="pokedexnum">#<%= mon.pokedex_number %></span>
         <img
           src="<%= mon.sprite_url %>"
@@ -134,82 +309,167 @@
       </div>
       <% }) %>
     </div>
+
     <script>
-      //load HTML immediately without waiting for sprites and css to render
       document.addEventListener("DOMContentLoaded", () => {
         const searchInput = document.getElementById("searchInput");
         const pokemonCards = document.querySelectorAll(".pokedexbox");
+        const modal = document.getElementById("myModal");
+        const closeModalButton = document.getElementById("closeModal");
+        const monDexNum = document.getElementById("monDexNum");
+        const monName = document.getElementById("monName");
+        const monAbilities = document.getElementById("monAbilities");
+        const monSprite = document.getElementById("monSprite");
+        const monStats = document.getElementById("monStats");
+        const monTypesContainer = document.getElementById("monTypesContainer");
+
+        //escape event
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            modal.classList.add("hidden");
+          }
+        });
+
+        const statColors = {
+          hp: "#4CAF50",
+          attack: "#FF5733",
+          defense: "#F4D03F",
+          "special-attack": "#9B59B6",
+          "special-defense": "#3498DB",
+          speed: "#E67E22",
+        };
 
         searchInput.addEventListener("input", () => {
           const searchValue = searchInput.value.toLowerCase().trim();
 
           pokemonCards.forEach((card) => {
-            const pokemonName = card.querySelector(".pokedexname").textContent.toLowerCase();
-            const pokedexNum = card.querySelector(".pokedexnum").textContent
+            const pokemonName = card
+              .querySelector(".pokedexname")
+              .textContent.toLowerCase();
+            const pokedexNum = card.querySelector(".pokedexnum").textContent;
 
-            
-            if (pokemonName.includes(searchValue) || pokedexNum.includes(searchValue)) { 
+            //initially had set to block, but the sprites were uncentering when id search
+            //search function sets display: block; when showing Pokémon cards again after filtering. However, your .pokedexbox elements use Flexbox for layout, meaning they need display: flex; instead of block
 
-              //initially had set to block, but the sprites were uncentering when id search
-              //search function sets display: block; when showing Pokémon cards again after filtering. However, your .pokedexbox elements use Flexbox for layout, meaning they need display: flex; instead of block
-              card.style.display = "flex";
-            } else {
-              card.style.display = "none";
-            }
+            card.style.display =
+              pokemonName.includes(searchValue) ||
+              pokedexNum.includes(searchValue)
+                ? "flex"
+                : "none";
           });
+        });
+
+        async function openModal(pokemonName) {
+          console.log("Fetching Pokémon:", pokemonName);
+
+          const response = await fetch(`/poke/mon/${pokemonName}`, {
+            method: "GET",
+          });
+          const pokemon = await response.json();
+
+          modal.classList.remove("hidden");
+          monDexNum.innerText = `#${pokemon.dex_number}`;
+          monName.innerText =
+            pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
+          monAbilities.innerText = `Abilities: ${pokemon.abilities
+            .map(
+              (ability) => ability.charAt(0).toUpperCase() + ability.slice(1)
+            )
+            .join(", ")}`;
+
+          monSprite.src = pokemon.sprite_url;
+
+          monTypesContainer.innerHTML = "";
+          pokemon.types.forEach((type) => {
+            const typeBadge = document.createElement("span");
+            typeBadge.innerText = type.charAt(0).toUpperCase() + type.slice(1); //sneaky little trick to uppercase the first character
+            typeBadge.className = `pokedextype ${type.toLowerCase()}`;
+            monTypesContainer.appendChild(typeBadge);
+          });
+
+          // Define display names
+          const statDisplayNames = {
+            hp: "HP",
+            attack: "Attack",
+            defense: "Defense",
+            "special-attack": "Sp. Atk",
+            "special-defense": "Sp. Def",
+            speed: "Speed",
+          };
+
+          monStats.innerHTML = "";
+          pokemon.stats.forEach((stat) => {
+            let statKey = stat.name.toLowerCase();
+            let statName = statDisplayNames[statKey] || stat.name; // Convert stat name
+            let statValue = stat.base_stat;
+            let colorStyle = `background-color: ${
+              statColors[statKey] || "#AAAAAA"
+            }`;
+
+            monStats.innerHTML += `
+      <li class="stat-container">
+        <span class="stat-name">${statName}</span>
+        <span class="stat-value">${statValue}</span>
+        <div class="stat-bar-container flex-1 bg-gray-600 rounded-full h-2 relative overflow-hidden">
+          <div class="stat-bar" style="${colorStyle}; width: ${statValue}%;"></div>
+        </div>
+      </li>
+        `;
+          });
+        }
+
+        closeModalButton.onclick = () => modal.classList.add("hidden");
+        window.onclick = (event) => {
+          if (event.target === modal) modal.classList.add("hidden");
+        };
+
+        window.openModal = openModal;
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const filterButton = document.getElementById("filterButton");
+        const filterModal = document.getElementById("filterModal");
+        const closeFilterModal = document.getElementById("closeFilterModal");
+        const cancelFilter = document.getElementById("cancelFilter");
+        const clearFilters = document.getElementById("clearFilters");
+        const selectAll = document.getElementById("selectAll");
+        const applyFilter = document.getElementById("applyFilter");
+        const checkboxes = document.querySelectorAll(".filter-checkbox");
+
+        // Open Modal
+        filterButton.addEventListener("click", () => {
+          filterModal.classList.remove("hidden");
+        });
+
+        // Close Modal
+        closeFilterModal.addEventListener("click", () => {
+          filterModal.classList.add("hidden");
+        });
+        cancelFilter.addEventListener("click", () => {
+          filterModal.classList.add("hidden");
+        });
+
+        // Select All Checkboxes
+        selectAll.addEventListener("click", () => {
+          checkboxes.forEach((checkbox) => (checkbox.checked = true));
+        });
+
+        // Clear All Checkboxes
+        clearFilters.addEventListener("click", () => {
+          checkboxes.forEach((checkbox) => (checkbox.checked = false));
+        });
+
+        // Apply Filter Logic will go here
+
+        // Close Modal When Clicking Outside
+        window.addEventListener("click", (event) => {
+          if (event.target === filterModal) {
+            filterModal.classList.add("hidden");
+          }
         });
       });
     </script>
-    
   </body>
-
-  <script>
-    // Get the modal
-    var modal = document.getElementById("myModal");
-    
-    // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
-    
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-    var monName = document.getElementById("monName");
-    var monAbilities = document.getElementById("monAbilities");
-    var monTypes = document.getElementById("monTypes");
-    var monSprite = document.getElementById("monSprite");
-    var monStats = document.getElementById("monStats");
-    // When the user clicks the button, open the modal 
-    async function openModal(pokemonName) {
-      console.log("GETTING POKEMON");
-      const response = await fetch(`/poke/mon/${pokemonName}`,   {
-        method: 'GET'
-      });
-      const pokemon = await response.json();
-      console.log("-----------------")
-      console.log(pokemon);
-      modal.style.display = "block";
-
-      monDexNum.innerHTML = `#${pokemon.dex_number}`;
-      monName.innerHTML = pokemon.name;
-      monAbilities.innerHTML = `Abilities: ${pokemon.abilities.join(",")}`;
-      monTypes.innerHTML = `Types: ${pokemon.types.join(",")}`;
-      monSprite.src = pokemon.sprite_url;
-      monStats.innerHTML = `Stats: ${pokemon.stats.map(stat => `<li>${stat.name}: ${stat.base_stat}</li>`).join("")}`;
-
-    }
-    
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-      modal.style.display = "none";
-    }
-    
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }
-    </script>
-
-</body>
-
 </html>
