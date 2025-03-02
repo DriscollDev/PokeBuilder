@@ -128,30 +128,28 @@ const teamController = {
 
 
     // Get a specific team by ID
-    getTeamById: async (req, res) => {
+    getTeamById: async (teamID) => {
         try {
-            const { teamID } = req.params;
-            
             const [team] = await pool.query(
                 'SELECT * FROM teams WHERE teamID = ?',
                 [teamID]
             );
             
             if (team.length === 0) {
-                return res.status(404).json({ message: 'Team not found' });
+                throw new Error('Team not found');
             }
             
-            res.status(200).json(team[0]);
+            return team[0];
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            console.error('Error fetching team:', error);
+            throw error;
         }
     },
 
     // Update a team
     updateTeam: async (req, res) => {
         try {
-            const { teamID } = req.params;
-            const { generation, teamname, description, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6 } = req.body;
+            const { teamID, generation, teamname, description, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6 } = req.body;
             
             const [result] = await pool.query(
                 `UPDATE teams 
@@ -172,22 +170,21 @@ const teamController = {
     },
 
     // Delete a team
-    deleteTeam: async (req, res) => {
+    deleteTeam: async (teamID) => {
         try {
-            const { teamID } = req.params;
-            
             const [result] = await pool.query(
                 'DELETE FROM teams WHERE teamID = ?',
                 [teamID]
             );
             
             if (result.affectedRows === 0) {
-                return res.status(404).json({ message: 'Team not found' });
+                throw new Error('Team not found');
             }
             
-            res.status(200).json({ message: 'Team deleted successfully' });
+            return result;
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            console.error('Error deleting team:', error);
+            throw error;
         }
     }
 };

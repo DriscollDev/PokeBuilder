@@ -47,10 +47,8 @@
           alt="Poke Ball"
           class="w-10 h-10"
         />
-        <div
-          class="bg-gray-300 text-gray-700 text-lg font-bold px-4 py-2 rounded-md w-[100%] animate-pulse text-center"
-        >
-          Loading team...
+        <div class="bg-gray-300 text-gray-700 text-lg font-bold px-4 py-2 rounded-md w-[100%] text-center">
+          <%= team ? team.teamname : 'Loading team...' %>
         </div>
       </div>
       <!-- Buttons Container (Delete Team & Pokédex) -->
@@ -73,7 +71,7 @@
       <!-- Delete Confirmation Modal -->
       <div
         id="deleteModal"
-        class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       >
         <div
           class="bg-red-700 p-6 rounded-xl text-center shadow-lg border-4 border-red-900 w-[350px]"
@@ -83,12 +81,15 @@
           </h2>
 
           <div class="flex justify-center gap-10 mt-4">
-            <button
-              id="confirmDelete"
-              class="bg-blue-500 text-white px-6 py-2 rounded-md font-bold hover:bg-blue-600 text-lg shadow-md border-2 border-blue-700"
-            >
-              Yes
-            </button>
+            <form action="/team/delete" method="POST" class="m-0">
+              <input type="hidden" name="teamID" value="<%= team.teamID %>">
+              <button
+                type="submit"
+                class="bg-blue-500 text-white px-6 py-2 rounded-md font-bold hover:bg-blue-600 text-lg shadow-md border-2 border-blue-700"
+              >
+                Yes
+              </button>
+            </form>
             <button
               id="cancelDelete"
               class="bg-red-500 text-white px-6 py-2 rounded-md font-bold hover:bg-red-600 text-lg shadow-md border-2 border-red-700"
@@ -101,239 +102,55 @@
 
       <!-- Pokémon Cards/Slots Container -->
       <div id="team-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Loading Slot (Now with Full-Width Moves) -->
-        <div class="bg-gray-300 p-4 rounded-lg flex items-center gap-6 w-full">
-          <!-- Left: Pokémon Sprite Placeholder -->
-          <div
-            class="w-40 h-40 bg-gray-400 rounded-md text-gray-700 text-lg font-bold px-4 py-2 rounded-md animate-pulse text-center"
-          >
-            Loading Pokemon...
-          </div>
-
-          <!-- Right: Moves & Buttons -->
-          <div class="flex flex-col flex-grow">
-            <!-- Moves Title -->
-            <h2 class="text-black text-lg font-bold mb-2 text-center">Moves</h2>
-            
-            <!-- Moves (2x2 Grid) -->
-            <div class="grid grid-cols-2 gap-3">
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-            </div>
-
-            <!-- Buttons / 1 -->
-            <div class="flex gap-3 mt-3">
-              <div
-                class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"
-              >
-                Edit
+        <% for(let i = 1; i <= 6; i++) { %>
+          <div class="bg-gray-300 p-4 rounded-lg flex items-center gap-6 w-full">
+            <!-- Left: Pokémon Sprite Area -->
+            <% if (team && team['pokemon' + i]) { %>
+              <!-- Loading existing Pokémon -->
+              <div class="w-40 h-40 bg-gray-400 rounded-md text-gray-700 text-lg font-bold px-4 py-2 animate-pulse text-center">
+                Loading Pokemon...
               </div>
-              <!-- Edit Button -->
-              <div
-                class="w-full h-8 bg-red-500 rounded-xl text-center text-white font-bold"
-              >
-                Swap
+            <% } else { %>
+              <!-- Empty slot -->
+              <div class="w-40 h-40 bg-gray-400 rounded-md text-gray-700 text-lg font-bold px-4 py-2 text-center flex items-center justify-center">
+                <span>Empty Slot</span>
               </div>
-              <!-- Swap Button -->
-            </div>
-          </div>
-        </div>
+            <% } %>
 
-        <div class="bg-gray-300 p-4 rounded-lg flex items-center gap-6 w-full">
-          <!-- Left: Pokémon Sprite Placeholder -->
-          <div
-            class="w-40 h-40 bg-gray-400 rounded-md text-gray-700 text-lg font-bold px-4 py-2 rounded-md animate-pulse text-center"
-          >
-            Loading Pokemon...
-          </div>
-
-          <!-- Right: Moves & Buttons -->
-          <div class="flex flex-col flex-grow">
-            <!-- Moves Title -->
-            <h2 class="text-black text-lg font-bold mb-2 text-center">Moves</h2>
-            
-            <!-- Moves (2x2 Grid) -->
-            <div class="grid grid-cols-2 gap-3">
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-            </div>
-
-
-            <!-- Buttons / 2 -->
-            <div class="flex gap-3 mt-3">
-              <div
-                class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"
-              >
-                Edit
+            <!-- Right: Moves & Buttons -->
+            <div class="flex flex-col flex-grow">
+              <!-- Moves Title -->
+              <h2 class="text-black text-lg font-bold mb-2 text-center">Moves</h2>
+              
+              <!-- Moves (2x2 Grid) -->
+              <div class="grid grid-cols-2 gap-3">
+                <% if (team && team['pokemon' + i]) { %>
+                  <!-- Loading move slots -->
+                  <div class="w-full h-8 bg-gray-400 rounded animate-pulse"></div>
+                  <div class="w-full h-8 bg-gray-400 rounded animate-pulse"></div>
+                  <div class="w-full h-8 bg-gray-400 rounded animate-pulse"></div>
+                  <div class="w-full h-8 bg-gray-400 rounded animate-pulse"></div>
+                <% } else { %>
+                  <!-- Empty move slots -->
+                  <div class="w-full h-8 bg-gray-400 rounded opacity-50">-</div>
+                  <div class="w-full h-8 bg-gray-400 rounded opacity-50">-</div>
+                  <div class="w-full h-8 bg-gray-400 rounded opacity-50">-</div>
+                  <div class="w-full h-8 bg-gray-400 rounded opacity-50">-</div>
+                <% } %>
               </div>
-              <!-- Edit Button -->
-              <div
-                class="w-full h-8 bg-red-500 rounded-xl text-center text-white font-bold"
-              >
-                Swap
+
+              <!-- Buttons -->
+              <div class="flex gap-3 mt-3">
+                <button class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold">
+                  Edit
+                </button>
+                <button class="w-full h-8 bg-red-500 rounded-xl text-center text-white font-bold">
+                  Swap
+                </button>
               </div>
-              <!-- Swap Button -->
             </div>
           </div>
-        </div>
-
-        <div class="bg-gray-300 p-4 rounded-lg flex items-center gap-6 w-full">
-          <!-- Left: Pokémon Sprite Placeholder -->
-          <div
-            class="w-40 h-40 bg-gray-400 rounded-md text-gray-700 text-lg font-bold px-4 py-2 rounded-md animate-pulse text-center"
-          >
-            Loading Pokemon...
-          </div>
-
-          <!-- Right: Moves & Buttons -->
-          <div class="flex flex-col flex-grow">
-            <!-- Moves Title -->
-            <h2 class="text-black text-lg font-bold mb-2 text-center">Moves</h2>
-            
-            <!-- Moves (2x2 Grid) -->
-            <div class="grid grid-cols-2 gap-3">
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-            </div>
-
-            <!-- Buttons / 3 -->
-            <div class="flex gap-3 mt-3">
-              <div
-                class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"
-              >
-                Edit
-              </div>
-              <!-- Edit Button -->
-              <div
-                class="w-full h-8 bg-red-500 rounded-xl text-center text-white font-bold"
-              >
-                Swap
-              </div>
-              <!-- Swap Button -->
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-gray-300 p-4 rounded-lg flex items-center gap-6 w-full">
-          <!-- Left: Pokémon Sprite Placeholder -->
-          <div
-            class="w-40 h-40 bg-gray-400 rounded-md text-gray-700 text-lg font-bold px-4 py-2 rounded-md animate-pulse text-center"
-          >
-            Loading Pokemon...
-          </div>
-
-          <!-- Right: Moves & Buttons -->
-          <div class="flex flex-col flex-grow">
-            <h2 class="text-black text-lg font-bold mb-2 text-center">Moves</h2>
-            
-            <!-- Moves (2x2 Grid) -->
-            <div class="grid grid-cols-2 gap-3">
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-            </div>
-
-            <!-- Buttons / 4 -->
-            <div class="flex gap-3 mt-3">
-              <div
-                class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"
-              >
-                Edit
-              </div>
-              <!-- Edit Button -->
-              <div
-                class="w-full h-8 bg-red-500 rounded-xl text-center text-white font-bold"
-              >
-                Swap
-              </div>
-              <!-- Swap Button -->
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-gray-300 p-4 rounded-lg flex items-center gap-6 w-full">
-          <!-- Left: Pokémon Sprite Placeholder -->
-          <div
-            class="w-40 h-40 bg-gray-400 rounded-md text-gray-700 text-lg font-bold px-4 py-2 rounded-md animate-pulse text-center"
-          >
-            Loading Pokemon...
-          </div>
-  
-          <div class="flex flex-col flex-grow">
-            <!-- Moves Title -->
-            <h2 class="text-black text-lg font-bold mb-2 text-center">Moves</h2>
-            
-            <!-- Moves (2x2 Grid) -->
-            <div class="grid grid-cols-2 gap-3">
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-            </div>
-
-            <!-- Buttons / 5 -->
-            <div class="flex gap-3 mt-3">
-              <div
-                class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"
-              >
-                Edit
-              </div>
-              <!-- Edit Button -->
-              <div
-                class="w-full h-8 bg-red-500 rounded-xl text-center text-white font-bold"
-              >
-                Swap
-              </div>
-              <!-- Swap Button -->
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-gray-300 p-4 rounded-lg flex items-center gap-6 w-full">
-          <!-- Left: Pokémon Sprite Placeholder -->
-          <div
-            class="w-40 h-40 bg-gray-400 rounded-md text-gray-700 text-lg font-bold px-4 py-2 rounded-md animate-pulse text-center"
-          >
-            Loading Pokemon...
-          </div>
-
-          <!-- Right: Moves & Buttons -->
-          <div class="flex flex-col flex-grow">
-            <!-- Moves Title -->
-            <h2 class="text-black text-lg font-bold mb-2 text-center">Moves</h2>
-            
-            <!-- Moves (2x2 Grid) -->
-            <div class="grid grid-cols-2 gap-3">
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-                <div class="w-full h-8 bg-gray-400 rounded"></div>
-            </div>
-
-            <!-- Buttons / 6 -->
-            <div class="flex gap-3 mt-3">
-              <div
-                class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"
-              >
-                Edit
-              </div>
-              <!-- Edit Button -->
-              <div
-                class="w-full h-8 bg-red-500 rounded-xl text-center text-white font-bold"
-              >
-                Swap
-              </div>
-              <!-- Swap Button -->
-            </div>
-          </div>
-        </div>
+        <% } %>
       </div>
     </div>
 
@@ -341,34 +158,19 @@
       // Select buttons & modal
       const deleteBtn = document.getElementById("deleteBtn");
       const deleteModal = document.getElementById("deleteModal");
-      const confirmDelete = document.getElementById("confirmDelete");
       const cancelDelete = document.getElementById("cancelDelete");
-      const body = document.body; // Target the body for freezing
+      const body = document.body;
 
       // Show modal & freeze background
       deleteBtn.addEventListener("click", () => {
         deleteModal.classList.remove("hidden");
-        body.classList.add("freeze-scroll"); // Add class to freeze animations
+        body.classList.add("freeze-scroll");
       });
 
-      // Show the modal when "Delete Team" is clicked
-      deleteBtn.addEventListener("click", () => {
-        deleteModal.classList.remove("hidden");
-      });
-      
       // Hide modal & resume animations
       cancelDelete.addEventListener("click", () => {
         deleteModal.classList.add("hidden");
-        body.classList.remove("freeze-scroll"); // Remove freeze class
-      });
-
-      // Perform delete action when "Yes" is clicked
-      confirmDelete.addEventListener("click", () => {
-        deleteModal.classList.add("hidden");
-        body.classList.remove("freeze-scroll"); // Resume animations
-        // alert("Team has been deleted!"); Placeholder: Replace with actual delete function
-
-        //once deleted , should we route them to the pokedex? or team builder?
+        body.classList.remove("freeze-scroll");
       });
     </script>
   </body>

@@ -46,31 +46,35 @@
         </div>
       </div>
 
-     <div class="bg-purple-400 p-4 rounded-md border-2 border-black col-span-2 h-full flex flex-col">
+     <div class="bg-purple-400 p-4 rounded-md border-2 border-black col-span-2 flex flex-col h-full overflow-hidden">
         <h2 class="text-black font-bold text-lg text-center hover:scale-105">
-          <a href="/team" class= hover:text-white>Team Builder</a>
+          <a href="/team" class="hover:text-white">Team Builder</a>
         </h2>
         <div class="mt-2 flex">
           <input type="text" class="ml-2 flex-grow p-1 rounded-md" placeholder="Search Team" />
           <button class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300">Search</button>
         </div>
 
-        <!-- Team Display -->
-        <div id="team-list" class="mt-4 space-y-4 flex-grow flex flex-col justify-between">
-            <% if (Array.isArray(teams)) { %>
-            <% teams.slice(0, 5).forEach(function(team) { %>
-              <div class="flex justify-between p-2 rounded-md flex-grow">
-              <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md flex-grow flex items-center justify-center">
-                <a href="/team/builder/<%= team.teamID %>"><%= team.teamname %></a>
-              </div>
-              <a href="/team/builder/<%= team.teamID %>" class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300 flex items-center justify-center">View</a>
-              </div>
-            <% }); %>
-          <% } else { %>
-            <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse">
-              No teams available.
+        <!-- Team Display - Independent scroll -->
+        <div id="team-list" class="mt-4 flex-grow overflow-y-auto pr-2">
+            <div class="space-y-3">
+                <% if (teams && teams.length > 0) { %>
+                <% teams.forEach(function(team) { %>
+                  <div class="w-full bg-gray-400 text-gray-600 font-bold text-center rounded-md hover:bg-gray-500 transition-colors shadow-md">
+                    <form action="/team/builder" method="POST" class="m-0">
+                      <input type="hidden" name="teamID" value="<%= team.teamID %>">
+                      <button type="submit" class="w-full text-gray-600 hover:text-gray-700 py-4 text-lg">
+                        <%= team.teamname %>
+                      </button>
+                    </form>
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <div class="w-full bg-gray-400 text-gray-600 font-bold py-4 text-center rounded-md text-lg">
+                  No teams available
+                </div>
+              <% } %>
             </div>
-          <% } %>
         </div>
       </div>
       <!-- Side Buttons (Pokedex, Help, Team Building) -->
