@@ -1,12 +1,18 @@
 import { Router } from 'express';
 import passport from 'passport';
+import teamController from '../controllers/teamController.js';
 const router = Router();
 
 
-router.get('/',passport.authenticate('session'), function(req, res, next) {
+router.get('/',passport.authenticate('session'), async function(req, res, next) {
   //req.session.regenerate((err) => {
     //if (err) next(err);
-    res.render("dashboard", { title: 'Dashboard' });
+    const teams = await teamController.getTeamsByCurrentUser(req);
+    res.render("dashboard", { 
+      title: 'Dashboard',
+      teams: teams
+
+    });
   //});
 })
 
