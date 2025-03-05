@@ -4,33 +4,6 @@ import pool from '../controllers/db.js';
 
 const router = express.Router();
 
-/*
-router.get('/pokemon/:generation', async (req, res) => {
-    try {
-        const connection = await pool.getConnection();
-        const [pokemon] = await connection.execute(`
-            SELECT 
-                gm.pokemon_id,
-                gm.name,
-                gm.species_name,
-                gm.sprite_url,
-                gg.primary_type,
-                gg.secondary_type,
-                gg.pokedex_number,
-                gg.generation
-            FROM grid_mon gm
-            JOIN grid_gen gg ON gm.pokemon_id = gg.pokemon_id
-            WHERE gg.generation = ?
-            ORDER BY gg.pokedex_number
-        `, [req.params.generation]);
-        connection.release();
-        res.json(pokemon);
-    } catch (error) {
-        console.log('Pokemon filter API error:', error);
-        res.status(500).json({ error: 'Error fetching filtered Pokemon data' });
-    }
-});
-*/
 // Pokedex routes
 router.get('/dex/:generation?', async (req, res) => {
     try {
@@ -83,23 +56,7 @@ router.get('/dex/:generation?', async (req, res) => {
     }
 });
 
-/*
-Gen <-> DexName
-1 = kanto
-2 = updated-johto
-3 = updated-hoenn
-4 = extended-sinnoh
-5 = updated-unova
-6 = kalos-central
-7 = updated-alola
-8 = galar
-9 = paldea
-*/
-
-
 router.get('/mon/:name', pokeAPI.getFormattedPokemonByName);
-
-
 
 router.get('/test',async(req, res) =>{
     try{
@@ -113,58 +70,6 @@ router.get('/test',async(req, res) =>{
 })
 
 router.get('/test2', async (req, res) => {
-    /*
-                -- Create Pokemon base table
-        CREATE TABLE dex_mon (
-            id INT PRIMARY KEY,
-            name VARCHAR(100) NOT NULL,
-            sprite_url VARCHAR(255),
-            box_sprite VARCHAR(255),
-            generation VARCHAR(50)
-        );
-
-        -- Create Pokedex Entries table (one-to-many with dex_mon)
-        CREATE TABLE pokedex_entries (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            pokemon_id INT,
-            entry_number INT,
-            dex_name VARCHAR(100),
-            dex_id INT,
-            FOREIGN KEY (pokemon_id) REFERENCES dex_mon(id)
-        );
-
-        -- Create Types table (one-to-many with dex_mon)
-        CREATE TABLE pokemon_types (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            pokemon_id INT,
-            slot INT,
-            type VARCHAR(50),
-            FOREIGN KEY (pokemon_id) REFERENCES dex_mon(id)
-        );
-
-        -- Create Past Types table to track type changes over generations
-        CREATE TABLE past_types (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            pokemon_id INT,
-            generation VARCHAR(50),
-            FOREIGN KEY (pokemon_id) REFERENCES dex_mon(id)
-        );
-
-        -- Create Past Type Details table
-        CREATE TABLE past_type_details (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            past_type_id INT,
-            slot INT,
-            type VARCHAR(50),
-            FOREIGN KEY (past_type_id) REFERENCES past_types(id)
-        );
-
-        -- Indexes for performance
-        CREATE INDEX idx_pokemon_name ON dex_mon(name);
-        CREATE INDEX idx_pokedex_pokemon ON pokedex_entries(pokemon_id);
-        CREATE INDEX idx_types_pokemon ON pokemon_types(pokemon_id);
-        CREATE INDEX idx_past_types_pokemon ON past_types(pokemon_id);
-    */
     try {
         const pokemon = await pokeAPI.populateGridMon(req);
         
