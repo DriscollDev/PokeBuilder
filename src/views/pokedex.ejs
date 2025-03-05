@@ -38,6 +38,7 @@
   </button> -->
 
     <!-- filter here  -->
+
     <button
       id="filterButton"
       class="bg-blue-500 text-white px-4 py-2 rounded-md font-bold shadow-md hover:bg-blue-600 transition"
@@ -63,7 +64,7 @@
 
         <h2 class="text-center mb-4">Filters</h2>
 
-        <!-- Filter Section  filters icon instead of text most likely (Gen + Region) -->
+        <!-- Filter Section filters icon instead of text most likely (Gen + Region) -->
         <div class="flex justify-center space-x-8 px-4">
           <!-- Generations Column -->
           <div>
@@ -194,6 +195,130 @@
     </div>
 
     <!--Type filter will go here -->
+    <!-- Floating Type Filter Button -->
+    <!-- Floating Type Filter Button (More Transparent) -->
+    <button
+      id="floatingFilterButton"
+      class="fixed top-20 left-4 bg-blue-500 bg-opacity-60 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="w-6 h-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M3 4h18M6 9h12M9 14h6m-3 5v0"
+        />
+      </svg>
+    </button>
+
+    <!-- Type Filter Sidebar -->
+    <aside
+      id="typeFilterSidebar"
+      class="fixed top-0 left-0 w-64 h-full bg-gray-100 shadow-lg p-4 hidden transition-transform transform -translate-x-full"
+    >
+      <button
+        id="closeTypeFilterSidebar"
+        class="absolute top-2 right-2 text-gray-700 hover:text-red-600 text-2xl font-bold"
+      >
+        &times;
+      </button>
+
+      <h2 class="text-lg font-bold mb-4">Filter by Type</h2>
+
+      <!-- Pokémon Type Filter -->
+      <div id="typeFilters" class="flex flex-col space-y-2">
+        <label
+          ><input type="checkbox" class="type-checkbox" value="fire" />
+          Fire</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="water" />
+          Water</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="grass" />
+          Grass</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="electric" />
+          Electric</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="ice" />
+          Ice</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="fighting" />
+          Fighting</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="poison" />
+          Poison</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="ground" />
+          Ground</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="flying" />
+          Flying</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="psychic" />
+          Psychic</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="bug" />
+          Bug</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="rock" />
+          Rock</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="ghost" />
+          Ghost</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="dragon" />
+          Dragon</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="dark" />
+          Dark</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="steel" />
+          Steel</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="fairy" />
+          Fairy</label
+        >
+      </div>
+
+      <!-- Filter Actions -->
+      <div class="mt-4 space-y-3">
+        <button
+          id="applyTypeFilter"
+          class="bg-blue-500 text-white px-4 py-2 rounded-md font-bold hover:bg-blue-600 transition"
+        >
+          Apply Filter
+        </button>
+        <button
+          id="clearTypeFilter"
+          class="bg-gray-400 text-white px-4 py-2 rounded-md font-bold hover:bg-gray-500 transition"
+        >
+          Clear Filters
+        </button>
+      </div>
+    </aside>
 
     <!--search bar-->
     <div
@@ -286,7 +411,11 @@
     <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
     <div id="pokemonContainer" class="grid grid-cols-3 gap-6 mt-6 w-[60%]">
       <% pokemon.forEach(mon => { %>
-      <button class="pokedexbox relative cursor-pointer" onclick="openModal('<%= mon.name %>')" tabindex="0">
+      <button
+        class="pokedexbox relative cursor-pointer"
+        onclick="openModal('<%= mon.name %>')"
+        tabindex="0"
+      >
         <span class="pokedexnum">#<%= mon.pokedex_number %></span>
         <img
           src="<%= mon.sprite_url %>"
@@ -329,14 +458,28 @@
           }
         });
 
+        //color map for pokedex stats
+
         const statColors = {
-          hp: "#4CAF50",
-          attack: "#FF5733",
-          defense: "#F4D03F",
-          "special-attack": "#9B59B6",
-          "special-defense": "#3498DB",
-          speed: "#E67E22",
+          hp: "#4CAF50", // Green for good health
+          attack: "#FF5733", // Red for very low
+          defense: "#FF5733", 
+          "special-attack": "#FF5733", 
+          "special-defense": "#FF5733", 
+          speed: "#FF5733", 
         };
+
+        function getStatColor(statType, statValue) {
+          if (statValue >= 120) {
+            return "#3498DB"; // Blue for maxed-out stats
+          } else if (statValue >= 80) {
+            return "#4CAF50"; // Green for high stats
+          } else if (statValue >= 40) {
+            return "#FFC107"; // Yellow for moderate stats
+          } else {
+            return "#FF5733"; // Red for very low stats
+          }
+        }
 
         searchInput.addEventListener("input", () => {
           const searchValue = searchInput.value.toLowerCase().trim();
@@ -401,9 +544,10 @@
             let statKey = stat.name.toLowerCase();
             let statName = statDisplayNames[statKey] || stat.name; // Convert stat name
             let statValue = stat.base_stat;
-            let colorStyle = `background-color: ${
-              statColors[statKey] || "#AAAAAA"
-            }`;
+            let colorStyle = `background-color: ${getStatColor(
+              statKey,
+              statValue
+            )};`;
 
             monStats.innerHTML += `
               <li class="stat-container">
@@ -423,25 +567,25 @@
         };
 
         window.openModal = openModal;
-        
+
         // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
+        span.onclick = function () {
           modal.style.display = "none";
-        }
+        };
 
         // When the user hits escape, close the modal
-        document.addEventListener('keydown', function(event) {
+        document.addEventListener("keydown", function (event) {
           if (event.key === "Escape") {
             modal.style.display = "none";
           }
         });
-        
+
         // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
+        window.onclick = function (event) {
           if (event.target == modal) {
             modal.style.display = "none";
           }
-        }
+        };
       });
     </script>
     <script>
@@ -484,6 +628,79 @@
         window.addEventListener("click", (event) => {
           if (event.target === filterModal) {
             filterModal.classList.add("hidden");
+          }
+        });
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const floatingFilterButton = document.getElementById(
+          "floatingFilterButton"
+        );
+        const typeFilterSidebar = document.getElementById("typeFilterSidebar");
+        const closeTypeFilterSidebar = document.getElementById(
+          "closeTypeFilterSidebar"
+        );
+        const applyTypeFilter = document.getElementById("applyTypeFilter");
+        const clearTypeFilter = document.getElementById("clearTypeFilter");
+        const typeCheckboxes = document.querySelectorAll(".type-checkbox");
+
+        // Toggle Sidebar Visibility (Fix for Multiple Clicks)
+        floatingFilterButton.addEventListener("click", () => {
+          if (typeFilterSidebar.classList.contains("hidden")) {
+            typeFilterSidebar.classList.remove("hidden");
+            setTimeout(
+              () => typeFilterSidebar.classList.add("translate-x-0"),
+              10
+            );
+          } else {
+            typeFilterSidebar.classList.remove("translate-x-0");
+            setTimeout(() => typeFilterSidebar.classList.add("hidden"), 300);
+          }
+        });
+
+        // Close Sidebar
+        closeTypeFilterSidebar.addEventListener("click", () => {
+          typeFilterSidebar.classList.remove("translate-x-0");
+          setTimeout(() => typeFilterSidebar.classList.add("hidden"), 300);
+        });
+
+        // Apply Type Filter
+        applyTypeFilter.addEventListener("click", () => {
+          const selectedTypes = Array.from(typeCheckboxes)
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.value);
+
+          document.querySelectorAll(".pokedexbox").forEach((card) => {
+            const types = Array.from(
+              card.querySelectorAll(".pokedextypestyle")
+            ).map((el) => el.textContent.toLowerCase());
+
+            card.style.display =
+              selectedTypes.length === 0 ||
+              selectedTypes.some((type) => types.includes(type))
+                ? "flex"
+                : "none";
+          });
+        });
+
+        // Clear Type Filter
+        clearTypeFilter.addEventListener("click", () => {
+          typeCheckboxes.forEach((checkbox) => (checkbox.checked = false));
+          document
+            .querySelectorAll(".pokedexbox")
+            .forEach((card) => (card.style.display = "flex"));
+        });
+
+        // Fix Sidebar Closing When Clicking Outside (Only When Visible)
+        window.addEventListener("click", (event) => {
+          if (
+            !typeFilterSidebar.contains(event.target) &&
+            event.target !== floatingFilterButton &&
+            !floatingFilterButton.contains(event.target)
+          ) {
+            typeFilterSidebar.classList.remove("translate-x-0");
+            setTimeout(() => typeFilterSidebar.classList.add("hidden"), 300);
           }
         });
       });
