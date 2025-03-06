@@ -31,10 +31,6 @@ router.get('/user', function(req, res, next) {
 
 
 
-router.get('/team:teamid', function(req, res, next) {
-  res.render("team", { title: 'Team View', team: req.params.teamid });
-})
-
 router.get('/logout', function(req, res, next) {
   req.logout();
   res.redirect('/');

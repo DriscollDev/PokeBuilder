@@ -62,133 +62,55 @@
           &times;
         </button>
 
-        <h2 class="text-center mb-4">Filters</h2>
+        <h2 class="text-center mb-4 text-xl font-bold">Select Generation</h2>
 
-        <!-- Filter Section filters icon instead of text most likely (Gen + Region) -->
-        <div class="flex justify-center space-x-8 px-4">
-          <!-- Generations Column -->
-          <div>
-            <h3 class="text-lg font-bold text-center mb-2">Generations</h3>
-            <div class="space-y-2 flex flex-col items-start">
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen1" />
-                Gen 1</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen2" />
-                Gen 2</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen3" />
-                Gen 3</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen4" />
-                Gen 4</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen5" />
-                Gen 5</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen6" />
-                Gen 6</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen7" />
-                Gen 7</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen8" />
-                Gen 8</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen9" />
-                Gen 9</label
-              >
-            </div>
-          </div>
-
-          <!-- Region Column -->
-          <div>
-            <h3 class="text-lg font-bold text-center mb-2">Region</h3>
-            <div class="space-y-2 flex flex-col items-start">
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="kanto" />
-                Kanto</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="johto" />
-                Johto</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="hoenn" />
-                Hoenn</label
-              >
-              <label class="filter-label"
-                ><input
-                  type="checkbox"
-                  class="filter-checkbox"
-                  value="sinnoh"
-                />
-                Sinnoh</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="unova" />
-                Unova</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="kalos" />
-                Kalos</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="alola" />
-                Alola</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="galar" />
-                Galar</label
-              >
-              <label class="filter-label"
-                ><input
-                  type="checkbox"
-                  class="filter-checkbox"
-                  value="paldea"
-                />
-                Paldea</label
-              >
-            </div>
-          </div>
+        <!-- Generation List -->
+        <div class="w-full max-w-xs space-y-2">
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="1" class="mr-2">
+            Generation 1 (Kanto)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="2" class="mr-2">
+            Generation 2 (Johto)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="3" class="mr-2">
+            Generation 3 (Hoenn)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="4" class="mr-2">
+            Generation 4 (Sinnoh)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="5" class="mr-2">
+            Generation 5 (Unova)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="6" class="mr-2">
+            Generation 6 (Kalos)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="7" class="mr-2">
+            Generation 7 (Alola)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="8" class="mr-2">
+            Generation 8 (Galar)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="9" class="mr-2">
+            Generation 9 (Paldea)
+          </label>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="mt-6 flex flex-wrap justify-center gap-4">
-          <button
-            id="clearFilters"
-            class="bg-blue-500 text-white px-4 py-2 rounded-md font-bold shadow-md hover:bg-blue-600 transition"
-          >
-            Clear Filters
-          </button>
-          <button
-            id="selectAll"
-            class="bg-blue-500 text-white px-4 py-2 rounded-md font-bold shadow-md hover:bg-blue-600 transition"
-          >
-            Select All
-          </button>
-        </div>
-
-        <div class="mt-2 flex flex-wrap justify-center gap-4">
+        <!-- Action Button -->
+        <div class="mt-6">
           <button
             id="applyFilter"
-            class="bg-blue-400 text-white px-4 py-2 rounded-md font-bold hover:bg-blue-500 transition"
+            class="bg-blue-500 text-white px-6 py-2 rounded-md font-bold hover:bg-blue-600 transition"
           >
             Apply
-          </button>
-          <button
-            id="cancelFilter"
-            class="bg-red-500 text-white px-4 py-2 rounded-md font-bold hover:bg-red-600 transition"
-          >
-            Cancel
           </button>
         </div>
       </div>
@@ -408,7 +330,6 @@
 
     <!-- Pokémon Display Container -->
 
-    <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
     <div id="pokemonContainer" class="grid grid-cols-3 gap-6 mt-6 w-[60%]">
       <% pokemon.forEach(mon => { %>
       <button
@@ -458,16 +379,6 @@
           }
         });
 
-        //color map for pokedex stats
-
-        const statColors = {
-          hp: "#4CAF50", // Green for good health
-          attack: "#FF5733", // Red for very low
-          defense: "#FF5733", 
-          "special-attack": "#FF5733", 
-          "special-defense": "#FF5733", 
-          speed: "#FF5733", 
-        };
 
         function getStatColor(statType, statValue) {
           if (statValue >= 120) {
@@ -593,11 +504,16 @@
         const filterButton = document.getElementById("filterButton");
         const filterModal = document.getElementById("filterModal");
         const closeFilterModal = document.getElementById("closeFilterModal");
-        const cancelFilter = document.getElementById("cancelFilter");
-        const clearFilters = document.getElementById("clearFilters");
-        const selectAll = document.getElementById("selectAll");
         const applyFilter = document.getElementById("applyFilter");
-        const checkboxes = document.querySelectorAll(".filter-checkbox");
+        const generationInputs = document.getElementsByName("generation");
+
+        // Get current generation from URL or default to 1
+        const currentGen = window.location.pathname.split('/').pop() || '1';
+        generationInputs.forEach(input => {
+          if (input.value === currentGen) {
+            input.checked = true;
+          }
+        });
 
         // Open Modal
         filterButton.addEventListener("click", () => {
@@ -608,21 +524,12 @@
         closeFilterModal.addEventListener("click", () => {
           filterModal.classList.add("hidden");
         });
-        cancelFilter.addEventListener("click", () => {
-          filterModal.classList.add("hidden");
-        });
 
-        // Select All Checkboxes
-        selectAll.addEventListener("click", () => {
-          checkboxes.forEach((checkbox) => (checkbox.checked = true));
+        // Apply Filter
+        applyFilter.addEventListener("click", () => {
+          const selectedGen = document.querySelector('input[name="generation"]:checked').value;
+          window.location.href = `/poke/dex/${selectedGen}`;
         });
-
-        // Clear All Checkboxes
-        clearFilters.addEventListener("click", () => {
-          checkboxes.forEach((checkbox) => (checkbox.checked = false));
-        });
-
-        // Apply Filter Logic will go here
 
         // Close Modal When Clicking Outside
         window.addEventListener("click", (event) => {

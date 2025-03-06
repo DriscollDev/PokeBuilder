@@ -54,10 +54,12 @@
               <% teams.forEach(function(team) { %>
               <div class="w-full text-white font-bold py-2 rounded-md transition">
                 <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md">
-                  <a href="/team/builder/<%= team.teamID %>"><%= team.teamname %></a>
+                  <form action="/team/builder" method="POST" class="m-0">
+                    <input type="hidden" name="teamID" value="<%= team.teamID %>">
+                    <button type="submit" class="w-full text-gray-600"><%= team.teamname %></button>
+                  </form>
                 </div>
               </div>
-              
               <% }) %>
             <% } else { %>
             <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse">
