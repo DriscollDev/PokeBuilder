@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -6,58 +8,59 @@
     <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Sign-Up</title>
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
-    />
-  </head> 
-  <body class="bg-gray-600 text-white font-sans min-h-screen flex items-center justify-center">
+</head>
+
+<body class="bg-gray-600 text-white font-sans min-h-screen flex items-center justify-center">
     <main class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6">
-        <!-- Replace Text with Image -->
+        
+        <!-- Logo/Image -->
         <div class="flex justify-center mb-6">
-          <img src="../images/Sign-Up-1-28-2025.png" alt="signup" class="w-[300px] md:w-[400px]">
-      </div>
-      
-      
-      <!-- POKEMON FONT <a href="https://fontmeme.com/pokemon-font/"><img src="https://fontmeme.com/permalink/250115/3e958ba2f87832ffe596556e42e10469.png" alt="pokemon-font" border="0"></a> -->
-
-      <!-- Content Wrapper -->
-      <div class="flex flex-col md:flex-row items-center gap-10 justify-between">   
-        <!-- Form Section -->
-        <form class="w-full md:w-1/2 space-y-6"  action="/auth/register" method="POST">
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="User Name"
-            class="w-full px-4 py-2 text-black rounded-md bg-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          />
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Password"
-            class="w-full px-4 py-2 text-black rounded-md bg-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          />
-          <button
-            type="submit"
-            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded-lg transition"
-          >
-            Sign-Up
-          </button>
-        </form>
-        <div class="character">
-
-        <!-- Scizor Character Image -->
-        <div class="w-full flex justify-center">
-          <img
-            src="../images/scizor.gif"
-            alt="Scizor"
-            class="h-65"
-          />
+            <img src="../images/Sign-Up-1-28-2025.png" alt="signup" class="w-[300px] md:w-[400px]">
         </div>
-      </div>
+
+        <!-- Content Wrapper -->
+        <div class="flex flex-col md:flex-row items-center gap-10 justify-between">   
+
+            <!-- Form Section -->
+            <form class="w-full md:w-1/2 space-y-6" action="/auth/register" method="POST">
+
+                <!-- Display Error Messages -->
+                <% if (errorMessage) { %>
+                    <div class="w-full bg-red-500 text-white text-center p-2 rounded-md">
+                        <%= errorMessage %>
+                    </div>
+                <% } %>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="User Name"
+                    class="w-full px-4 py-2 text-black rounded-md bg-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    required
+                />
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Password"
+                    class="w-full px-4 py-2 text-black rounded-md bg-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    required
+                />
+                <button
+                    type="submit"
+                    class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded-lg transition"
+                >
+                    Sign-Up
+                </button>
+            </form>
+
+            <!-- Scizor Character Image -->
+            <div class="w-full flex justify-center">
+                <img src="../images/scizor.gif" alt="Scizor" class="h-65">
+            </div>
+
+        </div>
     </main>
-  </body>
+</body>
 </html>

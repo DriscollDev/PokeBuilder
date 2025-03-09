@@ -5,23 +5,22 @@ const router = Router();
 import teamController from '../controllers/teamController.js';
 
 // Get teams by user ID
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   const teams = teamController.getTeamsByUser;
-  res.render("teamhome", { 
+  res.render("teamhome", {
     title: 'Team View',
     teams: teams
   });
 });
 
 //Team Builder Page
-router.get('/builder/:team', function(req, res, next) {
-
-  res.render("teambuilder", { 
+router.get('/builder', function (req, res, next) {
+  res.render("teambuilder", {
     title: 'Team Builder',
-    team: req.params.team
+    team: null // or provide a default value
   });
-
 });
+
 // Create team
 router.post('/builder/create', teamController.createTeam);
 

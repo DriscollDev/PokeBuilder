@@ -1,7 +1,7 @@
-import bcrypt from "bcryptjs"
-import pool from "./db.js"
-import passport from 'passport';
-import LocalStrategy from 'passport-local';
+import bcrypt from "bcryptjs";
+import pool from "./db.js";
+import passport from "passport";
+import LocalStrategy from "passport-local";
 
 // Configure passport to use local strategy
 passport.use(
@@ -56,12 +56,15 @@ passport.deserializeUser((user, cb) => {
 
 const authController = {
     registerUser: async (req, res, next) => {
-        const { username, password} = req.body;
+        const { username, password } = req.body;
         //console.log("Registering user", username);
 
         // Input validation
         if (!username || !password) {
-            return res.status(400).json({ error: 'All fields are required' });
+            return res.render("signup", { 
+                title: "Sign Up",
+                errorMessage: "All fields are required." 
+            });
         }
         /*
         if (password !== password_confirm) {
@@ -79,7 +82,10 @@ const authController = {
             
             if (existingUsers.length > 0) {
                 pool.releaseConnection(conn);
-                return res.status(400).json({ error: "Username already exists" });
+                return res.render("signup", { 
+                    title: "Sign Up",
+                    errorMessage: "Username already exists." 
+                });
             }
 
             // Hash password and create user
@@ -89,46 +95,41 @@ const authController = {
                 [username, hash]
             );
             pool.releaseConnection(conn);
-            next();
+            
+            // Redirect to login after successful registration
+            return res.redirect("/auth/login");
 
         } catch (err) {
             console.log('Registration error:', err);
-            res.status(500).json({ error: 'Internal server error' });
+            return res.render("signup", { 
+                title: "Sign Up",
+                errorMessage: "Internal server error. Please try again." 
+            });
         }
     },
 
     loginUser: async (req, res, next) => {
-        try {
-            const conn = await pool.getConnection();
-            const [users] = await conn.query(
-                "SELECT * FROM user WHERE username = ?", 
-                [req.body.username]
-            );
-            pool.releaseConnection(conn);
-
-            if (users.length === 0) {
-                return res.status(401).json({ error: "Invalid credentials" });
+        passport.authenticate("local", (err, user, info) => {
+            if (err) {
+                return next(err);
             }
-
-            const user = users[0];
-            const isMatch = await bcrypt.compare(req.body.password, user.password);
-            
-            if (!isMatch) {
-                return res.status(401).json({ error: "Invalid credentials" });
+            if (!user) {
+                // If incorrect username or password, return specific error type
+                return res.render("login", { 
+                    title: "Login",
+                    errorMessage: "Incorrect username or password.",
+                    errorType: "password" // Can be 'username' or 'password'
+                });
             }
-            //req.session.passport.user.userID = user.userID;
-            //req.session.save();
-            //console.log("------");
-            //console.log(req.session);
-            //console.log("------");
-
-            next();
-
-        } catch (err) {
-            console.log('Login error:', err);
-            res.status(500).json({ error: 'Internal server error' });
-        }
+            req.logIn(user, (err) => {
+                if (err) {
+                    return next(err);
+                }
+                return res.redirect("/dash"); // Redirect to dashboard on success
+            });
+        })(req, res, next);
     }
+    
 }
 
 export default authController;
