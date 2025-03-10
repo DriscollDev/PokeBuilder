@@ -11,11 +11,8 @@ router.get('/', function (req, res, next) {
     title: 'Team View',
     teams: teams
   });
-  } catch (error) {
-  console.log('Error fetching teams:', error);
-  throw error;
-  }
 });
+
 
 
 // Team Builder Page - Now fetches team data before rendering
