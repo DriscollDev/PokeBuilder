@@ -259,3 +259,130 @@ flex-shrink: 0;
   gap: 10px;
   flex-shrink: 0; 
 }
+
+.main-grid {
+  width: 100%;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  border: 4px solid red;
+  border-radius: 8px;
+  background: #f0f0f0;
+}
+
+
+.box-container {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  
+}
+
+
+
+.move-slot {
+  height: 80px;
+  background: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+/*  MODAL STYLING */
+
+.modal-backdrop {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none; /* hidden by default */
+  align-items: center; 
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-backdrop.active {
+  display: flex; 
+}
+
+.modal-content {
+  background: #D9D9D9;       
+  border: 3px solid #000;  
+  border-radius: 20px;      
+  width: 600px;              
+  max-width: 90%;           
+  padding: 20px;
+  font-family: 'Kode-Mono', sans-serif;
+  color: #000;
+}
+
+.modal-title {
+  font-size: 32px;
+  
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* For the move list (scrollable) */
+.modal-list {
+  max-height: 300px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.modal-list li {
+  margin: 4px 0;
+  cursor: pointer;
+  font-size: 32px;
+}
+.modal-list li:hover {
+  background: #eee;
+}
+
+
+.modal-field {
+  margin-bottom: 10px;
+}
+.modal-label {
+  font-weight: bold;
+}
+
+
+.modal-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.modal-button {
+  background: #f00;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.modal-button:hover {
+  background: #c00;
+}
+.font-quantico{
+  font-family: Quantico, monospace;
+}

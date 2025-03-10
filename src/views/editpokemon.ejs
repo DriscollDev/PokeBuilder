@@ -1,11 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit</title>
+  <meta charset="UTF-8" />
+  <title>Pokémon Edit: Garchomp</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="/stylesheets/pokestyle.css">
+  <link
+  rel="icon"
+  type="image/x-icon"
+  href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
+/>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen px-8 fontResize font-quantico">
+  
+  <!-- Main Grid Container (3 columns) -->
+  <div class="main-grid">
     
+    <!-- Left Column: Pokémon Info -->
+    <div class="spcontainer w-full fontResize">
+      <img id="pokemonImage" class="w-65" alt="Pokémon Image">
+      <h1 id="pokemonName" class=" font-bold mt-3"></h1>
+      <p id="pokedexNumber" class="text-gray-700"></p>
+      <div id="typeContainer" class="flex gap-4 mt-3"></div>
+      <p class="mt-3 text-gray-600">
+         <span id="abilities"></span>
+      </p>
+      <p class="text-gray-600">
+         <span id="generation"></span>
+      </p>
+      <p class="text-gray-600">
+         <span id="weight"></span> 
+      </p>
+      <p class="text-gray-600">
+         <span id="height"></span> 
+      </p>
+    </div>
+    
+    <!-- Middle Column: Defensive & Offensive (STAB) Matchups -->
+    <div class="flex flex-col gap-6 justify-center">
+      <div class="outerStabContainer border-4 border-red-700 shadow-lg p-2">
+        <h2 class="font-bold text-center mb-2">Defensive Type Match Ups</h2>
+        <div id="weaknessContainer" class="innerStabContainer"></div>
+      </div>
+      <div class="outerStabContainer border-4 border-red-700 shadow-lg p-2">
+        <h2 class="font-bold text-center mb-2">STAB Type Match Ups</h2>
+        <div id="stabContainer" class="innerStabContainer"></div>
+      </div>
+      <div class="flex justify-center gap-6 mt-4">
+        <a class="bg-red-500 text-white px-6 py-3 rounded-lg" href="/poke/dex">Return to Pokédex</a>
+        <a class="bg-red-500 text-white px-6 py-3 rounded-lg" href="/team/builder">Update Pokémon</a>
+      </div>
+    </div>
+    
+    <!-- Right Column: Stats & Move Pool -->
+    <div class="flex flex-col gap-6 w-full">
+      <!-- Stat Totals Box -->
+      <div class="box-container statsChart p-2">
+        <h2 class="box-title p-2">Stat Totals</h2>
+        <div id="stats"></div>
+      </div>
+      <div class="box-container p-2 margin-top-4">
+        <h2 class="box-title">Move Pool</h2>
+        <div id="moveSlotsContainer" class="flex flex-col mt-4"></div>
+      </div>
+    </div>
+    
+  </div>
+  
+  <!--  MOVE MODAL  -->
+  <div class="modal-backdrop" id="moveModalBackdrop">
+    <div class="modal-content">
+      <h3 class="modal-title">Select a Move</h3>
+      <ul id="moveList" class="modal-list"></ul>
+      <div class="modal-buttons">
+        <button class="modal-button" onclick="closeMoveModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  
+  <!--  STAT MODAL  -->
+  <div class="modal-backdrop" id="statModalBackdrop">
+    <div class="modal-content">
+      <h3 id="statModalTitle" class="modal-title">Adjust Stat</h3>
+      
+      <div class="modal-field">
+        <span class="modal-label">Base Value:</span>
+        <span id="baseValueDisplay"></span>
+      </div>
+      
+      <div class="modal-field">
+        <label class="modal-label">IV (0–31):</label>
+        <input type="number" id="ivInput" min="0" max="31" oninput="recalcStat()">
+      </div>
+      
+      <div class="modal-field">
+        <label class="modal-label">EV (0–252):</label>
+        <input type="range" id="evRange" min="0" max="252" oninput="recalcStat()">
+        <span id="evValueDisplay">0</span>
+      </div>
+      
+      <div class="modal-field">
+        <span class="modal-label">Final Stat:</span>
+        <span id="finalStatDisplay"></span>
+      </div>
+      
+      <div class="modal-buttons">
+        <button class="modal-button" onclick="saveStatChanges()">Save</button>
+        <button class="modal-button" onclick="closeStatModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  
+
+  <script src="/scripts/update.js"></script>
 </body>
 </html>

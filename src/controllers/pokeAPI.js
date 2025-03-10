@@ -217,18 +217,30 @@ const pokeAPI = {
         let missedMons = 0;
         let addedMons = 0;
         try {
-            const nationalDex = await P.getPokedexByName('kanto');
+            const nationalDex = await P.getPokedexByName('national');
             const allResponses = [];
             console.log("Starting Pokemon population");
             for (const entry of nationalDex.pokemon_entries) {
+                if((addedMons + missedMons)%100 == 0){
+                    console.log("==================")
+                    console.log("Missed Pokemon: ", missedMons)
+                    console.log("Added Pokemon: ", addedMons)
+                }
                 try {
                     const speciesData = await P.getPokemonSpeciesByName(entry.pokemon_species.name);
-                    const pokemonData = await P.getPokemonByName(entry.pokemon_species.name);
+                    let defaultForm = "";
+                    for (const element of speciesData.varieties) {
+                        if(element.is_default){
+                            defaultForm = element.pokemon.name;
+                        }
+                    }
+                    const pokemonData = await P.getPokemonByName(defaultForm);
 
                     const testData = {
                         id: pokemonData.id,
                         name: speciesData.name,
                         sprite_url: pokemonData.sprites.front_default,
+                        box_sprite: `https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen7x/regular/${speciesData.name}.png`,
                         dex_entries: speciesData.pokedex_numbers.map(dex => ({
                             entry_number: dex.entry_number,
                             dex_name: dex.pokedex.name,
@@ -250,11 +262,13 @@ const pokeAPI = {
                     allResponses.push(testData);
                     addedMons++;
                 } catch (error) {
-                    console.log(`Error processing ${entry.pokemon_species.name}:`, error);
+                    console.log("==================")
+                    console.log(`Error processing ${entry.pokemon_species.name}:`);
                     missedMons++;
                     continue;
                 }
             }
+            console.log("==================")
             console.log("Missed Pokemon: ", missedMons)
             console.log("Added Pokemon: ", addedMons)
             return allResponses;
@@ -263,7 +277,7 @@ const pokeAPI = {
             throw error;
         }
     },
-}
+
 
     getextraPokemon: async (req, res, next) => {
         try {
@@ -299,6 +313,6 @@ const pokeAPI = {
              
         }
     }
-
+}
 
 export default pokeAPI;

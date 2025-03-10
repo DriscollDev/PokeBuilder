@@ -62,133 +62,55 @@
           &times;
         </button>
 
-        <h2 class="text-center mb-4">Filters</h2>
+        <h2 class="text-center mb-4 text-xl font-bold">Select Generation</h2>
 
-        <!-- Filter Section filters icon instead of text most likely (Gen + Region) -->
-        <div class="flex justify-center space-x-8 px-4">
-          <!-- Generations Column -->
-          <div>
-            <h3 class="text-lg font-bold text-center mb-2">Generations</h3>
-            <div class="space-y-2 flex flex-col items-start">
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen1" />
-                Gen 1</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen2" />
-                Gen 2</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen3" />
-                Gen 3</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen4" />
-                Gen 4</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen5" />
-                Gen 5</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen6" />
-                Gen 6</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen7" />
-                Gen 7</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen8" />
-                Gen 8</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="gen9" />
-                Gen 9</label
-              >
-            </div>
-          </div>
-
-          <!-- Region Column -->
-          <div>
-            <h3 class="text-lg font-bold text-center mb-2">Region</h3>
-            <div class="space-y-2 flex flex-col items-start">
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="kanto" />
-                Kanto</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="johto" />
-                Johto</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="hoenn" />
-                Hoenn</label
-              >
-              <label class="filter-label"
-                ><input
-                  type="checkbox"
-                  class="filter-checkbox"
-                  value="sinnoh"
-                />
-                Sinnoh</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="unova" />
-                Unova</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="kalos" />
-                Kalos</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="alola" />
-                Alola</label
-              >
-              <label class="filter-label"
-                ><input type="checkbox" class="filter-checkbox" value="galar" />
-                Galar</label
-              >
-              <label class="filter-label"
-                ><input
-                  type="checkbox"
-                  class="filter-checkbox"
-                  value="paldea"
-                />
-                Paldea</label
-              >
-            </div>
-          </div>
+        <!-- Generation List -->
+        <div class="w-full max-w-xs space-y-2">
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="1" class="mr-2">
+            Generation 1 (Kanto)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="2" class="mr-2">
+            Generation 2 (Johto)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="3" class="mr-2">
+            Generation 3 (Hoenn)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="4" class="mr-2">
+            Generation 4 (Sinnoh)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="5" class="mr-2">
+            Generation 5 (Unova)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="6" class="mr-2">
+            Generation 6 (Kalos)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="7" class="mr-2">
+            Generation 7 (Alola)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="8" class="mr-2">
+            Generation 8 (Galar)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="9" class="mr-2">
+            Generation 9 (Paldea)
+          </label>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="mt-6 flex flex-wrap justify-center gap-4">
-          <button
-            id="clearFilters"
-            class="bg-blue-500 text-white px-4 py-2 rounded-md font-bold shadow-md hover:bg-blue-600 transition"
-          >
-            Clear Filters
-          </button>
-          <button
-            id="selectAll"
-            class="bg-blue-500 text-white px-4 py-2 rounded-md font-bold shadow-md hover:bg-blue-600 transition"
-          >
-            Select All
-          </button>
-        </div>
-
-        <div class="mt-2 flex flex-wrap justify-center gap-4">
+        <!-- Action Button -->
+        <div class="mt-6">
           <button
             id="applyFilter"
-            class="bg-blue-400 text-white px-4 py-2 rounded-md font-bold hover:bg-blue-500 transition"
+            class="bg-blue-500 text-white px-6 py-2 rounded-md font-bold hover:bg-blue-600 transition"
           >
             Apply
-          </button>
-          <button
-            id="cancelFilter"
-            class="bg-red-500 text-white px-4 py-2 rounded-md font-bold hover:bg-red-600 transition"
-          >
-            Cancel
           </button>
         </div>
       </div>
@@ -392,14 +314,16 @@
 
         <!-- Buttons -->
         <div class="mt-5 flex flex-col space-y-2">
-          <button
+          <a href="/poke/fullview/garchomp"
+          id="fullViewBtn"
             class="bg-red-500 text-white py-2 px-4 rounded-lg font-semibold shadow-md hover:bg-red-600 transition"
           >
             View Full Page of Pokémon
-          </button>
+        </a>
           <button
-            id="add-to-team-btn"
-            class="bg-red-500 text-white py-2 px-4 rounded-lg font-semibold shadow-md hover:bg-red-600 transition"
+            onclick="addToTeam('<%= selectedTeam ? selectedTeam.teamID : null %>', event)"
+            class="bg-green-500 text-white py-2 px-4 rounded-lg font-semibold shadow-md hover:bg-green-600 transition"
+            data-pokemon-id=""
           >
             Add Pokémon to Team
           </button>
@@ -465,9 +389,42 @@
       </div>
     </div>
 
+    <!-- Team Selection Modal -->
+    <div id="teamSelectionModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 hidden">
+        <div class="bg-gray-300 border-8 border-red-500 rounded-xl shadow-lg p-6 w-[90%] sm:w-[60%] lg:w-[40%] relative">
+            <button id="closeTeamSelection" class="absolute top-3 right-3 text-gray-700 hover:text-red-600 text-2xl font-bold">&times;</button>
+            
+            <h2 class="text-xl font-bold text-center mb-4">Select Team and Slot</h2>
+            
+            <!-- Team Selection -->
+            <div class="mb-4">
+                <label for="teamSelect" class="block text-gray-700 text-sm font-bold mb-2">Select Team:</label>
+                <select id="teamSelect" name="teamSelect" class="w-full p-2 border rounded-md">
+                    <option value="">Choose a team...</option>
+                    <% userTeams.filter(team => team.generation == generation).forEach(team => { %>
+                        <option value="<%= team.teamID %>"><%= team.teamname %></option>
+                    <% }); %>
+                </select>
+            </div>
+            
+            <!-- Slot Selection -->
+            <div class="mb-6">
+                <label for="slotSelect" class="block text-gray-700 text-sm font-bold mb-2">Select Slot:</label>
+                <select id="slotSelect" name="slotSelect" class="w-full p-2 border rounded-md">
+                    <option value="">Choose a slot...</option>
+                </select>
+            </div>
+            
+            <div class="flex justify-center">
+                <button id="confirmTeamSelection" class="bg-green-500 text-white py-2 px-4 rounded-lg font-semibold shadow-md hover:bg-green-600 transition">
+                    Confirm Selection
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Pokémon Display Container -->
 
-    <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
     <div id="pokemonContainer" class="grid grid-cols-3 gap-6 mt-6 w-[60%]">
       <% pokemon.forEach(mon => { %>
       <button
@@ -517,16 +474,6 @@
           }
         });
 
-        //color map for pokedex stats
-
-        // const statColors = {
-        //   hp: "#4CAF50", // Green for good health
-        //   attack: "#FF5733", // Red for very low
-        //   defense: "#FF5733",
-        //   "special-attack": "#FF5733",
-        //   "special-defense": "#FF5733",
-        //   speed: "#FF5733",
-        // };
 
         function getStatColor(statType, statValue) {
           if (statValue >= 120) {
@@ -618,6 +565,9 @@
               </li>
                 `;
           });
+
+          // Add this line after setting other modal content
+          document.querySelector('[data-pokemon-id]').setAttribute('data-pokemon-id', pokemon.id);
         }
 
         closeModalButton.onclick = () => modal.classList.add("hidden");
@@ -652,11 +602,16 @@
         const filterButton = document.getElementById("filterButton");
         const filterModal = document.getElementById("filterModal");
         const closeFilterModal = document.getElementById("closeFilterModal");
-        const cancelFilter = document.getElementById("cancelFilter");
-        const clearFilters = document.getElementById("clearFilters");
-        const selectAll = document.getElementById("selectAll");
         const applyFilter = document.getElementById("applyFilter");
-        const checkboxes = document.querySelectorAll(".filter-checkbox");
+        const generationInputs = document.getElementsByName("generation");
+
+        // Get current generation from URL or default to 1
+        const currentGen = window.location.pathname.split('/').pop() || '1';
+        generationInputs.forEach(input => {
+          if (input.value === currentGen) {
+            input.checked = true;
+          }
+        });
 
         // Open Modal
         filterButton.addEventListener("click", () => {
@@ -667,18 +622,11 @@
         closeFilterModal.addEventListener("click", () => {
           filterModal.classList.add("hidden");
         });
-        cancelFilter.addEventListener("click", () => {
-          filterModal.classList.add("hidden");
-        });
 
-        // Select All Checkboxes
-        selectAll.addEventListener("click", () => {
-          checkboxes.forEach((checkbox) => (checkbox.checked = true));
-        });
-
-        // Clear All Checkboxes
-        clearFilters.addEventListener("click", () => {
-          checkboxes.forEach((checkbox) => (checkbox.checked = false));
+        // Apply Filter
+        applyFilter.addEventListener("click", () => {
+          const selectedGen = document.querySelector('input[name="generation"]:checked').value;
+          window.location.href = `/poke/dex/${selectedGen}`;
         });
 
         // Close Modal When Clicking Outside
@@ -688,6 +636,277 @@
           }
         });
       });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const floatingFilterButton = document.getElementById(
+          "floatingFilterButton"
+        );
+        const typeFilterSidebar = document.getElementById("typeFilterSidebar");
+        const closeTypeFilterSidebar = document.getElementById(
+          "closeTypeFilterSidebar"
+        );
+        const applyTypeFilter = document.getElementById("applyTypeFilter");
+        const clearTypeFilter = document.getElementById("clearTypeFilter");
+        const typeCheckboxes = document.querySelectorAll(".type-checkbox");
+
+        // Toggle Sidebar Visibility (Fix for Multiple Clicks)
+        floatingFilterButton.addEventListener("click", () => {
+          if (typeFilterSidebar.classList.contains("hidden")) {
+            typeFilterSidebar.classList.remove("hidden");
+            setTimeout(
+              () => typeFilterSidebar.classList.add("translate-x-0"),
+              10
+            );
+          } else {
+            typeFilterSidebar.classList.remove("translate-x-0");
+            setTimeout(() => typeFilterSidebar.classList.add("hidden"), 300);
+          }
+        });
+
+        // Close Sidebar
+        closeTypeFilterSidebar.addEventListener("click", () => {
+          typeFilterSidebar.classList.remove("translate-x-0");
+          setTimeout(() => typeFilterSidebar.classList.add("hidden"), 300);
+        });
+
+        // Apply Type Filter
+        applyTypeFilter.addEventListener("click", () => {
+          const selectedTypes = Array.from(typeCheckboxes)
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.value);
+
+          document.querySelectorAll(".pokedexbox").forEach((card) => {
+            const types = Array.from(
+              card.querySelectorAll(".pokedextypestyle")
+            ).map((el) => el.textContent.toLowerCase());
+
+            card.style.display =
+              selectedTypes.length === 0 ||
+              selectedTypes.some((type) => types.includes(type))
+                ? "flex"
+                : "none";
+          });
+        });
+
+        // Clear Type Filter
+        clearTypeFilter.addEventListener("click", () => {
+          typeCheckboxes.forEach((checkbox) => (checkbox.checked = false));
+          document
+            .querySelectorAll(".pokedexbox")
+            .forEach((card) => (card.style.display = "flex"));
+        });
+
+        // Fix Sidebar Closing When Clicking Outside (Only When Visible)
+        window.addEventListener("click", (event) => {
+          if (
+            !typeFilterSidebar.contains(event.target) &&
+            event.target !== floatingFilterButton &&
+            !floatingFilterButton.contains(event.target)
+          ) {
+            typeFilterSidebar.classList.remove("translate-x-0");
+            setTimeout(() => typeFilterSidebar.classList.add("hidden"), 300);
+          }
+        });
+      });
+    </script>
+    <script>
+      async function addToTeam(teamID, event) {
+        const button = event.target;
+        const pokemonID = button.getAttribute('data-pokemon-id');
+        const pokemonName = document.getElementById('monName').textContent.toLowerCase();
+        const spriteURL = document.getElementById('monSprite').src;
+        
+        // Get stats from the stats list
+        const statsElements = document.querySelectorAll('.stat-container');
+        const stats = [];
+        statsElements.forEach(statElement => {
+            const name = statElement.querySelector('.stat-name').textContent.toLowerCase();
+            const value = parseInt(statElement.querySelector('.stat-value').textContent);
+            
+            // Map the display names back to the database names
+            const statMapping = {
+                'hp': 'hp',
+                'attack': 'attack',
+                'defense': 'defense',
+                'sp. atk': 'special-attack',
+                'sp. def': 'special-defense',
+                'speed': 'speed'
+            };
+            
+            stats.push({
+                name: statMapping[name],
+                base_stat: value
+            });
+        });
+        
+        // Get types from the types container
+        const types = Array.from(document.querySelectorAll('#monTypesContainer .pokedextype'))
+            .map(type => type.textContent.toLowerCase());
+        
+        // Get abilities from the abilities text
+        const abilitiesText = document.getElementById('monAbilities').textContent;
+        const abilities = abilitiesText.replace('Abilities: ', '').split(', ');
+
+        // If no teamID is provided, show the team selection modal
+        if (!teamID) {
+            const teamSelectionModal = document.getElementById('teamSelectionModal');
+            teamSelectionModal.classList.remove('hidden');
+
+            // Store the Pokemon data for later use
+            window.pendingPokemonData = {
+                id: pokemonID,
+                name: pokemonName,
+                types: types,
+                abilities: abilities,
+                stats: stats,
+                dex_number: parseInt(document.getElementById('monDexNum').textContent.replace('#', '')),
+                sprite_url: spriteURL
+            };
+
+            return;
+        }
+        
+        try {
+            const response = await fetch('/poke/add-to-team', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    pokemonData: {
+                        id: pokemonID,
+                        name: pokemonName,
+                        types: types,
+                        abilities: abilities,
+                        stats: stats,
+                        dex_number: parseInt(document.getElementById('monDexNum').textContent.replace('#', '')),
+                        sprite_url: spriteURL
+                    }
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Create a form and submit it programmatically
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/team/builder';
+                
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'teamID';
+                input.value = teamID;
+                
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            } else {
+                alert(data.error);
+            }
+        } catch (error) {
+            console.log(error);
+            alert('Error adding Pokémon to team');
+        }
+    }
+
+    // Add team selection modal handlers
+    document.addEventListener('DOMContentLoaded', () => {
+        const teamSelectionModal = document.getElementById('teamSelectionModal');
+        const closeTeamSelection = document.getElementById('closeTeamSelection');
+        const confirmTeamSelection = document.getElementById('confirmTeamSelection');
+        const teamSelect = document.getElementById('teamSelect');
+        const slotSelect = document.getElementById('slotSelect');
+
+        // Store teams data for easy access
+        const teamsData = JSON.parse('<%- JSON.stringify(userTeams) %>');
+
+        // Update slot options when team is selected
+        teamSelect.addEventListener('change', () => {
+            const selectedTeam = teamsData.find(team => team.teamID == teamSelect.value);
+            slotSelect.innerHTML = '<option value="">Choose a slot...</option>';
+            
+            if (selectedTeam) {
+                selectedTeam.pokemon.forEach((pokemon, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = `Slot ${index + 1}${pokemon ? ` (Current: ${pokemon})` : ' (Empty)'}`;
+                    slotSelect.appendChild(option);
+                });
+            }
+        });
+
+        closeTeamSelection.addEventListener('click', () => {
+            teamSelectionModal.classList.add('hidden');
+            window.pendingPokemonData = null;
+        });
+
+        confirmTeamSelection.addEventListener('click', async () => {
+            const selectedTeam = teamSelect.value;
+            const selectedSlot = slotSelect.value;
+
+            if (!selectedTeam || selectedSlot === '') {
+                alert('Please select both a team and a slot');
+                return;
+            }
+
+            try {
+                // First, set the selected team and slot in the session
+                const response = await fetch('/poke/select-slot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        teamID: selectedTeam,
+                        slotNumber: selectedSlot
+                    })
+                });
+
+                if (response.ok) {
+                    // Now add the Pokemon to the selected team and slot
+                    const addResponse = await fetch('/poke/add-to-team', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            pokemonData: window.pendingPokemonData
+                        })
+                    });
+
+                    const data = await addResponse.json();
+                    
+                    if (data.success) {
+                        // Create a form and submit it programmatically
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = '/team/builder';
+                        
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'teamID';
+                        input.value = selectedTeam;
+                        
+                        form.appendChild(input);
+                        document.body.appendChild(form);
+                        form.submit();
+                    } else {
+                        alert(data.error);
+                    }
+                } else {
+                    alert('Error selecting team and slot');
+                }
+            } catch (error) {
+                console.log(error);
+                alert('Error adding Pokémon to team');
+            }
+
+            teamSelectionModal.classList.add('hidden');
+            window.pendingPokemonData = null;
+        });
+    });
     </script>
   </body>
 </html>

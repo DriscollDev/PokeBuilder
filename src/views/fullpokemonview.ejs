@@ -1,17 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detailed Pokemon Page</title>
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Pokémon Details</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/stylesheets/pokestyle.css"> 
+  <link
+  rel="icon"
+  type="image/x-icon"
+  href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
+/>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen px-8 fontResize font-quantico">
+  <link rel="stylesheet" href="/stylesheets/pokestyle.css" />
+
+  <!-- Main Grid Container  -->
+  <div class="bg-gray-200 p-6 rounded-xl border-4 border-red-700 shadow-lg w-full grid grid-cols-3 gap-10 fontResize">
+
+    <!-- Left Column pokémon details -->
+    <div class="spcontainer w-full fontResize">
+      <img id="pokemonImage" class="w-70" src="" alt="Pokemon Image">
+      <h1 id="pokemonName" class="font-bold mt-3"></h1>
+      <p id="pokedexNumber" class="text-gray-700"></p>
+
+      <div id="typeContainer" class="flex gap-4 mt-3"></div>
+
+      <p id="abilities" class="mt-3 text-gray-600"></p>
+      <p id="generation" class="text-gray-600"></p>
+      <p id="weight" class="text-gray-600"></p>
+      <p id="height" class="text-gray-600"></p>
+    </div>
     
+    <!-- Middle Column all stab and type matchups-->
+    <div class="flex flex-col gap-6">
+      <div class="outerStabContainer border-4 border-red-700 shadow-lg p-2">
+        <h2 class="font-bold text-center mb-2">Defensive Type Match Ups</h2>
+        <div id="weaknessContainer" class="innerStabContainer flex flex-col gap-2"></div>
+      </div>
+      <div class="outerStabContainer border-4 border-red-700 shadow-lg p-2">
+        <h2 class="font-bold text-center mb-2">STAB Type Match Ups</h2>
+        <div id="stabContainer" class="innerStabContainer flex flex-col gap-2"></div>
+      </div>
+      <div class="flex justify-center gap-6 mt-4">
+        <a class="bg-red-500 text-white px-6 py-3 rounded-lg" href="/poke/dex">Return to Pokédex</a>
+        <a class="bg-red-500 text-white px-6 py-3 rounded-lg" href="/team/">Add Pokémon to Team</a>
+      </div>
+    </div>
+    
+    <!-- Right Column base stats and moves-->
+    <div class=" flex flex-col gap-6 w-full">
+      <div class="bg-white p-6 rounded-lg shadow-md w-full statsChart">
+        <h2 class="font-bold text-center mb-2">Base Stats</h2>
+        <div id="stats"></div>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md w-full ">
+        <h2 class="font-bold text-center mb-2">Move Pool</h2>
+        <div class="overflow-y-auto max-h-80">
+          <table class="w-full text-left border-collapse">
+            <thead class="sticky top-0 bg-white">
+              <tr>
+                <th class="border px-4 py-2">Move</th>
+                <th class="border px-4 py-2">Learned By</th>
+              </tr>
+            </thead>
+            <tbody id="moveTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script src="/scripts/styling.js"></script>
 </body>
 </html>
