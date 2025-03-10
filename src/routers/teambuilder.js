@@ -5,10 +5,9 @@ const router = Router();
 import teamController from '../controllers/teamController.js';
 
 // Get teams by user ID
-router.get('/', async function(req, res, next) {
-  try{
-  const teams = await teamController.getTeamsByCurrentUser(req);
-  res.render("teamhome", { 
+router.get('/', function (req, res, next) {
+  const teams = teamController.getTeamsByUser;
+  res.render("teamhome", {
     title: 'Team View',
     teams: teams
   });
@@ -18,12 +17,12 @@ router.get('/', async function(req, res, next) {
   }
 });
 
-//Team Builder Page
+// Team Builder Page
 router.get('/builder/:team', function(req, res, next) {
-  res.render("teambuilder", { 
-    title: 'Team Builder',
-    team: null // or provide a default value
-  });
+    res.render("teambuilder", {
+        title: "Team Builder",
+        team: req.params.team
+    });
 });
 
 // Create team
@@ -32,8 +31,5 @@ router.post('/builder/create', teamController.createTeam);
 
 // Update team
 router.put('/builder/update/:teamID', teamController.updateTeam);
-
-// Delete team
-router.delete('/builder/delete/:teamID', teamController.deleteTeam);
 
 export default router;
