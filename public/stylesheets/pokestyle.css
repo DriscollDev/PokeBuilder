@@ -383,3 +383,6 @@ flex-shrink: 0;
 .modal-button:hover {
   background: #c00;
 }
+.font-quantico{
+  font-family: Quantico, monospace;
+}
