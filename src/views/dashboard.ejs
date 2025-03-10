@@ -15,47 +15,119 @@
   </head>
   <!--flex justify-center-->
   <body class="bg-gray-600 border-8 border-red-600 w-full h-dvh p-6">
-    
     <!-- Main Grid Container -->
     <div class="grid grid-cols-4 gap-4 w-full h-full">
+      <!------------------------ LEFT SIDE ----------------------------->
 
-             <!------------------------ LEFT SIDE ----------------------------->
-      
       <!-- Dashboard Container (User Info + Badges) -->
-      <div class="bg-gray-300 p-4 rounded-md border-2 border-black flex flex-col space-y-4 h-full">
-
+      <div
+        class="bg-gray-300 p-4 rounded-md border-2 border-black flex flex-col space-y-4 h-full"
+      >
         <!-- User Info Panel -->
-        <div class="bg-gray-200 p-3 rounded-md border-2 border-black shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-200">
+        <!-- Logout Button (Top Left Corner) -->
+        <!-- Logout Button (Circular Icon) -->
+        <div class="fixed top-4 left-2 p-1 z-50 group">
+          <form action="/auth/logout" method="POST">
+            <button
+              type="submit"
+              class="relative w-10 h-10 flex items-center justify-center bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg transition"
+            >
+              <!-- Logout Icon (SVG) -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h6a2 2 0 012 2v1"
+                />
+              </svg>
+              <!-- "Tooltip" when hovered over icon -->
+              <span
+                class="absolute left-full ml-2 px-2 py-1 text-sm text-white bg-gray-800 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                Logout
+              </span>
+            </button>
+          </form>
+        </div>
+        
+
+        <div
+          class="bg-gray-200 p-3 rounded-md border-2 border-black shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-200"
+        >
           <h2 class="text-black font-bold text-lg text-center">
             <a href="/dash/user">User Info <span class="gear">⚙️</span></a>
           </h2>
         </div>
 
         <!-- Badges Box -->
-        <div class="bg-gray-200 p-3 rounded-md border-2 border-black flex-grow flex flex-col items-center">
+        <div
+          class="bg-gray-200 p-3 rounded-md border-2 border-black flex-grow flex flex-col items-center"
+        >
           <h3 class="text-black font-bold text-center">Badges</h3>
-          <div class="grid grid-cols-2 gap-20 py-10 mt-4 flex-grow items-center justify-center">
-            <img src="./images/badges/pngwing.com.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
-            <img src="./images/badges/pngwing.com_1.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
-            <img src="./images/badges/pngwing.com_2.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
-            <img src="./images/badges/pngwing.com_3.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
-            <img src="./images/badges/pngwing.com_4.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
-            <img src="./images/badges/pngwing.com_5.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
-            <img src="./images/badges/pngwing.com_6.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
-            <img src="./images/badges/pngwing.com_8.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
-            <img src="./images/badges/pngwing.com_9.png" class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200" />
+          <div
+            class="grid grid-cols-2 gap-20 py-10 flex-grow items-center justify-center"
+          >
+            <img
+              src="./images/badges/pngwing.com.png"
+              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+            />
+            <img
+              src="./images/badges/pngwing.com_1.png"
+              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+            />
+            <img
+              src="./images/badges/pngwing.com_2.png"
+              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+            />
+            <img
+              src="./images/badges/pngwing.com_3.png"
+              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+            />
+            <img
+              src="./images/badges/pngwing.com_4.png"
+              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+            />
+            <img
+              src="./images/badges/pngwing.com_5.png"
+              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+            />
+            <img
+              src="./images/badges/pngwing.com_6.png"
+              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+            />
+            <img
+              src="./images/badges/pngwing.com_8.png"
+              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+            />
           </div>
         </div>
       </div>
+
 
      <div class="bg-purple-400 p-4 rounded-md border-2 border-black col-span-2 flex flex-col h-full overflow-hidden">
         <h2 class="text-black font-bold text-lg text-center hover:scale-105">
           <a href="/team" class="hover:text-white">Team Builder</a>
         </h2>
         <div class="mt-2 flex">
-          <input type="text" class="ml-2 flex-grow p-1 rounded-md" placeholder="Search Team" />
-          <button class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300">Search</button>
+          <input
+            type="text"
+            class="ml-2 flex-grow p-1 rounded-md"
+            placeholder="Search Team"
+          />
+          <button
+            class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300"
+          >
+            Search
+          </button>
         </div>
+
 
         <!-- Team Display - Independent scroll -->
         <div id="team-list" class="mt-4 flex-grow overflow-y-auto pr-2">
@@ -81,18 +153,25 @@
       </div>
       <!-- Side Buttons (Pokedex, Help, Team Building) -->
       <div class="flex flex-col h-full col-span-1 gap-4">
-        <a href="/poke/dex" class="flex-grow w-full bg-red-600 text-white text-center font-bold py-6 text-2xl rounded-lg border-2 border-black shadow-lg hover:bg-red-500 hover:border-black flex justify-center items-center hover:scale-105 transition-transform duration-100">
+        <a
+          href="/poke/dex"
+          class="flex-grow w-full bg-red-600 text-white text-center font-bold py-6 text-2xl rounded-lg border-2 border-black shadow-lg hover:bg-red-500 hover:border-black flex justify-center items-center hover:scale-105 transition-transform duration-100"
+        >
           Pokedex
         </a>
-        <a href="/dash/help" class="flex-grow w-full bg-purple-600 text-white font-bold py-6 text-2xl rounded-lg border-2 border-black flex justify-center items-center hover:scale-105 transition-transform duration-100">
+        <a
+          href="/dash/help"
+          class="flex-grow w-full bg-purple-600 text-white font-bold py-6 text-2xl rounded-lg border-2 border-black flex justify-center items-center hover:scale-105 transition-transform duration-100"
+        >
           Help
         </a>
-        <a href="/dash/build" class="flex-grow w-full bg-blue-700 text-white font-bold py-6 text-2xl rounded-lg border-2 border-black flex justify-center items-center hover:scale-105 transition-transform duration-100">
+        <a
+          href="/dash/build"
+          class="flex-grow w-full bg-blue-700 text-white font-bold py-6 text-2xl rounded-lg border-2 border-black flex justify-center items-center hover:scale-105 transition-transform duration-100"
+        >
           Team Building Help
         </a>
       </div>
-
     </div>
-
   </body>
 </html>

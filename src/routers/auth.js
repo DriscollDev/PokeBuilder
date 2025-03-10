@@ -1,37 +1,24 @@
-import { Router } from 'express';
+import { Router } from "express";
+import authController from "../controllers/authController.js";
 
 const router = Router();
 
-import authController from "../controllers/authController.js";
-import passport from "passport";
-
-
-router.get('/login', function(req, res, next) {
-  res.render("login", { title: 'Login' });
+router.get("/login", (req, res) => {
+    res.render("login", { title: "Login", errorMessage: null });
 });
 
-router.get('/register', function(req, res, next) {
-  res.render("signup", { title: 'Sign Up' });
+router.get("/register", (req, res) => {
+    res.render("signup", { title: "Sign Up", errorMessage: null });
 });
 
-router.post('/login', authController.loginUser, passport.authenticate('local', {
-    successRedirect: '/dash',
-    failureRedirect: '/auth/login' }));
+router.post("/login", authController.loginUser);
+router.post("/register", authController.registerUser);
 
-router.post('/register', authController.registerUser, passport.authenticate('local', {
-    successRedirect: '/dash',
-    failureRedirect: '/auth/register'
-  }));
-
-router.post('/logout', function(req, res, next) {
-    req.logout(function(err) {
-        if (err) { return next(err); }
-        res.redirect('/');
+router.post("/logout", (req, res, next) => {
+    req.logout((err) => {
+        if (err) return next(err);
+        res.redirect("/");
     });
 });
 
 export default router;
-
-
-
-
