@@ -129,8 +129,12 @@ router.get('/dex/:generation?', async (req, res) => {
 
 router.get('/mon/:name', pokeAPI.getFormattedPokemonByName);
 
-router.get('/editpokemon', async(req,res) => {
+
+router.get('/editpokemon/:pokemonID', async(req,res) => {
     res.render('editpokemon')
+})
+router.get('/fullview/:pokemonName', async(req,res) => {
+    res.render('fullpokemonview')
 })
 
 // Add this new route to handle swapping Pokemon
