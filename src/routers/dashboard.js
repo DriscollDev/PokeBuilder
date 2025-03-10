@@ -1,12 +1,18 @@
 import { Router } from 'express';
 import passport from 'passport';
+import teamController from '../controllers/teamController.js';
 const router = Router();
 
 
-router.get('/',passport.authenticate('session'), function(req, res, next) {
+router.get('/',passport.authenticate('session'), async function(req, res, next) {
   //req.session.regenerate((err) => {
     //if (err) next(err);
-    res.render("dashboard", { title: 'Dashboard' });
+    const teams = await teamController.getTeamsByCurrentUser(req);
+    res.render("dashboard", { 
+      title: 'Dashboard',
+      teams: teams
+
+    });
   //});
 })
 
@@ -24,10 +30,6 @@ router.get('/user', function(req, res, next) {
 })
 
 
-
-router.get('/team:teamid', function(req, res, next) {
-  res.render("team", { title: 'Team View', team: req.params.teamid });
-})
 
 router.get('/logout', function(req, res, next) {
   req.logout();

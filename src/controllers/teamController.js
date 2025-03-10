@@ -1,8 +1,7 @@
 import pool from './db.js';
-import pokeAPI from './pokeAPI.js';
+//import pokeAPI from './pokeAPI.js';
 
 /*
-
 -- Stat List Table
 CREATE TABLE stat_list (
     statID INT PRIMARY KEY AUTO_INCREMENT,
@@ -68,7 +67,7 @@ CREATE TABLE pokemon (
 -- Teams Table
 CREATE TABLE teams (
     teamID INT PRIMARY KEY AUTO_INCREMENT,
-    ownerID INT NOT NULL,
+    ownerID INT,
     generation VARCHAR(50),
     pokemon1 INT,
     pokemon2 INT,
@@ -77,8 +76,6 @@ CREATE TABLE teams (
     pokemon5 INT,
     pokemon6 INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    name VARCHAR(45),
-    description MEDIUMTEXT,
     FOREIGN KEY (ownerID) REFERENCES user(userID),
     FOREIGN KEY (pokemon1) REFERENCES pokemon(pokemonID),
     FOREIGN KEY (pokemon2) REFERENCES pokemon(pokemonID),
@@ -93,63 +90,136 @@ const teamController = {
     // Create a new team
     createTeam: async (req, res) => {
         try {
-            const { ownerID, generation, name, description } = req.body;
-
+            const {generation, name, description } = req.body;
+            const ownerID = req.session.passport.user.userID;
+            
+            const generationNumber = generation;
+            
             const [result] = await pool.query(
-                'INSERT INTO teams (ownerID, generation, name, description) VALUES (?, ?, ?, ?)',
-                [ownerID, generation, name, description]
+                'INSERT INTO teams (ownerID, generation, teamname, description) VALUES (?, ?, ?, ?)',
+                [ownerID, generationNumber, name, description]
             );
             
-            res.status(201).json({ 
-                message: 'Team created successfully',
-                teamID: result.insertId 
+            req.body.teamID = result.insertId;
+            res.render("teambuilder", { 
+                title: 'Team Builder',
+                team: {
+                    teamID: result.insertId,
+                    teamname: name,
+                    description: description,
+                    generation: generationNumber
+                }
             });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
     },
 
-    // Get all teams for a specific user
-    getTeamsByUser: async (req, res) => {
+    getTeamsByCurrentUser: async (req) => {
         try {
-            const { ownerID } = req.params;
-            
-            const [teams] = await pool.query(
+            const ownerID = req.session.passport.user.userID;
+            const conn = await pool.getConnection();   
+            const [teams] = await conn.execute(
                 'SELECT * FROM teams WHERE ownerID = ? ORDER BY created_at DESC',
                 [ownerID]
             );
-            
-            res.status(200).json(teams);
+            pool.releaseConnection(conn);
+            return teams;
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            console.log('Error fetching teams:', error);
+            throw error;
         }
     },
 
-    // Get a specific team by ID
-    getTeamById: async (req, res) => {
+    // Get a specific team by ID with all related data
+    getTeamById: async (teamID) => {
         try {
-            const { teamID } = req.params;
-            
-            const [team] = await pool.query(
-                'SELECT * FROM teams WHERE teamID = ?',
+            // Get the base team data
+            const [teamRows] = await pool.query(`
+                SELECT t.*, u.username as ownerName 
+                FROM teams t
+                JOIN user u ON t.ownerID = u.userID
+                WHERE t.teamID = ?`,
                 [teamID]
             );
             
-            if (team.length === 0) {
-                return res.status(404).json({ message: 'Team not found' });
+            if (teamRows.length === 0) {
+                throw new Error('Team not found');
             }
+
+            const team = teamRows[0];
             
-            res.status(200).json(team[0]);
+            // Function to fetch complete Pokemon data
+            const getPokemonData = async (pokemonId) => {
+                if (!pokemonId) return null;
+                
+                const [pokemonData] = await pool.query(`
+                    SELECT 
+                        p.generation,
+                        pbd.name, pbd.dexNum, pbd.spriteURL,
+                        tr1.typeName as typeMain,
+                        tr2.typeName as typeSecond,
+                        pcd.gender, pcd.shiny, pcd.nature, 
+                        pcd.friendship, pcd.ability,
+                        pm.move1, pm.move2, pm.move3, pm.move4,
+                        bs.sHealth as baseHP, bs.sAtk as baseAtk, 
+                        bs.sDef as baseDef, bs.sSpAtk as baseSpAtk,
+                        bs.sSpDef as baseSpDef, bs.sSpd as baseSpd,
+                        ev.sHealth as evHP, ev.sAtk as evAtk,
+                        ev.sDef as evDef, ev.sSpAtk as evSpAtk,
+                        ev.sSpDef as evSpDef, ev.sSpd as evSpd,
+                        iv.sHealth as ivHP, iv.sAtk as ivAtk,
+                        iv.sDef as ivDef, iv.sSpAtk as ivSpAtk,
+                        iv.sSpDef as ivSpDef, iv.sSpd as ivSpd,
+                        total.sHealth as totalHP, total.sAtk as totalAtk,
+                        total.sDef as totalDef, total.sSpAtk as totalSpAtk,
+                        total.sSpDef as totalSpDef, total.sSpd as totalSpd
+                    FROM pokemon p
+                    JOIN poke_base_data pbd ON p.baseDataID = pbd.baseID
+                    JOIN type_ref tr1 ON pbd.typeMain = tr1.typeID
+                    LEFT JOIN type_ref tr2 ON pbd.typeSecond = tr2.typeID
+                    JOIN poke_choice_data pcd ON p.choiceDataID = pcd.choiceID
+                    JOIN poke_moveset pm ON p.moveSetID = pm.moveSetID
+                    JOIN stat_list bs ON pbd.baseStatID = bs.statID
+                    JOIN stat_list ev ON pcd.statEV = ev.statID
+                    JOIN stat_list iv ON pcd.statIV = iv.statID
+                    JOIN stat_list total ON pcd.statTotal = total.statID
+                    WHERE p.pokemonID = ?`,
+                    [pokemonId]
+                );
+                
+                return pokemonData[0] || null;
+            };
+
+            // Fetch data for all Pokemon in the team
+            team.pokemon = await Promise.all([
+                getPokemonData(team.pokemon1),
+                getPokemonData(team.pokemon2),
+                getPokemonData(team.pokemon3),
+                getPokemonData(team.pokemon4),
+                getPokemonData(team.pokemon5),
+                getPokemonData(team.pokemon6)
+            ]);
+
+            // Clean up the response by removing the individual pokemon fields
+            delete team.pokemon1;
+            delete team.pokemon2;
+            delete team.pokemon3;
+            delete team.pokemon4;
+            delete team.pokemon5;
+            delete team.pokemon6;
+            //console.log(team)
+            return team;
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            console.error('Error fetching team:', error);
+            throw error;
         }
     },
 
     // Update a team
     updateTeam: async (req, res) => {
         try {
-            const { teamID } = req.params;
-            const { generation, teamname, description, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6 } = req.body;
+            const { teamID, generation, teamname, description, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6 } = req.body;
             
             const [result] = await pool.query(
                 `UPDATE teams 
@@ -170,22 +240,21 @@ const teamController = {
     },
 
     // Delete a team
-    deleteTeam: async (req, res) => {
+    deleteTeam: async (teamID) => {
         try {
-            const { teamID } = req.params;
-            
             const [result] = await pool.query(
                 'DELETE FROM teams WHERE teamID = ?',
                 [teamID]
             );
             
             if (result.affectedRows === 0) {
-                return res.status(404).json({ message: 'Team not found' });
+                throw new Error('Team not found');
             }
             
-            res.status(200).json({ message: 'Team deleted successfully' });
+            return result;
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            console.error('Error deleting team:', error);
+            throw error;
         }
     }
 };

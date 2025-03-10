@@ -12,7 +12,7 @@
     <title>Team Builder</title>
   </head>
   <body
-    class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6"
+    class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-full flex flex-col justify-center items-center p-6"
   >
     <!-- Back to Dash -->
     <nav class="absolute top-6 left-4">
@@ -40,53 +40,38 @@
         <!-- Search Team -->
         <input
           type="text"
+          id="searchInput"
           placeholder="Search Teams"
           class="bg-gray-300 text-gray-700 text-lg font-bold px-4 py-2 rounded-md w-[100%] text-center"
         />
 
-        <!-- Team Name -->
         <div
           id="team-list"
-          class="w-full text-white font-bold py-2 rounded-md transition animate-pulse"
-        >
-          <!-- Placeholder Teams (Will be replaced with real data) -->
-          <div
-            class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse"
-          >
-            <a href="/team/builder">Loading Team...</a>
-          </div>
-        </div>
-
-         <!-- Team Name -->
-         <div
-         id="team-list"
-         class="w-full text-white font-bold py-2 rounded-md transition animate-pulse"
-       >
-         <!-- Placeholder Teams (Will be replaced with real data) -->
-         <div
-           class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse"
-         >
-           <a href="/team/builder">Loading Team...</a>
-         </div>
-       </div>
-
-        <!-- Team Name -->
-        <div
-          id="team-list"
-          class="w-full text-white font-bold py-2 rounded-md transition animate-pulse"
-        >
-          <!-- Placeholder Teams (Will be replaced with real data) -->
-          <div
-            class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse"
-          >
-            <a href="/team/builder">Loading Team...</a>
-          </div>
+          class="w-full text-white font-bold py-2 rounded-md transition"
+        >        
+            <!-- Placeholder Teams (Will be replaced with real data) -->
+            <% if (Array.isArray(teams)) { %>
+              <% teams.forEach(function(team) { %>
+              <div class="w-full text-white font-bold py-2 rounded-md transition">
+                <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md">
+                  <form action="/team/builder" method="POST" class="m-0">
+                    <input type="hidden" name="teamID" value="<%= team.teamID %>">
+                    <button type="submit" class="w-full text-gray-600"><%= team.teamname %></button>
+                  </form>
+                </div>
+              </div>
+              <% }) %>
+            <% } else { %>
+            <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse">
+              No teams available.
+            </div>
+            <% } %>
         </div>
 
         <!-- Create New Team Button -->
         <button
           id="createBtn"
-          class="w-full bg-blue-500 text-white font-bold py-2 rounded-md hover:bg-blue-600 "
+          class="w-full bg-blue-500 text-white font-bold py-2 rounded-md hover:bg-blue-600"
         >
           Create a new team
         </button>
@@ -94,32 +79,34 @@
     </div>
 
     <!-- FORM (Hidden by default) -->
-     <!-- hidden will be removed from the classList when clicked. .classList.remove('hidden') -->
+    <!-- hidden will be removed from the classList when clicked. .classList.remove('hidden') -->
     <div
       id="teamform"
       class="hidden fixed inset-5 bg-gray-900 bg-opacity-50 flex justify-center items-center"
     >
-      <div class="bg-gray-300 p-6 rounded-lg shadow-lg w-[90%] max-w-md">
+      <form class="bg-gray-300 p-6 rounded-lg shadow-lg w-[90%] max-w-md" action="/team/builder/create" method="POST">
         <h2 class="text-xl font-bold text-center mb-4">New Team Information</h2>
         <label class="block text-sm font-medium text-gray-700">Team Name</label>
         <input
           type="text"
           class="w-full border p-2 rounded-md mb-3"
           placeholder="Enter Team Name"
+          name="name"
+          id="name"
         />
 
         <!-- Generation drop down menu -->
-         <!--block -->
+        <!--block -->
         <label class="block text-sm font-medium text-gray-700"
           >Generation</label
         >
-        <select class="w-full border p-2 rounded-md mb-3">
-          <option>Generation 1</option>
-          <option>Generation 2</option>
-          <option>Generation 3</option>
-          <option>Generation 4</option>
-          <option>Generation 5</option>
-          <option>Generation 6</option>
+        <select class="w-full border p-2 rounded-md mb-3" name="generation" id="generation">
+          <option value="1">Generation 1</option>
+          <option value="2">Generation 2</option>
+          <option value="3">Generation 3</option>
+          <option value="4">Generation 4</option>
+          <option value="5">Generation 5</option>
+          <option value="6">Generation 6</option>
         </select>
 
         <!--Team description -->
@@ -132,6 +119,8 @@
         <textarea
           class="w-full border p-2 rounded-md mb-3"
           placeholder="Reason for the team, format, game etc"
+          name="description"
+          id="description"
         ></textarea>
 
         <div class="flex justify-between">
@@ -144,20 +133,24 @@
           <button
             id="createBtn"
             class="bg-blue-500 text-white px-4 py-2 w-[70%] rounded-md hover:bg-blue-600"
+            type="submit"
+            name="submit"
           >
             Create Team
           </button>
         </div>
-      </div>
+      </form>
     </div>
 
     <!-- js for btn to create new team -->
     <script>
-        //Declaring constants
-        //refrencing these elements by their id in order to manipulate the document 
+      //Declaring constants
+      //refrencing these elements by their id in order to manipulate the document
       const createBtn = document.getElementById("createBtn");
       const closeBtn = document.getElementById("closeBtn");
       const teamform = document.getElementById("teamform");
+      const searchInput = document.getElementById("searchInput");
+      const teams = document.querySelectorAll(".team");
 
       // Opening the form
       //When the createBtn is clicked triggering the eventlistener, the function removes the "hidden" class from teamform, making it visible.
@@ -170,6 +163,18 @@
       //When the closeBtn is clicked triggering the eventlistener, the function ADDS the "hidden" class from teamform, making it dissappear.
       closeBtn.addEventListener("click", () => {
         teamform.classList.add("hidden");
+      });
+
+      
+    //Search functionality for teams
+      searchInput.addEventListener("input", () => {
+        const searchValue = searchInput.value.toLowerCase().trim();
+      });
+
+      teams.forEach((team) => {
+        const teamName = team.textContent.toLowerCase();
+
+        team.style.display = teamName.includes(searchValue) ? "block" : "none";
       });
     </script>
   </body>

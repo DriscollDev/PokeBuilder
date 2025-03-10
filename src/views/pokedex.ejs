@@ -33,9 +33,216 @@
         class="w-[300px]"
       />
     </div>
+    <!-- inspiration : was watching a youtube video, and a cool site feature always is a dark mode toggle, maybe? <button id="darkModeToggle" class="fixed top-4 right-4 bg-gray-800 text-white px-4 py-2 rounded-md">
+      Toggle Dark Mode
+  </button> -->
 
-    <!-- Search Bar -->
+    <!-- filter here  -->
 
+    <button
+      id="filterButton"
+      class="bg-blue-500 text-white px-4 py-2 rounded-md font-bold shadow-md hover:bg-blue-600 transition"
+    >
+      Filters
+    </button>
+
+    <!-- Filter Modal  -->
+    <div
+      id="filterModal"
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 hidden"
+    >
+      <div
+        class="bg-gray-100 p-6 rounded-lg shadow-lg w-[90%] sm:w-[50%] lg:w-[30%] relative flex flex-col items-center"
+      >
+        <!-- Close filter button -->
+        <button
+          id="closeFilterModal"
+          class="absolute top-3 right-3 text-gray-700 hover:text-red-600 text-2xl font-bold"
+        >
+          &times;
+        </button>
+
+        <h2 class="text-center mb-4 text-xl font-bold">Select Generation</h2>
+
+        <!-- Generation List -->
+        <div class="w-full max-w-xs space-y-2">
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="1" class="mr-2">
+            Generation 1 (Kanto)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="2" class="mr-2">
+            Generation 2 (Johto)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="3" class="mr-2">
+            Generation 3 (Hoenn)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="4" class="mr-2">
+            Generation 4 (Sinnoh)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="5" class="mr-2">
+            Generation 5 (Unova)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="6" class="mr-2">
+            Generation 6 (Kalos)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="7" class="mr-2">
+            Generation 7 (Alola)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="8" class="mr-2">
+            Generation 8 (Galar)
+          </label>
+          <label class="block p-2 rounded-md hover:bg-gray-200 cursor-pointer">
+            <input type="radio" name="generation" value="9" class="mr-2">
+            Generation 9 (Paldea)
+          </label>
+        </div>
+
+        <!-- Action Button -->
+        <div class="mt-6">
+          <button
+            id="applyFilter"
+            class="bg-blue-500 text-white px-6 py-2 rounded-md font-bold hover:bg-blue-600 transition"
+          >
+            Apply
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!--Type filter will go here -->
+    <!-- Floating Type Filter Button -->
+    <!-- Floating Type Filter Button (More Transparent) -->
+    <button
+      id="floatingFilterButton"
+      class="fixed top-20 left-4 bg-blue-500 bg-opacity-60 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="w-6 h-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M3 4h18M6 9h12M9 14h6m-3 5v0"
+        />
+      </svg>
+    </button>
+
+    <!-- Type Filter Sidebar -->
+    <aside
+      id="typeFilterSidebar"
+      class="fixed top-0 left-0 w-64 h-full bg-gray-100 shadow-lg p-4 hidden transition-transform transform -translate-x-full"
+    >
+      <button
+        id="closeTypeFilterSidebar"
+        class="absolute top-2 right-2 text-gray-700 hover:text-red-600 text-2xl font-bold"
+      >
+        &times;
+      </button>
+
+      <h2 class="text-lg font-bold mb-4">Filter by Type</h2>
+
+      <!-- Pokémon Type Filter -->
+      <div id="typeFilters" class="flex flex-col space-y-2">
+        <label
+          ><input type="checkbox" class="type-checkbox" value="fire" />
+          Fire</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="water" />
+          Water</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="grass" />
+          Grass</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="electric" />
+          Electric</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="ice" />
+          Ice</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="fighting" />
+          Fighting</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="poison" />
+          Poison</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="ground" />
+          Ground</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="flying" />
+          Flying</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="psychic" />
+          Psychic</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="bug" />
+          Bug</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="rock" />
+          Rock</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="ghost" />
+          Ghost</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="dragon" />
+          Dragon</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="dark" />
+          Dark</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="steel" />
+          Steel</label
+        >
+        <label
+          ><input type="checkbox" class="type-checkbox" value="fairy" />
+          Fairy</label
+        >
+      </div>
+
+      <!-- Filter Actions -->
+      <div class="mt-4 space-y-3">
+        <button
+          id="applyTypeFilter"
+          class="bg-blue-500 text-white px-4 py-2 rounded-md font-bold hover:bg-blue-600 transition"
+        >
+          Apply Filter
+        </button>
+        <button
+          id="clearTypeFilter"
+          class="bg-gray-400 text-white px-4 py-2 rounded-md font-bold hover:bg-gray-500 transition"
+        >
+          Clear Filters
+        </button>
+      </div>
+    </aside>
+
+    <!--search bar-->
     <div
       class="flex justify-center gap-4 mt-4 text-lg font-bold px-4 py-2 rounded-md w-[70%]"
     >
@@ -52,29 +259,121 @@
         Search
       </button>
     </div>
-    
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
 
-      <!-- Modal content -->
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2 id="monDexNum"> # </h2>
-        <h1 style="font-size: large;" id="monName"> Name </h1>
-        <p id="monAbilities">Abilities: </p>
-        <p id="monTypes">Types:  </p>
-        <img id="monSprite" src="" alt="Pokemon">
-        <ul id="monStats">Stats: </ul>
+    <!-- Pokémon Modal (Hidden by Default, this controls the postioning of the modal and the blackout effect we see when it appears) -->
+    <div
+      id="myModal"
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 hidden"
+    >
+      <!-- Control the Modal features here-->
+      <div
+        class="bg-gray-300 border-8 border-red-500 rounded-xl shadow-lg p-6 w-[90%] sm:w-[60%] lg:w-[40%] relative animate-fadeIn"
+      >
+        <!-- Close pokemon modal Button -->
+        <button
+          id="closeModal"
+          class="absolute top-3 right-3 text-gray-700 hover:text-red-600 text-2xl font-bold"
+        >
+          &times;
+        </button>
+
+        <!-- Pokémon Header -->
+        <div class="text-center mb-4 absolute">
+          <h2 id="monDexNum">#</h2>
+        </div>
+        <div class="flex justify-center">
+          <img id="monSprite" src="" alt="Pokemon Sprite" class="w-60 h-60" />
+        </div>
+        <!-- Display Pokemon name -->
+        <div class="text-center mt-2">
+          <h1 id="monName" class="text-xl font-semibold text-gray-900">Name</h1>
+        </div>
+
+        <p id="monAbilities" class="text-center text-gray-700 font-medium mt-3">
+          Abilities:
+        </p>
+
+        <!-- Pokémon Types -->
+        <div
+          id="monTypesContainer"
+          class="flex justify-center space-x-3 mt-2 text-white"
+        >
+          <!-- Dynamically added type badges will go here -->
+        </div>
+
+        <!-- Pokémon Stats Section -->
+        <div class="mt-4">
+          <h3 class="text-md font-semibold text-gray-700 mb-2 text-center">
+            Base Stats
+          </h3>
+
+          <ul id="monStats" class="space-y-2">
+            <!-- Stats will be dynamically populated by JavaScript -->
+          </ul>
+        </div>
+
+        <!-- Buttons -->
+        <div class="mt-5 flex flex-col space-y-2">
+          <a href="/poke/fullview/garchomp"
+          id="fullViewBtn"
+            class="bg-red-500 text-white py-2 px-4 rounded-lg font-semibold shadow-md hover:bg-red-600 transition"
+          >
+            View Full Page of Pokémon
+        </a>
+          <button
+            onclick="addToTeam('<%= selectedTeam ? selectedTeam.teamID : null %>', event)"
+            class="bg-green-500 text-white py-2 px-4 rounded-lg font-semibold shadow-md hover:bg-green-600 transition"
+            data-pokemon-id=""
+          >
+            Add Pokémon to Team
+          </button>
+        </div>
       </div>
+    </div>
 
+    <!-- Team Selection Modal -->
+    <div id="teamSelectionModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 hidden">
+        <div class="bg-gray-300 border-8 border-red-500 rounded-xl shadow-lg p-6 w-[90%] sm:w-[60%] lg:w-[40%] relative">
+            <button id="closeTeamSelection" class="absolute top-3 right-3 text-gray-700 hover:text-red-600 text-2xl font-bold">&times;</button>
+            
+            <h2 class="text-xl font-bold text-center mb-4">Select Team and Slot</h2>
+            
+            <!-- Team Selection -->
+            <div class="mb-4">
+                <label for="teamSelect" class="block text-gray-700 text-sm font-bold mb-2">Select Team:</label>
+                <select id="teamSelect" name="teamSelect" class="w-full p-2 border rounded-md">
+                    <option value="">Choose a team...</option>
+                    <% userTeams.filter(team => team.generation == generation).forEach(team => { %>
+                        <option value="<%= team.teamID %>"><%= team.teamname %></option>
+                    <% }); %>
+                </select>
+            </div>
+            
+            <!-- Slot Selection -->
+            <div class="mb-6">
+                <label for="slotSelect" class="block text-gray-700 text-sm font-bold mb-2">Select Slot:</label>
+                <select id="slotSelect" name="slotSelect" class="w-full p-2 border rounded-md">
+                    <option value="">Choose a slot...</option>
+                </select>
+            </div>
+            
+            <div class="flex justify-center">
+                <button id="confirmTeamSelection" class="bg-green-500 text-white py-2 px-4 rounded-lg font-semibold shadow-md hover:bg-green-600 transition">
+                    Confirm Selection
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- Pokémon Display Container -->
 
-     <!-- this grid template sets up 3 columns with a gap of 6 between cards. with a margin top of 6 spacing away from the top margin. the content of the pokedex takes up 80% of the 100% viewport -->
     <div id="pokemonContainer" class="grid grid-cols-3 gap-6 mt-6 w-[60%]">
       <% pokemon.forEach(mon => { %>
-      <button class="pokedexbox relative cursor-pointer" onclick="openModal('<%= mon.name %>')" tabindex="0">
+      <button
+        class="pokedexbox relative cursor-pointer"
+        onclick="openModal('<%= mon.name %>')"
+        tabindex="0"
+      >
         <span class="pokedexnum">#<%= mon.pokedex_number %></span>
         <img
           src="<%= mon.sprite_url %>"
@@ -95,89 +394,461 @@
       </button>
       <% }) %>
     </div>
+
     <script>
-      //load HTML immediately without waiting for sprites and css to render
       document.addEventListener("DOMContentLoaded", () => {
         const searchInput = document.getElementById("searchInput");
         const pokemonCards = document.querySelectorAll(".pokedexbox");
+        const modal = document.getElementById("myModal");
+        const closeModalButton = document.getElementById("closeModal");
+        const monDexNum = document.getElementById("monDexNum");
+        const monName = document.getElementById("monName");
+        const monAbilities = document.getElementById("monAbilities");
+        const monSprite = document.getElementById("monSprite");
+        const monStats = document.getElementById("monStats");
+        const monTypesContainer = document.getElementById("monTypesContainer");
+
+        //escape event
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            modal.classList.add("hidden");
+          }
+        });
+
+
+        function getStatColor(statType, statValue) {
+          if (statValue >= 120) {
+            return "#3498DB"; // Blue for maxed-out stats
+          } else if (statValue >= 80) {
+            return "#4CAF50"; // Green for high stats
+          } else if (statValue >= 40) {
+            return "#FFC107"; // Yellow for moderate stats
+          } else {
+            return "#FF5733"; // Red for very low stats
+          }
+        }
 
         searchInput.addEventListener("input", () => {
           const searchValue = searchInput.value.toLowerCase().trim();
 
           pokemonCards.forEach((card) => {
-            const pokemonName = card.querySelector(".pokedexname").textContent.toLowerCase();
-            const pokedexNum = card.querySelector(".pokedexnum").textContent
+            const pokemonName = card
+              .querySelector(".pokedexname")
+              .textContent.toLowerCase();
+            const pokedexNum = card.querySelector(".pokedexnum").textContent;
 
-            
-            if (pokemonName.includes(searchValue) || pokedexNum.includes(searchValue)) { 
+            //initially had set to block, but the sprites were uncentering when id search
+            //search function sets display: block; when showing Pokémon cards again after filtering. However, your .pokedexbox elements use Flexbox for layout, meaning they need display: flex; instead of block
 
-              //initially had set to block, but the sprites were uncentering when id search
-              //search function sets display: block; when showing Pokémon cards again after filtering. However, your .pokedexbox elements use Flexbox for layout, meaning they need display: flex; instead of block
-              card.style.display = "flex";
-            } else {
-              card.style.display = "none";
-            }
+            card.style.display =
+              pokemonName.includes(searchValue) ||
+              pokedexNum.includes(searchValue)
+                ? "flex"
+                : "none";
           });
+        });
+
+        async function openModal(pokemonName) {
+          console.log("Fetching Pokémon:", pokemonName);
+
+          const response = await fetch(`/poke/mon/${pokemonName}`, {
+            method: "GET",
+          });
+          const pokemon = await response.json();
+
+          modal.classList.remove("hidden");
+          monDexNum.innerText = `#${pokemon.dex_number}`;
+          monName.innerText =
+            pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
+          monAbilities.innerText = `Abilities: ${pokemon.abilities
+            .map(
+              (ability) => ability.charAt(0).toUpperCase() + ability.slice(1)
+            )
+            .join(", ")}`;
+
+          monSprite.src = pokemon.sprite_url;
+
+          monTypesContainer.innerHTML = "";
+          pokemon.types.forEach((type) => {
+            const typeBadge = document.createElement("span");
+            typeBadge.innerText = type.charAt(0).toUpperCase() + type.slice(1); //sneaky little trick to uppercase the first character
+            typeBadge.className = `pokedextype ${type.toLowerCase()}`;
+            monTypesContainer.appendChild(typeBadge);
+          });
+
+          // Define display names
+          const statDisplayNames = {
+            hp: "HP",
+            attack: "Attack",
+            defense: "Defense",
+            "special-attack": "Sp. Atk",
+            "special-defense": "Sp. Def",
+            speed: "Speed",
+          };
+
+          monStats.innerHTML = "";
+          pokemon.stats.forEach((stat) => {
+            let statKey = stat.name.toLowerCase();
+            let statName = statDisplayNames[statKey] || stat.name; // Convert stat name
+            let statValue = stat.base_stat;
+            let colorStyle = `background-color: ${getStatColor(
+              statKey,
+              statValue
+            )};`;
+
+            monStats.innerHTML += `
+              <li class="stat-container">
+                <span class="stat-name">${statName}</span>
+                <span class="stat-value">${statValue}</span>
+                <div class="stat-bar-container flex-1 bg-gray-600 rounded-full h-2 relative overflow-hidden">
+                  <div class="stat-bar" style="${colorStyle}; width: ${statValue}%;"></div>
+                </div>
+              </li>
+                `;
+          });
+
+          // Add this line after setting other modal content
+          document.querySelector('[data-pokemon-id]').setAttribute('data-pokemon-id', pokemon.id);
+        }
+
+        closeModalButton.onclick = () => modal.classList.add("hidden");
+        window.onclick = (event) => {
+          if (event.target === modal) modal.classList.add("hidden");
+        };
+
+        window.openModal = openModal;
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+          modal.style.display = "none";
+        };
+
+        // When the user hits escape, close the modal
+        document.addEventListener("keydown", function (event) {
+          if (event.key === "Escape") {
+            modal.style.display = "none";
+          }
+        });
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        };
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const filterButton = document.getElementById("filterButton");
+        const filterModal = document.getElementById("filterModal");
+        const closeFilterModal = document.getElementById("closeFilterModal");
+        const applyFilter = document.getElementById("applyFilter");
+        const generationInputs = document.getElementsByName("generation");
+
+        // Get current generation from URL or default to 1
+        const currentGen = window.location.pathname.split('/').pop() || '1';
+        generationInputs.forEach(input => {
+          if (input.value === currentGen) {
+            input.checked = true;
+          }
+        });
+
+        // Open Modal
+        filterButton.addEventListener("click", () => {
+          filterModal.classList.remove("hidden");
+        });
+
+        // Close Modal
+        closeFilterModal.addEventListener("click", () => {
+          filterModal.classList.add("hidden");
+        });
+
+        // Apply Filter
+        applyFilter.addEventListener("click", () => {
+          const selectedGen = document.querySelector('input[name="generation"]:checked').value;
+          window.location.href = `/poke/dex/${selectedGen}`;
+        });
+
+        // Close Modal When Clicking Outside
+        window.addEventListener("click", (event) => {
+          if (event.target === filterModal) {
+            filterModal.classList.add("hidden");
+          }
         });
       });
     </script>
-    
-  </body>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const floatingFilterButton = document.getElementById(
+          "floatingFilterButton"
+        );
+        const typeFilterSidebar = document.getElementById("typeFilterSidebar");
+        const closeTypeFilterSidebar = document.getElementById(
+          "closeTypeFilterSidebar"
+        );
+        const applyTypeFilter = document.getElementById("applyTypeFilter");
+        const clearTypeFilter = document.getElementById("clearTypeFilter");
+        const typeCheckboxes = document.querySelectorAll(".type-checkbox");
 
-  <script>
-    // Get the modal
-    var modal = document.getElementById("myModal");
-    
-    // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
-    
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-    var monName = document.getElementById("monName");
-    var monAbilities = document.getElementById("monAbilities");
-    var monTypes = document.getElementById("monTypes");
-    var monSprite = document.getElementById("monSprite");
-    var monStats = document.getElementById("monStats");
-    // When the user clicks the button, open the modal 
-    async function openModal(pokemonName) {
-      console.log("GETTING POKEMON");
-      const response = await fetch(`/poke/mon/${pokemonName}`,   {
-        method: 'GET'
+        // Toggle Sidebar Visibility (Fix for Multiple Clicks)
+        floatingFilterButton.addEventListener("click", () => {
+          if (typeFilterSidebar.classList.contains("hidden")) {
+            typeFilterSidebar.classList.remove("hidden");
+            setTimeout(
+              () => typeFilterSidebar.classList.add("translate-x-0"),
+              10
+            );
+          } else {
+            typeFilterSidebar.classList.remove("translate-x-0");
+            setTimeout(() => typeFilterSidebar.classList.add("hidden"), 300);
+          }
+        });
+
+        // Close Sidebar
+        closeTypeFilterSidebar.addEventListener("click", () => {
+          typeFilterSidebar.classList.remove("translate-x-0");
+          setTimeout(() => typeFilterSidebar.classList.add("hidden"), 300);
+        });
+
+        // Apply Type Filter
+        applyTypeFilter.addEventListener("click", () => {
+          const selectedTypes = Array.from(typeCheckboxes)
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.value);
+
+          document.querySelectorAll(".pokedexbox").forEach((card) => {
+            const types = Array.from(
+              card.querySelectorAll(".pokedextypestyle")
+            ).map((el) => el.textContent.toLowerCase());
+
+            card.style.display =
+              selectedTypes.length === 0 ||
+              selectedTypes.some((type) => types.includes(type))
+                ? "flex"
+                : "none";
+          });
+        });
+
+        // Clear Type Filter
+        clearTypeFilter.addEventListener("click", () => {
+          typeCheckboxes.forEach((checkbox) => (checkbox.checked = false));
+          document
+            .querySelectorAll(".pokedexbox")
+            .forEach((card) => (card.style.display = "flex"));
+        });
+
+        // Fix Sidebar Closing When Clicking Outside (Only When Visible)
+        window.addEventListener("click", (event) => {
+          if (
+            !typeFilterSidebar.contains(event.target) &&
+            event.target !== floatingFilterButton &&
+            !floatingFilterButton.contains(event.target)
+          ) {
+            typeFilterSidebar.classList.remove("translate-x-0");
+            setTimeout(() => typeFilterSidebar.classList.add("hidden"), 300);
+          }
+        });
       });
-      const pokemon = await response.json();
-      console.log("-----------------")
-      console.log(pokemon);
-      modal.style.display = "block";
-
-      monDexNum.innerHTML = `#${pokemon.dex_number}`;
-      monName.innerHTML = pokemon.name;
-      monAbilities.innerHTML = `Abilities: ${pokemon.abilities.join(",")}`;
-      monTypes.innerHTML = `Types: ${pokemon.types.join(",")}`;
-      monSprite.src = pokemon.sprite_url;
-      monStats.innerHTML = `Stats: ${pokemon.stats.map(stat => `<li>${stat.name}: ${stat.base_stat}</li>`).join("")}`;
-
-    }
-    
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-      modal.style.display = "none";
-    }
-
-    // When the user hits escape, close the modal
-    document.addEventListener('keydown', function(event) {
-      if (event.key === "Escape") {
-        modal.style.display = "none";
-      }
-    });
-    
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }
     </script>
+    <script>
+      async function addToTeam(teamID, event) {
+        const button = event.target;
+        const pokemonID = button.getAttribute('data-pokemon-id');
+        const pokemonName = document.getElementById('monName').textContent.toLowerCase();
+        const spriteURL = document.getElementById('monSprite').src;
+        
+        // Get stats from the stats list
+        const statsElements = document.querySelectorAll('.stat-container');
+        const stats = [];
+        statsElements.forEach(statElement => {
+            const name = statElement.querySelector('.stat-name').textContent.toLowerCase();
+            const value = parseInt(statElement.querySelector('.stat-value').textContent);
+            
+            // Map the display names back to the database names
+            const statMapping = {
+                'hp': 'hp',
+                'attack': 'attack',
+                'defense': 'defense',
+                'sp. atk': 'special-attack',
+                'sp. def': 'special-defense',
+                'speed': 'speed'
+            };
+            
+            stats.push({
+                name: statMapping[name],
+                base_stat: value
+            });
+        });
+        
+        // Get types from the types container
+        const types = Array.from(document.querySelectorAll('#monTypesContainer .pokedextype'))
+            .map(type => type.textContent.toLowerCase());
+        
+        // Get abilities from the abilities text
+        const abilitiesText = document.getElementById('monAbilities').textContent;
+        const abilities = abilitiesText.replace('Abilities: ', '').split(', ');
 
-</body>
+        // If no teamID is provided, show the team selection modal
+        if (!teamID) {
+            const teamSelectionModal = document.getElementById('teamSelectionModal');
+            teamSelectionModal.classList.remove('hidden');
 
+            // Store the Pokemon data for later use
+            window.pendingPokemonData = {
+                id: pokemonID,
+                name: pokemonName,
+                types: types,
+                abilities: abilities,
+                stats: stats,
+                dex_number: parseInt(document.getElementById('monDexNum').textContent.replace('#', '')),
+                sprite_url: spriteURL
+            };
+
+            return;
+        }
+        
+        try {
+            const response = await fetch('/poke/add-to-team', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    pokemonData: {
+                        id: pokemonID,
+                        name: pokemonName,
+                        types: types,
+                        abilities: abilities,
+                        stats: stats,
+                        dex_number: parseInt(document.getElementById('monDexNum').textContent.replace('#', '')),
+                        sprite_url: spriteURL
+                    }
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Create a form and submit it programmatically
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/team/builder';
+                
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'teamID';
+                input.value = teamID;
+                
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            } else {
+                alert(data.error);
+            }
+        } catch (error) {
+            console.log(error);
+            alert('Error adding Pokémon to team');
+        }
+    }
+
+    // Add team selection modal handlers
+    document.addEventListener('DOMContentLoaded', () => {
+        const teamSelectionModal = document.getElementById('teamSelectionModal');
+        const closeTeamSelection = document.getElementById('closeTeamSelection');
+        const confirmTeamSelection = document.getElementById('confirmTeamSelection');
+        const teamSelect = document.getElementById('teamSelect');
+        const slotSelect = document.getElementById('slotSelect');
+
+        // Store teams data for easy access
+        const teamsData = JSON.parse('<%- JSON.stringify(userTeams) %>');
+
+        // Update slot options when team is selected
+        teamSelect.addEventListener('change', () => {
+            const selectedTeam = teamsData.find(team => team.teamID == teamSelect.value);
+            slotSelect.innerHTML = '<option value="">Choose a slot...</option>';
+            
+            if (selectedTeam) {
+                selectedTeam.pokemon.forEach((pokemon, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = `Slot ${index + 1}${pokemon ? ` (Current: ${pokemon})` : ' (Empty)'}`;
+                    slotSelect.appendChild(option);
+                });
+            }
+        });
+
+        closeTeamSelection.addEventListener('click', () => {
+            teamSelectionModal.classList.add('hidden');
+            window.pendingPokemonData = null;
+        });
+
+        confirmTeamSelection.addEventListener('click', async () => {
+            const selectedTeam = teamSelect.value;
+            const selectedSlot = slotSelect.value;
+
+            if (!selectedTeam || selectedSlot === '') {
+                alert('Please select both a team and a slot');
+                return;
+            }
+
+            try {
+                // First, set the selected team and slot in the session
+                const response = await fetch('/poke/select-slot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        teamID: selectedTeam,
+                        slotNumber: selectedSlot
+                    })
+                });
+
+                if (response.ok) {
+                    // Now add the Pokemon to the selected team and slot
+                    const addResponse = await fetch('/poke/add-to-team', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            pokemonData: window.pendingPokemonData
+                        })
+                    });
+
+                    const data = await addResponse.json();
+                    
+                    if (data.success) {
+                        // Create a form and submit it programmatically
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = '/team/builder';
+                        
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'teamID';
+                        input.value = selectedTeam;
+                        
+                        form.appendChild(input);
+                        document.body.appendChild(form);
+                        form.submit();
+                    } else {
+                        alert(data.error);
+                    }
+                } else {
+                    alert('Error selecting team and slot');
+                }
+            } catch (error) {
+                console.log(error);
+                alert('Error adding Pokémon to team');
+            }
+
+            teamSelectionModal.classList.add('hidden');
+            window.pendingPokemonData = null;
+        });
+    });
+    </script>
+  </body>
 </html>

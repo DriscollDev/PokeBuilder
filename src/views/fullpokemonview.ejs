@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Pokémon Details</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="pokestyle.css"> 
+  <link rel="stylesheet" href="/stylesheets/pokestyle.css"> 
+  <link
+  rel="icon"
+  type="image/x-icon"
+  href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
+/>
 </head>
 <body class="bg-gray-100 min-h-screen px-8 fontResize font-quantico">
   <link rel="stylesheet" href="/stylesheets/pokestyle.css" />
@@ -29,17 +34,17 @@
     
     <!-- Middle Column all stab and type matchups-->
     <div class="flex flex-col gap-6">
-      <div class="outerStabContainer">
+      <div class="outerStabContainer border-4 border-red-700 shadow-lg p-2">
         <h2 class="font-bold text-center mb-2">Defensive Type Match Ups</h2>
         <div id="weaknessContainer" class="innerStabContainer flex flex-col gap-2"></div>
       </div>
-      <div class="outerStabContainer">
+      <div class="outerStabContainer border-4 border-red-700 shadow-lg p-2">
         <h2 class="font-bold text-center mb-2">STAB Type Match Ups</h2>
         <div id="stabContainer" class="innerStabContainer flex flex-col gap-2"></div>
       </div>
       <div class="flex justify-center gap-6 mt-4">
-        <button class="bg-red-500 text-white px-6 py-3 rounded-lg">Return to Pokédex</button>
-        <button class="bg-red-500 text-white px-6 py-3 rounded-lg">Add Pokémon to Team</button>
+        <a class="bg-red-500 text-white px-6 py-3 rounded-lg" href="/poke/dex">Return to Pokédex</a>
+        <a class="bg-red-500 text-white px-6 py-3 rounded-lg" href="/team/">Add Pokémon to Team</a>
       </div>
     </div>
     
@@ -66,6 +71,6 @@
     </div>
 
   </div>
-  <script src="styling.js"></script>
+  <script src="/scripts/styling.js"></script>
 </body>
 </html>
