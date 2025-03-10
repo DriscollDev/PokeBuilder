@@ -154,9 +154,15 @@
 
               <!-- Buttons -->
               <div class="flex gap-3 mt-3">
-                <button class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold">
+                <% if (team && team.pokemon && team.pokemon[i]) { %>
+                <a class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"
+                href="/poke/editpokemon/<%= team.pokemon[i].name %>"
+                >
                   Edit
-                </button>
+                </a>
+                <% } else {%>
+                  <div class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"></div>
+                <% } %>
                 <% if (team && team.pokemon && team.pokemon[i]) { %>
                   <form action="/poke/swap-slot" method="POST" class="w-full">
                     <input type="hidden" name="teamID" value="<%= team.teamID %>">

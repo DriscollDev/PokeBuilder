@@ -129,71 +129,13 @@ router.get('/dex/:generation?', async (req, res) => {
 
 router.get('/mon/:name', pokeAPI.getFormattedPokemonByName);
 
-router.get('/test',async(req, res) =>{
-    try{
-        const pokemon = await pokeAPI.populateGridMon(req);
-        res.json(pokemon)
-    }
-    catch (error) {
-        console.log('Test route error:', error);
-        res.status(500).send('Error loading test Pokédex');
-    }
+
+router.get('/editpokemon/:pokemonID', async(req,res) => {
+    res.render('editpokemon')
 })
-
-router.get('/test2', async (req, res) => {
-    try {
-        const pokemon = await pokeAPI.populateGridMon(req);
-        
-        const conn = await pool.getConnection();
-        
-        for (const mon of pokemon) {
-            // Insert base Pokemon data
-            await conn.execute(`
-                INSERT INTO dex_mon (id, name, sprite_url, box_sprite, generation)
-                VALUES (?, ?, ?, ?, ?)
-            `, [mon.id, mon.name, mon.sprite_url, mon.box_sprite, mon.generation]);
-
-            // Insert Pokedex entries
-            for (const entry of mon.dex_entries) {
-                await conn.execute(`
-                    INSERT INTO pokedex_entries (pokemon_id, entry_number, dex_name, dex_id)
-                    VALUES (?, ?, ?, ?)
-                `, [mon.id, entry.entry_number, entry.dex_name, entry.dex_id]);
-            }
-
-            // Insert current types
-            for (const type of mon.types) {
-                await conn.execute(`
-                    INSERT INTO pokemon_types (pokemon_id, slot, type)
-                    VALUES (?, ?, ?)
-                `, [mon.id, type.slot, type.type]);
-            }
-
-            // Insert past types if they exist
-            for (const pastType of mon.past_types) {
-                // Insert past type entry
-                const [result] = await conn.execute(`
-                    INSERT INTO past_types (pokemon_id, generation)
-                    VALUES (?, ?)
-                `, [mon.id, pastType.generation]);
-
-                // Insert past type details
-                for (const type of pastType.types) {
-                    await conn.execute(`
-                        INSERT INTO past_type_details (past_type_id, slot, type)
-                        VALUES (?, ?, ?)
-                    `, [result.insertId, type.slot, type.type]);
-                }
-            }
-        }
-
-        conn.release();
-        res.json({ message: `Successfully populated database with ${pokemon.length} Pokemon` });
-    } catch (error) {
-        console.log('Test route error:', error);
-        res.status(500).send('Error loading test Pokédex');
-    }
-});
+router.get('/fullview/:pokemonName', async(req,res) => {
+    res.render('fullpokemonview')
+})
 
 // Add this new route to handle swapping Pokemon
 router.post('/swap-slot', async (req, res) => {
