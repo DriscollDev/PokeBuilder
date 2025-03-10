@@ -3,6 +3,7 @@ import pokeAPI from './pokeAPI.js';
 
 const userController = {
 
+    
     getUserByName: async (req, res, next) => {
         const conn = await pool.getConnection();
         try {

@@ -26,8 +26,8 @@ router.get('/build', function(req, res, next) {
 
 
 router.get('/user', function(req, res, next) {
-  res.render("account", { title: 'Account Info' });
-})
+  res.render("account", { title: 'Account Info' , user: req.user});
+  });
 
 
 
