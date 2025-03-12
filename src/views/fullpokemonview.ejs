@@ -13,43 +13,26 @@
     />
   </head>
 
-  <body
-    class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex justify-center items-center p-6"
-  >
+  <body class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex justify-center items-center p-6">
     <!-- Main Card Container -->
-    <div
-      class="bg-gray-200 p-6 rounded-2xl w-full h-full max-screen grid grid-cols-1 md:grid-cols-3 gap-6"
-    >
+    <div class="bg-gray-200 p-6 rounded-2xl w-full h-full max-screen grid grid-cols-1 md:grid-cols-3 gap-6" >
       <!-- Left Column: Pokémon Details -->
-      <div
-        class="flex flex-col justify-center items-center text-center bg-white p-6 rounded-xl shadow-md border-2 border-gray-800 h-full"
-      >
-        <img
-          id="pokemonImage"
-          class="w-70 h-70 object-contain"
-          src=""
-          alt="Pokemon Image"
-        />
-        <h1 id="pokemonName" class="font-bold text-2xl mt-3"></h1>
-        <p id="pokedexNumber" class="text-black text-lg"></p>
+      <div class="spcontainer w-full fontResize h-full">
+        <img id="pokemonImage" class="w-full" src="<%= pokemon.sprite_url %>" alt="<%= pokemon.name %> sprite">
+        <h1 id="pokemonName" class="font-bold mt-3" style="font-size: larger;"><%= pokemon.name %></h1>
+        <p id="pokedexNumber" class="text-gray-700">#<%= pokemon.id %></p>
 
-    <!-- Left Column pokémon details -->
-    <div class="spcontainer w-full fontResize">
-      <img id="pokemonImage" class="w-70" src="<%= pokemon.sprite_url %>" alt="<%= pokemon.name %> sprite">
-      <h1 id="pokemonName" class="font-bold mt-3"><%= pokemon.name %></h1>
-      <p id="pokedexNumber" class="text-gray-700">#<%= pokemon.id %></p>
+        <div id="typeContainer" class="flex gap-4 mt-3">
+          <% pokemon.types.forEach(type => { %>
+            <span class="px-3 py-1 rounded text-white <%= type.toLowerCase() %>"><%= type.toUpperCase() %></span>
+          <% }); %>
+        </div>
 
-      <div id="typeContainer" class="flex gap-4 mt-3">
-        <% pokemon.types.forEach(type => { %>
-          <span class="px-3 py-1 rounded text-white <%= type.toLowerCase() %>"><%= type.toUpperCase() %></span>
-        <% }); %>
+        <p id="abilities" class="mt-3 text-gray-600">Abilities: <%= pokemon.abilities.join(', ') %></p>
+        <p id="weight" class="text-gray-600">Weight: <%= pokemon.weight %></p>
+        <p id="height" class="text-gray-600">Height: <%= pokemon.height %></p>
       </div>
 
-      <p id="abilities" class="mt-3 text-gray-600">Abilities: <%= pokemon.abilities.join(', ') %></p>
-      <p id="weight" class="text-gray-600">Weight: <%= pokemon.weight %></p>
-      <p id="height" class="text-gray-600">Height: <%= pokemon.height %></p>
-    </div>
-    
     <!-- Middle Column all stab and type matchups-->
     <div class="flex flex-col gap-6">
       <div class="outerStabContainer border-4 border-red-700 shadow-lg p-2">
@@ -155,7 +138,7 @@
           <% }); %>
         </div>
       </div>
-      <div class="bg-white p-6 rounded-lg shadow-md w-full">
+      <div class="bg-white p-6 rounded-lg shadow-md w-full h-full">
         <h2 class="font-bold text-center mb-2">Move Pool</h2>
         <div class="mb-4">
           <select id="moveFilter" class="w-full p-2 border rounded">
