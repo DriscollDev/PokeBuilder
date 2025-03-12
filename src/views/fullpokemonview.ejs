@@ -82,7 +82,7 @@
         <h2 class="font-bold text-center mb-2">STAB Type Match Ups</h2>
         <div id="stabContainer" class="innerStabContainer grid grid-cols-<%= pokemon.types.length %> gap-4">
           <% pokemon.types.forEach(type => { %>
-            <div class="border-2 border-gray-300 bg-gray-100 shadow-sm rounded-lg p-3">
+            <div class="border-2 border-gray-300 bg-gray-100 shadow-md rounded-lg p-3">
               <h3 class="text-center shadow-xl font-bold mb-3 <%= type.toLowerCase() %> text-white rounded py-1"><%= type.toUpperCase() %></h3>
               <% 
                 // Group matchups by damage modifier
@@ -124,7 +124,7 @@
     
     <!-- Right Column base stats and moves-->
     <div class="flex flex-col gap-6 w-full">
-      <div class="bg-white p-6 rounded-lg shadow-md w-full statsChart">
+      <div class="bg-white p-6 rounded-lg border-2 border-black shadow-md w-full statsChart">
         <h2 class="font-bold text-center mb-2">Base Stats</h2>
         <div id="stats">
           <% Object.entries(pokemon.stats).forEach(([stat, value]) => { %>
@@ -138,7 +138,7 @@
           <% }); %>
         </div>
       </div>
-      <div class="bg-white p-6 rounded-lg shadow-md w-full h-full">
+      <div class="bg-white p-6 rounded-lg shadow-md border-2 border-black w-full h-full">
         <h2 class="font-bold text-center mb-2">Move Pool</h2>
         <div class="mb-4">
           <select id="moveFilter" class="w-full p-2 border rounded">
