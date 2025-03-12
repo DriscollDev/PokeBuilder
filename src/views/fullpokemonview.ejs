@@ -35,9 +35,9 @@
 
     <!-- Middle Column all stab and type matchups-->
     <div class="flex flex-col gap-6">
-      <div class="outerStabContainer border-4 border-red-700 shadow-lg p-2">
+      <div class="outerStabContainer border-4 border-red-700 shadow-md p-4 rounded-xl bg-white h-full flex flex-col">
         <h2 class="font-bold text-center mb-2">Defensive Type Match Ups</h2>
-        <div id="weaknessContainer" class="innerStabContainer">
+        <div id="weaknessContainer" class="innerStabContainer bg-gray-100 p-3 px-6 shadow-md rounded-lg flex flex-col  h-full">
           <% 
             // Group matchups by damage modifier
             const damageGroups = {
@@ -70,7 +70,7 @@
                 </div>
                 <div class="flex flex-wrap gap-2">
                   <% damageGroups[modifier].forEach(type => { %>
-                    <span class="<%= type.toLowerCase() %> px-3 py-1 rounded text-white"><%= type.toUpperCase() %></span>
+                    <span class="<%= type.toLowerCase() %> px-3 py-1 rounded text-white shadow-lg"><%= type.toUpperCase() %></span>
                   <% }); %>
                 </div>
               </div>
@@ -78,12 +78,12 @@
           <% }); %>
         </div>
       </div>
-      <div class="outerStabContainer border-4 border-red-700 shadow-lg p-2">
+      <div class="outerStabContainer border-4 border-red-700 shadow-md p-4 rounded-xl bg-white h-full flex flex-col">
         <h2 class="font-bold text-center mb-2">STAB Type Match Ups</h2>
         <div id="stabContainer" class="innerStabContainer grid grid-cols-<%= pokemon.types.length %> gap-4">
           <% pokemon.types.forEach(type => { %>
-            <div class="border-2 border-gray-300 rounded-lg p-3">
-              <h3 class="text-center font-bold mb-3 <%= type.toLowerCase() %> text-white rounded py-1"><%= type.toUpperCase() %></h3>
+            <div class="border-2 border-gray-300 bg-gray-100 shadow-sm rounded-lg p-3">
+              <h3 class="text-center shadow-xl font-bold mb-3 <%= type.toLowerCase() %> text-white rounded py-1"><%= type.toUpperCase() %></h3>
               <% 
                 // Group matchups by damage modifier
                 const typeMatchups = matchups.offensive.filter(m => m.attacking_type.toUpperCase() === type.toUpperCase());
@@ -106,7 +106,7 @@
                     </div>
                     <div class="flex flex-wrap gap-1">
                       <% offensiveGroups[modifier].forEach(defType => { %>
-                        <span class="<%= defType.toLowerCase() %> px-2 py-1 rounded text-white text-sm"><%= defType.toUpperCase() %></span>
+                        <span class="<%= defType.toLowerCase() %> px-2 py-1 rounded text-white text-sm shadow-lg"><%= defType.toUpperCase() %></span>
                       <% }); %>
                     </div>
                   </div>
