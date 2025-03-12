@@ -12,26 +12,226 @@ function delay(ms) {
     return new Promise(res => setTimeout(res, ms));
 }
 
+
 const pokeAPI = {
+
+
+    getTypeMatchups: async (type1, type2, generation) => {
+        const conn = await pool.getConnection();
+        const attackStatements = [`attack_type.typeName = "${type1}"`];
+        const defendStatements = [`defend_type.typeName = "${type1}"`];
+        
+        if (type2) {
+            attackStatements.push(`attack_type.typeName = "${type2}"`);
+            defendStatements.push(`defend_type.typeName = "${type2}"`);
+        }
+        const attackQuery = `
+            WITH LatestTypeMatchups AS (
+                SELECT 
+                    tr.origin_type,
+                    tr.secondary_type,
+                    tr.damage_mod,
+                    tr.generation,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY tr.origin_type, tr.secondary_type 
+                        ORDER BY tr.generation DESC
+                    ) as rn
+                FROM type_rel tr
+                WHERE tr.generation <= ${generation}
+            )
+            SELECT 
+                attack_type.typeName AS attacking_type,
+                defend_type.typeName AS defending_type,
+                ltm.damage_mod,
+                ltm.generation
+            FROM 
+                LatestTypeMatchups ltm
+            JOIN 
+                type_ref attack_type ON ltm.origin_type = attack_type.typeID
+            JOIN
+                type_ref defend_type ON ltm.secondary_type = defend_type.typeID
+            WHERE 
+                (${attackStatements.join(` OR `)})
+                AND ltm.rn = 1
+            ORDER BY 
+                ltm.damage_mod DESC;
+        `;
+        const defendQuery = `
+            WITH LatestTypeMatchups AS (
+                SELECT 
+                    tr.origin_type,
+                    tr.secondary_type,
+                    tr.damage_mod,
+                    tr.generation,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY tr.origin_type, tr.secondary_type 
+                        ORDER BY tr.generation DESC
+                    ) as rn
+                FROM type_rel tr
+                WHERE tr.generation <= ${generation}
+            )
+            SELECT 
+                attack_type.typeName AS attacking_type,
+                defend_type.typeName AS defending_type,
+                ltm.damage_mod,
+                ltm.generation
+            FROM 
+                LatestTypeMatchups ltm
+            JOIN 
+                type_ref attack_type ON ltm.origin_type = attack_type.typeID
+            JOIN
+                type_ref defend_type ON ltm.secondary_type = defend_type.typeID
+            WHERE 
+                (${defendStatements.join(` OR `)})
+                AND ltm.rn = 1
+            ORDER BY 
+                ltm.damage_mod DESC;
+        `;
+        const [attackRows] = await conn.query(attackQuery);
+        const [defendRows] = await conn.query(defendQuery);
+        conn.release();
+        //console.log(defendRows);
+
+        // Process offensive and defensive matchups separately
+        let offensiveMatchups = [];
+        let defensiveMatchups = new Map(); // Use map to track combined defensive matchups
+
+        for(const row of attackRows){
+                offensiveMatchups.push({
+                    attacking_type: row.attacking_type,
+                    defending_type: row.defending_type,
+                    damage_mod: row.damage_mod,
+                    generation: row.generation
+                });
+        }
+        for(const row of defendRows){
+            // For defensive matchups, combine the modifiers
+            const currentEntry = defensiveMatchups.get(row.attacking_type);
+            if(currentEntry?.damage_mod === 0) {
+                // If already immune, keep as 0
+                continue;
+            }
+            if(!currentEntry) {
+                // First occurrence of this attacking type
+                defensiveMatchups.set(row.attacking_type, {
+                    damage_mod: row.damage_mod,
+                    generation: row.generation
+                });
+            } else if(row.damage_mod === 0) {
+                // If new immunity found, override 
+                defensiveMatchups.set(row.attacking_type, {
+                    damage_mod: 0,
+                    generation: row.generation
+                });
+            } else {
+                // Multiply modifiers together
+                const result = currentEntry.damage_mod * row.damage_mod;
+                if(result != 1){
+                    defensiveMatchups.set(row.attacking_type, {
+                        damage_mod: result,
+                        // Take the more recent generation
+                        generation: Math.max(currentEntry.generation, row.generation)
+                    });
+                }
+            }
+        }
+
+        // Convert defensive map to array format and sort by damage mod
+        const defensiveArray = Array.from(defensiveMatchups.entries())
+            .map(([type, entry]) => ({
+                attacking_type: type,
+                damage_mod: entry.damage_mod,
+                generation: entry.generation
+            }))
+            .sort((a, b) => b.damage_mod - a.damage_mod);
+
+        // Sort offensive matchups by damage mod
+        offensiveMatchups.sort((a, b) => b.damage_mod - a.damage_mod);
+
+        return {
+            offensive: offensiveMatchups,
+            defensive: defensiveArray
+        };
+    },
+
     
+    getFullPokemonByName: async (pokemonName,generation) =>{
+        try{
+            //const speciesResponse = await P.getPokemonSpeciesByName(pokemonName);
+            const versionGroups = await P.getGenerationByName(generation).then(gen => gen.version_groups.map(vg => vg.name));
+            const pokeResponse = await P.getPokemonByName(pokemonName);
+            let pastGen = 0;
+            if(pokeResponse.past_types[0]){
+                pastGen = parseInt(pokeResponse.past_types[0].generation.url.split('/').slice(-2)[0]);
+            }
+            //console.log(`Past Gen: ${pastGen} \n Generation: ${generation}`);
+            const pokemonData = {
+                id: pokeResponse.id,
+                name: pokeResponse.name.toUpperCase(),
+                height: `${pokeResponse.height / 10} m`,
+                weight: `${pokeResponse.weight / 10} kg`,
+                abilities: pokeResponse.abilities.map(a => a.ability.name),
+                types: pokeResponse.past_types?.find(pt => {
+                    return parseInt(generation) <= pastGen;
+                })?.types.map(type => type.type.name) 
+                    ?? pokeResponse.types.map(type => type.type.name),
+                sprite_url: pokeResponse.sprites.front_default,
+                statNames: {
+                    hp: "HP",
+                    attack: "Attack",
+                    defense: "Defence",
+                    special_attack: "Sp. Atk",
+                    special_defense: "Sp. Def",
+                    speed: "Speed"
+                },
+                stats: {
+                    hp: pokeResponse.stats.find(s => s.stat.name === "hp").base_stat,
+                    attack: pokeResponse.stats.find(s => s.stat.name === "attack").base_stat,
+                    defense: pokeResponse.stats.find(s => s.stat.name === "defense").base_stat,
+                    special_attack: pokeResponse.stats.find(s => s.stat.name === "special-attack").base_stat,
+                    special_defense: pokeResponse.stats.find(s => s.stat.name === "special-defense").base_stat,
+                    speed: pokeResponse.stats.find(s => s.stat.name === "speed").base_stat
+                },
+                moves: pokeResponse.moves
+                    .filter(move => move.version_group_details.some(detail => versionGroups.includes(detail.version_group.name)))
+                    .map(move => ({
+                        name: move.move.name,
+                        learned_by: move.version_group_details.find(detail => versionGroups.includes(detail.version_group.name)).move_learn_method.name,
+                        level_at: move.version_group_details.find(detail => versionGroups.includes(detail.version_group.name)).level_learned_at
+                    })),
+            };
+            //console.log(versionGroups);
+            //console.log(pokemonData.moves);
+            return pokemonData;
+    
+        }
+        catch(error){
+            console.log('Pokemon Fetch Error :', error);
+            return null;
+        }
+    },
+
     getFormattedPokemonByName: async (req, res, next) =>{
         try{
             const speciesResponse = await P.getPokemonSpeciesByName(req.params.name);
             const pokeResponse = await P.getPokemonByName(req.params.name);
-
+            const generation = req.params.generation || "6";
             const formattedResponse = {
                 id: pokeResponse.id,
                 name: pokeResponse.name,
-                types: pokeResponse.types.map(type => type.type.name),
+                
+                types: pokeResponse.past_types?.find(pt => {
+                    const pastGen = parseInt(pt.generation.url.split('/').slice(-2)[0]);
+                    return parseInt(generation) <= pastGen;
+                })?.types.map(type => type.type.name) 
+                    ?? pokeResponse.types.map(type => type.type.name),
                 abilities: pokeResponse.abilities.map(ability => ability.ability.name),
-                dex_number: speciesResponse.pokedex_numbers[0].entry_number, //National dex num (need to get from specific dex which will be a filter)
+                dex_number: speciesResponse.pokedex_numbers[0].entry_number,
                 sprite_url: pokeResponse.sprites.front_default,
                 stats: pokeResponse.stats.map(stat => ({ 
                     name: stat.stat.name,
                     base_stat: stat.base_stat
                 }))
-                //Move pool. Need game version filter for this to work
-                //Evolutions
             };
             console.log("Sending Pokemon");
             res.json(formattedResponse);
@@ -315,4 +515,21 @@ const pokeAPI = {
     }
 }
 
+async function testTypeMatchups(type1, type2, generation){
+    const results = await pokeAPI.getTypeMatchups(type1, type2, generation);
+    console.log('\nOffensive Matchups:');
+    console.table(results.offensive.map(m => ({
+        'Attacking Type': m.attacking_type,
+        'Defending Type': m.defending_type,
+        'Damage Modifier': m.damage_mod,
+        'Generation': m.generation
+    })));
+    console.log('\nDefensive Matchups:');
+    console.table(results.defensive.map(m => ({
+        'Attacking Type': m.attacking_type,
+        'Damage Modifier': m.damage_mod,
+        'Generation': m.generation
+})));
+} 
+//testTypeMatchups('steel',null,6);
 export default pokeAPI;
