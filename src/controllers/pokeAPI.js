@@ -160,7 +160,10 @@ const pokeAPI = {
             //const speciesResponse = await P.getPokemonSpeciesByName(pokemonName);
             const versionGroups = await P.getGenerationByName(generation).then(gen => gen.version_groups.map(vg => vg.name));
             const pokeResponse = await P.getPokemonByName(pokemonName);
-            const pastGen = parseInt(pokeResponse.past_types[0].generation.url.split('/').slice(-2)[0]);
+            let pastGen = 0;
+            if(pokeResponse.past_types[0]){
+                pastGen = parseInt(pokeResponse.past_types[0].generation.url.split('/').slice(-2)[0]);
+            }
             //console.log(`Past Gen: ${pastGen} \n Generation: ${generation}`);
             const pokemonData = {
                 id: pokeResponse.id,
