@@ -12,8 +12,8 @@
     <title>Team Builder</title>
   </head>
   <body
-  class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6"
->
+    class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6"
+  >
     <!-- Back to Dash -->
     <nav class="absolute top-6 left-4">
       <a
@@ -48,24 +48,28 @@
         <div
           id="team-list"
           class="w-full text-white font-bold py-2 rounded-md transition"
-        >        
-            <!-- Placeholder Teams (Will be replaced with real data) -->
-            <% if (Array.isArray(teams)) { %>
-              <% teams.forEach(function(team) { %>
-              <div class="w-full text-white font-bold py-2 rounded-md transition">
-                <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md">
-                  <form action="/team/builder" method="POST" class="m-0">
-                    <input type="hidden" name="teamID" value="<%= team.teamID %>">
-                    <button type="submit" class="w-full text-gray-600"><%= team.teamname %></button>
-                  </form>
-                </div>
-              </div>
-              <% }) %>
-            <% } else { %>
-            <div class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse">
-              No teams available.
+        >
+          <!-- Placeholder Teams (Will be replaced with real data) -->
+          <% if (Array.isArray(teams)) { %> <% teams.forEach(function(team) { %>
+          <div class="w-full text-white font-bold py-2 rounded-md transition">
+            <div
+              class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md"
+            >
+              <form action="/team/builder" method="POST" class="m-0">
+                <input type="hidden" name="teamID" value="<%= team.teamID %>" />
+                <button type="submit" class="w-full text-gray-600">
+                  <%= team.teamname %>
+                </button>
+              </form>
             </div>
-            <% } %>
+          </div>
+          <% }) %> <% } else { %>
+          <div
+            class="w-full bg-gray-400 text-gray-600 font-bold py-2 text-center rounded-md animate-pulse"
+          >
+            No teams available.
+          </div>
+          <% } %>
         </div>
 
         <!-- Create New Team Button -->
@@ -84,7 +88,11 @@
       id="teamform"
       class="hidden fixed inset-5 bg-gray-900 bg-opacity-50 flex justify-center items-center"
     >
-      <form class="bg-gray-300 p-6 rounded-lg shadow-lg w-[90%] max-w-md" action="/team/builder/create" method="POST">
+      <form
+        class="bg-gray-300 p-6 rounded-lg shadow-lg w-[90%] max-w-md"
+        action="/team/builder/create"
+        method="POST"
+      >
         <h2 class="text-xl font-bold text-center mb-4">New Team Information</h2>
         <label class="block text-sm font-medium text-gray-700">Team Name</label>
         <input
@@ -100,7 +108,11 @@
         <label class="block text-sm font-medium text-gray-700"
           >Generation</label
         >
-        <select class="w-full border p-2 rounded-md mb-3" name="generation" id="generation">
+        <select
+          class="w-full border p-2 rounded-md mb-3"
+          name="generation"
+          id="generation"
+        >
           <option value="1">Generation 1</option>
           <option value="2">Generation 2</option>
           <option value="3">Generation 3</option>
@@ -150,7 +162,8 @@
       const closeBtn = document.getElementById("closeBtn");
       const teamform = document.getElementById("teamform");
       const searchInput = document.getElementById("searchInput");
-      const teams = document.querySelectorAll(".team");
+      const teamList = document.getElementById("team-list");
+      const teams = teamList.querySelectorAll("div");
 
       // Opening the form
       //When the createBtn is clicked triggering the eventlistener, the function removes the "hidden" class from teamform, making it visible.
@@ -165,16 +178,16 @@
         teamform.classList.add("hidden");
       });
 
-      
-    //Search functionality for teams
+      //NEW Search functionality for teams
       searchInput.addEventListener("input", () => {
         const searchValue = searchInput.value.toLowerCase().trim();
-      });
 
-      teams.forEach((team) => {
-        const teamName = team.textContent.toLowerCase();
-
-        team.style.display = teamName.includes(searchValue) ? "block" : "none";
+        teams.forEach((team) => {
+          const teamName = team.textContent.toLowerCase();
+          team.style.display = teamName.includes(searchValue)
+            ? "block"
+            : "none";
+        });
       });
     </script>
   </body>
