@@ -314,7 +314,7 @@
 
         <!-- Buttons -->
         <div class="mt-5 flex flex-col space-y-2">
-          <a href="/poke/fullview/garchomp"
+          <a href="/poke/fullview/"
           id="fullViewBtn"
             class="bg-red-500 text-white py-2 px-4 rounded-lg font-semibold  text text-center hover:bg-red-600 transition"
           >
@@ -328,64 +328,6 @@
             Add Pokémon to Team
           </button>
         </div>
-      </div>
-    </div>
-    <!-- Add to Team Modal -->
-
-    <div
-      id="addTeamModal"
-      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 hidden"
-    >
-      <div
-        class="bg-gray-800 p-6 rounded-lg shadow-lg w-[90%] sm:w-[50%] lg:w-[30%] relative flex flex-col items-center"
-      >
-        <!-- Close Button -->
-        <button
-          id="closeAddTeamModal"
-          class="absolute top-3 right-3 text-gray-400 hover:text-red-600 text-2xl font-bold"
-        >
-          &times;
-        </button>
-
-        <h2 class="text-center mb-4 text-white text-xl font-bold">
-          Add to Team
-        </h2>
-
-        <!-- Search Bar -->
-        <input
-          type="text"
-          id="searchTeams"
-          placeholder="Search Teams"
-          class="bg-gray-600 text-gray-300 px-4 py-2 rounded-md w-full text-center mb-4"
-        />
-
-        <!-- Loading State for Teams -->
-        <!-- Loading State for Teams -->
-        <div class="w-full space-y-2">
-          <button
-            class="team-button w-full bg-gray-700 text-gray-400 py-2 rounded-md"
-          >
-            Loading Team...
-          </button>
-          <button
-            class="team-button w-full bg-gray-700 text-gray-400 py-2 rounded-md"
-          >
-            Loading Team...
-          </button>
-          <button
-            class="team-button w-full bg-gray-700 text-gray-400 py-2 rounded-md"
-          >
-            Loading Team...
-          </button>
-        </div>
-
-        <!-- Create a New Team Button // Will user be able to create new team from here and add the selected pokemon to a new team while in the modal?-->
-        <!-- <button
-          id="createTeamBtn"
-          class="w-full bg-blue-500 text-white py-2 mt-4 rounded-md font-bold hover:bg-blue-600 transition"
-        >
-          Create a new team
-        </button> -->
       </div>
     </div>
 
@@ -454,6 +396,8 @@
     </div>
 
     <script>
+
+      
       document.addEventListener("DOMContentLoaded", () => {
         const searchInput = document.getElementById("searchInput");
         const pokemonCards = document.querySelectorAll(".pokedexbox");
@@ -465,6 +409,7 @@
         const monSprite = document.getElementById("monSprite");
         const monStats = document.getElementById("monStats");
         const monTypesContainer = document.getElementById("monTypesContainer");
+        const fullViewBtn = document.getElementById("fullViewBtn");
 
         //escape event
 
@@ -506,11 +451,11 @@
                 : "none";
           });
         });
-
+        const generation = '<%= generation %>';
         async function openModal(pokemonName) {
           console.log("Fetching Pokémon:", pokemonName);
 
-          const response = await fetch(`/poke/mon/${pokemonName}`, {
+          const response = await fetch(`/poke/mon/${pokemonName}/${generation}`, {
             method: "GET",
           });
           const pokemon = await response.json();
@@ -534,7 +479,8 @@
             typeBadge.className = `pokedextype ${type.toLowerCase()}`;
             monTypesContainer.appendChild(typeBadge);
           });
-
+          console.log(generation);
+          fullViewBtn.href = `/poke/fullview/${pokemon.name}/${generation}`;
           // Define display names
           const statDisplayNames = {
             hp: "HP",

@@ -2,7 +2,18 @@ import pool from './db.js';
 import pokeAPI from './pokeAPI.js';
 
 const userController = {
-
+    getUserData: async (req, res, next) => {
+        try {
+            const conn = await pool.getConnection();
+            const [rows] = await conn.query('SELECT * FROM user WHERE userID = ?', [req.session.passport.user.userID]);
+            pool.releaseConnection(conn);
+            return rows[0]
+        }
+        catch (error) {
+            console.log('Error fetching current user:', error);
+            return next(error);
+        }
+    },
     
     getUserByName: async (req, res, next) => {
         const conn = await pool.getConnection();

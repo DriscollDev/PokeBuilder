@@ -92,7 +92,6 @@ router.get('/dex/:generation?', async (req, res) => {
             }
             userTeams = teams;
         }
-
         const [pokemon] = await conn.execute(`
             SELECT 
                 dm.id,
@@ -100,8 +99,14 @@ router.get('/dex/:generation?', async (req, res) => {
                 dm.sprite_url,
                 dm.generation,
                 pe.entry_number as pokedex_number,
-                pt1.type as primary_type,
-                pt2.type as secondary_type
+                CASE 
+                    WHEN pt.generation IS NOT NULL AND ? <= pt.generation THEN pt.type1
+                    ELSE pt1.type 
+                END as primary_type,
+                CASE 
+                    WHEN pt.generation IS NOT NULL AND ? <= pt.generation THEN pt.type2
+                    ELSE pt2.type 
+                END as secondary_type
             FROM dex_mon dm
             JOIN pokedex_entries pe ON dm.id = pe.pokemon_id
                 AND pe.dex_name = ?
@@ -109,11 +114,13 @@ router.get('/dex/:generation?', async (req, res) => {
                 AND pt1.slot = 1
             LEFT JOIN pokemon_types pt2 ON dm.id = pt2.pokemon_id 
                 AND pt2.slot = 2
+            LEFT JOIN past_type pt ON dm.id = pt.pokemon_id
             ORDER BY pe.entry_number
-        `, [dexName]);
+        `, [generation, generation, dexName]);
+
+
         
         conn.release();
-
         res.render('pokedex', {
             title: `${dexName.charAt(0).toUpperCase() + dexName.slice(1)} Pokédex`,
             pokemon: pokemon,
@@ -127,14 +134,62 @@ router.get('/dex/:generation?', async (req, res) => {
     }
 });
 
-router.get('/mon/:name', pokeAPI.getFormattedPokemonByName);
+router.get('/mon/:name/:generation?', pokeAPI.getFormattedPokemonByName);
 
 
 router.get('/editpokemon/:pokemonID', async(req,res) => {
     res.render('editpokemon')
 })
-router.get('/fullview/:pokemonName', async(req,res) => {
-    res.render('fullpokemonview')
+router.get('/fullview/:pokemonName/:generation?', async(req,res) => {
+    try {
+        const data = await pokeAPI.getFullPokemonByName(req.params.pokemonName,req.params.generation);
+        const matchups = await pokeAPI.getTypeMatchups(data.types[0],data.types[1],req.params.generation);
+        if (!data) {
+            throw new Error('Pokemon not found');
+        }
+
+        // Get user's teams if they're logged in
+        let userTeams = [];
+        if (req.session.passport?.user) {
+            const conn = await pool.getConnection();
+            // First get the teams
+            const [teams] = await conn.execute(
+                'SELECT teamID, teamname, generation, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6 FROM teams WHERE ownerID = ? ORDER BY created_at DESC',
+                [req.session.passport.user.userID]
+            );
+            
+            // For each team, get the Pokemon names
+            for (const team of teams) {
+                const pokemonSlots = [];
+                for (let i = 1; i <= 6; i++) {
+                    const pokemonId = team[`pokemon${i}`];
+                    if (pokemonId) {
+                        const [pokemonData] = await conn.execute(`
+                            SELECT pbd.name 
+                            FROM pokemon p
+                            JOIN poke_base_data pbd ON p.baseDataID = pbd.baseID
+                            WHERE p.pokemonID = ?
+                        `, [pokemonId]);
+                        pokemonSlots.push(pokemonData[0]?.name || null);
+                    } else {
+                        pokemonSlots.push(null);
+                    }
+                }
+                team.pokemon = pokemonSlots;
+            }
+            userTeams = teams;
+            conn.release();
+        }
+
+        res.render('fullpokemonview', { 
+            pokemon: data, 
+            matchups: matchups, 
+            generation: req.params.generation,
+            userTeams: userTeams
+        });
+    } catch (error) {
+        console.error('Error fetching Pokémon data:', error);
+    }
 })
 
 // Add this new route to handle swapping Pokemon

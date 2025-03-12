@@ -1,3 +1,4 @@
+
 console.log("Styling.js loaded successfully!");
 // Type Charts
 
@@ -310,3 +311,4 @@ const garchomp = {
 
 // On Page Load, populate Pokémon data
 window.onload = () => setPokemonData(garchomp);
+
