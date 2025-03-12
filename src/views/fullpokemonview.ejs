@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Pokémon Details</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="/stylesheets/pokestyle.css"> 
-  <link
-  rel="icon"
-  type="image/x-icon"
-  href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
-/>
-</head>
-<body class="bg-gray-100 min-h-screen px-8 fontResize font-quantico">
-  <link rel="stylesheet" href="/stylesheets/pokestyle.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Pokémon Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/stylesheets/pokestyle.css" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
+    />
+  </head>
 
-  <!-- Main Grid Container  -->
-  <div class="bg-gray-200 p-6 rounded-xl border-4 border-red-700 shadow-lg w-full grid grid-cols-3 gap-10 fontResize">
+  <body
+    class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex justify-center items-center p-6"
+  >
+    <!-- Main Card Container -->
+    <div
+      class="bg-gray-200 p-6 rounded-2xl w-full h-full max-screen grid grid-cols-1 md:grid-cols-3 gap-6"
+    >
+      <!-- Left Column: Pokémon Details -->
+      <div
+        class="flex flex-col justify-center items-center text-center bg-white p-6 rounded-xl shadow-md border-2 border-gray-800 h-full"
+      >
+        <img
+          id="pokemonImage"
+          class="w-70 h-70 object-contain"
+          src=""
+          alt="Pokemon Image"
+        />
+        <h1 id="pokemonName" class="font-bold text-2xl mt-3"></h1>
+        <p id="pokedexNumber" class="text-black text-lg"></p>
 
     <!-- Left Column pokémon details -->
     <div class="spcontainer w-full fontResize">
@@ -219,4 +234,5 @@
 
   </script>
 </body>
+
 </html>
