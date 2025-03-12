@@ -7,7 +7,6 @@
       rel="icon"
       type="image/x-icon"
       href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
-      
     />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/stylesheets/pokestyle.css" />
@@ -56,7 +55,6 @@
             </button>
           </form>
         </div>
-        
 
         <div
           class="bg-gray-200 p-3 rounded-md border-2 border-black shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-200"
@@ -110,45 +108,47 @@
         </div>
       </div>
 
-
-     <div class="bg-purple-400 p-4 rounded-md border-2 border-black col-span-2 flex flex-col h-full overflow-hidden">
+      <div
+        class="bg-purple-400 p-4 rounded-md border-2 border-black col-span-2 flex flex-col h-full overflow-hidden"
+      >
         <h2 class="text-black font-bold text-lg text-center hover:scale-105">
           <a href="/team" class="hover:text-white">Team Builder</a>
         </h2>
         <div class="mt-2 flex">
           <input
             type="text"
-            class="ml-2 flex-grow p-1 rounded-md"
+            id="searchInput"
+            class="ml-2 flex-grow p-1 rounded-md text-center"
             placeholder="Search Team"
           />
-          <button
-            class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-300"
-          >
-            Search
-          </button>
         </div>
-
 
         <!-- Team Display - Independent scroll -->
         <div id="team-list" class="mt-4 flex-grow overflow-y-auto pr-2">
-            <div class="space-y-3">
-                <% if (teams && teams.length > 0) { %>
-                <% teams.forEach(function(team) { %>
-                  <div class="w-full bg-gray-400 text-gray-600 font-bold text-center rounded-md hover:bg-gray-500 transition-colors shadow-md">
-                    <form action="/team/builder" method="POST" class="m-0">
-                      <input type="hidden" name="teamID" value="<%= team.teamID %>">
-                      <button type="submit" class="w-full text-gray-600 hover:text-gray-700 py-4 text-lg">
-                        <%= team.teamname %>
-                      </button>
-                    </form>
-                  </div>
-                <% }); %>
-              <% } else { %>
-                <div class="w-full bg-gray-400 text-gray-600 font-bold py-4 text-center rounded-md text-lg">
-                  No teams available
-                </div>
-              <% } %>
+          <div class="space-y-3">
+            <% if (teams && teams.length > 0) { %> <%
+            teams.forEach(function(team) { %>
+            <div
+              class="w-full bg-gray-400 text-gray-600 font-bold text-center rounded-md hover:bg-gray-500 transition-colors shadow-md"
+            >
+              <form action="/team/builder" method="POST" class="m-0">
+                <input type="hidden" name="teamID" value="<%= team.teamID %>" />
+                <button
+                  type="submit"
+                  class="w-full text-gray-600 hover:text-gray-700 py-4 text-lg"
+                >
+                  <%= team.teamname %>
+                </button>
+              </form>
             </div>
+            <% }); %> <% } else { %>
+            <div
+              class="w-full bg-gray-400 text-gray-600 font-bold py-4 text-center rounded-md text-lg"
+            >
+              No teams available
+            </div>
+            <% } %>
+          </div>
         </div>
       </div>
       <!-- Side Buttons (Pokedex, Help, Team Building) -->
@@ -175,3 +175,17 @@
     </div>
   </body>
 </html>
+<script>
+  document.getElementById("searchInput").addEventListener("input", () => {
+    const searchValue = document
+      .getElementById("searchInput")
+      .value.toLowerCase()
+      .trim();
+    const teams = document.querySelectorAll("#team-list div");
+
+    teams.forEach((team) => {
+      const teamName = team.textContent.toLowerCase();
+      team.style.display = teamName.includes(searchValue) ? "block" : "none";
+    });
+  });
+</script>

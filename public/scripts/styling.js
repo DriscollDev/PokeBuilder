@@ -148,37 +148,64 @@ function calculateSTAB(types) {
   return stabMatchups;
 }
 
-// Populate a container with matchup data
+// Type Colors Mapping
+const typeColors = {
+  normal: "#A8A77A", fire: "#EE8130", water: "#6390F0", electric: "#F7D02C",
+  grass: "#7AC74C", ice: "#96D9D6", fighting: "#C22E28", poison: "#A33EA1",
+  ground: "#E2BF65", flying: "#A98FF3", psychic: "#F95587", bug: "#A6B91A",
+  rock: "#B6A136", ghost: "#735797", dragon: "#6F35FC", dark: "#705746",
+  steel: "#B7B7CE", fairy: "#D685AD"
+};
+
 function populateMatchups(containerId, matchups) {
   const container = document.getElementById(containerId);
   container.innerHTML = "";
+  container.className = "flex flex-col justify-center items-center gap-5 w-full h-full";
+
   Object.entries(matchups).forEach(([multiplier, types]) => {
     if (types.length > 0) {
-      const line = document.createElement("p");
-      line.innerHTML = `<strong>${multiplier}:</strong> ${types.join(", ")}`;
-      container.appendChild(line);
+      const row = document.createElement("div");
+      row.className = "flex flex-wrap justify-center items-center gap-x-4 gap-y-3 w-full";
+
+      // Effectiveness Multiplier Label
+      const multiplierSpan = document.createElement("span");
+      multiplierSpan.className = "font-bold text-xl";
+      multiplierSpan.innerText = `${multiplier}`;
+      row.appendChild(multiplierSpan);
+
+      // Type Labels 
+      types.forEach(type => {
+        const typeBadge = document.createElement("span");
+        typeBadge.className = `px-4 py-2 rounded-lg text-white text-md font-semibold shadow-md min-w-[80px] text-center`;
+        typeBadge.style.backgroundColor = typeColors[type.toLowerCase()] || "#777";
+        typeBadge.innerText = type;
+        row.appendChild(typeBadge);
+      });
+
+      container.appendChild(row);
     }
   });
 }
 
+
 // Populate Base Stats (linear layout with aligned bars)
 function populateStats(stats) {
-    const statsContainer = document.getElementById("stats");
-    statsContainer.innerHTML = "";
-  
-    Object.entries(stats).forEach(([statName, value]) => {
-      let barColor = "#FB2323";  // default
-      if (value >= 40)  barColor = "#F4902C";
-      if (value >= 70)  barColor = "#D2F700";
-      if (value >= 100) barColor = "#4FE71D";
-      if (value >= 120) barColor = "#4ECB73";
-      if (value >= 150) barColor = "#37D0D6";
-  
-      // Calculate bar width based on stat value / 160
-      const barWidth = Math.min((value / 160) * 100, 100);
-  
-      // For each stat creates a row
-      statsContainer.innerHTML += `
+  const statsContainer = document.getElementById("stats");
+  statsContainer.innerHTML = "";
+
+  Object.entries(stats).forEach(([statName, value]) => {
+    let barColor = "#FB2323";  // default
+    if (value >= 40) barColor = "#F4902C";
+    if (value >= 70) barColor = "#D2F700";
+    if (value >= 100) barColor = "#4FE71D";
+    if (value >= 120) barColor = "#4ECB73";
+    if (value >= 150) barColor = "#37D0D6";
+
+    // Calculate bar width based on stat value / 160
+    const barWidth = Math.min((value / 160) * 100, 100);
+
+    // For each stat creates a row
+    statsContainer.innerHTML += `
         <div class="flex items-center mb-2 gap-3" style="width: 100%;">
           <!-- Label (fixed 80px width) -->
           <span class=" flex-shrink-0" style="width:80px; text-align:right;">
@@ -198,8 +225,8 @@ function populateStats(stats) {
           </div>
         </div>
       `;
-    });
-  }
+  });
+}
 
 // Generate Move Table dynamically
 function generateMoveTable(moves) {
