@@ -314,7 +314,7 @@
 
         <!-- Buttons -->
         <div class="mt-5 flex flex-col space-y-2">
-          <a href="/poke/fullview/garchomp"
+          <a href="/poke/fullview/"
           id="fullViewBtn"
             class="bg-red-500 text-white py-2 px-4 rounded-lg font-semibold shadow-md hover:bg-red-600 transition"
           >
@@ -454,6 +454,8 @@
     </div>
 
     <script>
+
+      
       document.addEventListener("DOMContentLoaded", () => {
         const searchInput = document.getElementById("searchInput");
         const pokemonCards = document.querySelectorAll(".pokedexbox");
@@ -465,6 +467,7 @@
         const monSprite = document.getElementById("monSprite");
         const monStats = document.getElementById("monStats");
         const monTypesContainer = document.getElementById("monTypesContainer");
+        const fullViewBtn = document.getElementById("fullViewBtn");
 
         //escape event
 
@@ -506,11 +509,11 @@
                 : "none";
           });
         });
-
+        const generation = '<%= generation %>';
         async function openModal(pokemonName) {
           console.log("Fetching Pokémon:", pokemonName);
 
-          const response = await fetch(`/poke/mon/${pokemonName}`, {
+          const response = await fetch(`/poke/mon/${pokemonName}/${generation}`, {
             method: "GET",
           });
           const pokemon = await response.json();
@@ -534,7 +537,8 @@
             typeBadge.className = `pokedextype ${type.toLowerCase()}`;
             monTypesContainer.appendChild(typeBadge);
           });
-
+          console.log(generation);
+          fullViewBtn.href = `/poke/fullview/${pokemon.name}/${generation}`;
           // Define display names
           const statDisplayNames = {
             hp: "HP",

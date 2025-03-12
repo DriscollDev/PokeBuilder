@@ -20,42 +20,137 @@
 
     <!-- Left Column pokémon details -->
     <div class="spcontainer w-full fontResize">
-      <img id="pokemonImage" class="w-70" src="" alt="Pokemon Image">
-      <h1 id="pokemonName" class="font-bold mt-3"></h1>
-      <p id="pokedexNumber" class="text-gray-700"></p>
+      <img id="pokemonImage" class="w-70" src="<%= pokemon.sprite_url %>" alt="<%= pokemon.name %> sprite">
+      <h1 id="pokemonName" class="font-bold mt-3"><%= pokemon.name %></h1>
+      <p id="pokedexNumber" class="text-gray-700">#<%= pokemon.id %></p>
 
-      <div id="typeContainer" class="flex gap-4 mt-3"></div>
+      <div id="typeContainer" class="flex gap-4 mt-3">
+        <% pokemon.types.forEach(type => { %>
+          <span class="px-3 py-1 rounded text-white <%= type.toLowerCase() %>"><%= type.toUpperCase() %></span>
+        <% }); %>
+      </div>
 
-      <p id="abilities" class="mt-3 text-gray-600"></p>
-      <p id="generation" class="text-gray-600"></p>
-      <p id="weight" class="text-gray-600"></p>
-      <p id="height" class="text-gray-600"></p>
+      <p id="abilities" class="mt-3 text-gray-600">Abilities: <%= pokemon.abilities.join(', ') %></p>
+      <p id="weight" class="text-gray-600">Weight: <%= pokemon.weight %></p>
+      <p id="height" class="text-gray-600">Height: <%= pokemon.height %></p>
     </div>
     
     <!-- Middle Column all stab and type matchups-->
     <div class="flex flex-col gap-6">
       <div class="outerStabContainer border-4 border-red-700 shadow-lg p-2">
         <h2 class="font-bold text-center mb-2">Defensive Type Match Ups</h2>
-        <div id="weaknessContainer" class="innerStabContainer flex flex-col gap-2"></div>
+        <div id="weaknessContainer" class="innerStabContainer">
+          <% 
+            // Group matchups by damage modifier
+            const damageGroups = {
+              4: [],
+              2: [],
+              0.5: [],
+              0.25: [],
+              0: []
+            };
+            
+            matchups.defensive.forEach(match => {
+              damageGroups[match.damage_mod] = damageGroups[match.damage_mod] || [];
+              damageGroups[match.damage_mod].push(match.attacking_type);
+            });
+          %>
+          
+          <% const modifierLabels = {
+            4: '4x damage',
+            2: '2x damage',
+            0.5: '0.5x damage',
+            0.25: '0.25x damage',
+            0: 'Immune'
+          }; %>
+          
+          <% [4, 2, 0.5, 0.25, 0].forEach(modifier => { 
+            if (damageGroups[modifier] && damageGroups[modifier].length > 0) { %>
+              <div class="mb-2">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="font-bold text-lg"><%= modifierLabels[modifier] %>:</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <% damageGroups[modifier].forEach(type => { %>
+                    <span class="<%= type.toLowerCase() %> px-3 py-1 rounded text-white"><%= type.toUpperCase() %></span>
+                  <% }); %>
+                </div>
+              </div>
+            <% } %>
+          <% }); %>
+        </div>
       </div>
       <div class="outerStabContainer border-4 border-red-700 shadow-lg p-2">
         <h2 class="font-bold text-center mb-2">STAB Type Match Ups</h2>
-        <div id="stabContainer" class="innerStabContainer flex flex-col gap-2"></div>
+        <div id="stabContainer" class="innerStabContainer grid grid-cols-<%= pokemon.types.length %> gap-4">
+          <% pokemon.types.forEach(type => { %>
+            <div class="border-2 border-gray-300 rounded-lg p-3">
+              <h3 class="text-center font-bold mb-3 <%= type.toLowerCase() %> text-white rounded py-1"><%= type.toUpperCase() %></h3>
+              <% 
+                // Group matchups by damage modifier
+                const typeMatchups = matchups.offensive.filter(m => m.attacking_type.toUpperCase() === type.toUpperCase());
+                const offensiveGroups = {
+                  2: [],
+                  0.5: [],
+                  0: []
+                };
+                
+                typeMatchups.forEach(match => {
+                  offensiveGroups[match.damage_mod] = offensiveGroups[match.damage_mod] || [];
+                  offensiveGroups[match.damage_mod].push(match.defending_type);
+                });
+              %>
+              <% [2, 0.5, 0].forEach(modifier => { 
+                if (offensiveGroups[modifier] && offensiveGroups[modifier].length > 0) { %>
+                  <div class="mb-2">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="font-bold"><%= modifierLabels[modifier] %>:</span>
+                    </div>
+                    <div class="flex flex-wrap gap-1">
+                      <% offensiveGroups[modifier].forEach(defType => { %>
+                        <span class="<%= defType.toLowerCase() %> px-2 py-1 rounded text-white text-sm"><%= defType.toUpperCase() %></span>
+                      <% }); %>
+                    </div>
+                  </div>
+                <% } %>
+              <% }); %>
+            </div>
+          <% }); %>
+        </div>
       </div>
       <div class="flex justify-center gap-6 mt-4">
-        <a class="bg-red-500 text-white px-6 py-3 rounded-lg" href="/poke/dex">Return to Pokédex</a>
+        <a class="bg-red-500 text-white px-6 py-3 rounded-lg" href="/poke/dex/<%= generation %>">Return to Pokédex</a>
         <a class="bg-red-500 text-white px-6 py-3 rounded-lg" href="/team/">Add Pokémon to Team</a>
       </div>
     </div>
     
     <!-- Right Column base stats and moves-->
-    <div class=" flex flex-col gap-6 w-full">
+    <div class="flex flex-col gap-6 w-full">
       <div class="bg-white p-6 rounded-lg shadow-md w-full statsChart">
         <h2 class="font-bold text-center mb-2">Base Stats</h2>
-        <div id="stats"></div>
+        <div id="stats">
+          <% Object.entries(pokemon.stats).forEach(([stat, value]) => { %>
+            <div class="stat-container">
+              <span class="stat-name"><%= pokemon.statNames[stat] %></span>
+              <div class="stat-bar-container">
+                <div class="stat-bar" data-value="<%= value %>" data-width="<%= (value / 255) * 100 %>"></div>
+              </div>
+              <span class="stat-value"><%= value %></span>
+            </div>
+          <% }); %>
+        </div>
       </div>
-      <div class="bg-white p-6 rounded-lg shadow-md w-full ">
+      <div class="bg-white p-6 rounded-lg shadow-md w-full">
         <h2 class="font-bold text-center mb-2">Move Pool</h2>
+        <div class="mb-4">
+          <select id="moveFilter" class="w-full p-2 border rounded">
+            <option value="all">All Methods</option>
+            <option value="level-up">Level Up</option>
+            <option value="machine">Machine</option>
+            <option value="egg">Egg</option>
+            <option value="tutor">Tutor</option>
+          </select>
+        </div>
         <div class="overflow-y-auto max-h-80">
           <table class="w-full text-left border-collapse">
             <thead class="sticky top-0 bg-white">
@@ -64,13 +159,64 @@
                 <th class="border px-4 py-2">Learned By</th>
               </tr>
             </thead>
-            <tbody id="moveTableBody"></tbody>
+            <tbody id="moveTableBody">
+              <% pokemon.moves.forEach(move => { %>
+                <tr class="move-row" data-learn-method="<%= move.learned_by %>">
+                  <td class="border px-4 py-2"><%= move.name.replace(/-/g, ' ').toUpperCase() %></td>
+                  <% if (move.level_at > 0) { %>
+                    <td class="border px-4 py-2"><%= move.learned_by.replace(/-/g, ' ').toUpperCase() + " : " + move.level_at %></td>
+                  <% } else { %>
+                    <td class="border px-4 py-2"><%= move.learned_by.replace(/-/g, ' ').toUpperCase()%></td>
+                  <% } %>
+                </tr>
+              <% }); %>
+            </tbody>
           </table>
         </div>
       </div>
     </div>
 
   </div>
-  <script src="/scripts/styling.js"></script>
+  <script>
+
+    // Move filtering function
+    document.getElementById('moveFilter').addEventListener('change', function() {
+      const selectedMethod = this.value;
+      const moveRows = document.querySelectorAll('.move-row');
+      
+      moveRows.forEach(row => {
+        const learnMethod = row.getAttribute('data-learn-method');
+        if (selectedMethod === 'all' || learnMethod === selectedMethod) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    });
+    
+  // Functions
+  // Populate Base Stats (linear layout with aligned bars)
+  function colorStats() {
+        const statBars = document.querySelectorAll('.stat-bar');
+        
+        statBars.forEach(bar => {
+          const value = parseInt(bar.dataset.value);
+          const width = bar.dataset.width;
+          let barColor = "#FB2323";  // default red for low stats
+          if (value >= 40)  barColor = "#F4902C";  // orange for below average
+          if (value >= 70)  barColor = "#D2F700";  // yellow for average
+          if (value >= 100) barColor = "#4FE71D";  // light green for good
+          if (value >= 120) barColor = "#4ECB73";  // green for very good
+          if (value >= 150) barColor = "#37D0D6";  // blue for excellent
+          
+          bar.style.backgroundColor = barColor;
+          bar.style.width = width + '%';
+        });
+      }
+
+    // Run when the page loads
+    window.onload = colorStats;
+
+  </script>
 </body>
 </html>
