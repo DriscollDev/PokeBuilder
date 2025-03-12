@@ -5,14 +5,15 @@ const router = Router();
 import teamController from '../controllers/teamController.js';
 
 // Get teams by user ID
-router.get('/', function (req, res, next) {
-  const teams = teamController.getTeamsByUser;
+router.get('/', async function (req, res, next) {
+  const teams = await teamController.getTeamsByCurrentUser(req);
+  console.log(teams)
   res.render("teamhome", {
     title: 'Team View',
     teams: teams
   });
-  
 });
+
 
 
 // Team Builder Page - Now fetches team data before rendering
