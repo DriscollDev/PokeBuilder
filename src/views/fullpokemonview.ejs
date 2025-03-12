@@ -13,11 +13,11 @@
     />
   </head>
 
-  <body class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex justify-center items-center p-6">
+  <body class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-full flex justify-center items-center p-6">
     <!-- Main Card Container -->
     <div class="bg-gray-200 p-6 rounded-2xl w-full h-full max-screen grid grid-cols-1 md:grid-cols-3 gap-6" >
       <!-- Left Column: Pokémon Details -->
-      <div class="spcontainer w-full fontResize h-full">
+      <div class="spcontainer w-full  fontResize h-full">
         <img id="pokemonImage" class="w-full" src="<%= pokemon.sprite_url %>" alt="<%= pokemon.name %> sprite">
         <h1 id="pokemonName" class="font-bold mt-3" style="font-size: larger;"><%= pokemon.name %></h1>
         <p id="pokedexNumber" class="text-gray-700">#<%= pokemon.id %></p>
@@ -141,7 +141,7 @@
       <div class="bg-white p-6 rounded-lg shadow-md border-2 border-black w-full h-full">
         <h2 class="font-bold text-center mb-2">Move Pool</h2>
         <div class="mb-4">
-          <select id="moveFilter" class="w-full p-2 border rounded">
+          <select id="moveFilter" class="w-full p-2 border rounded text-center bg-gray-100">
             <option value="all">All Methods</option>
             <option value="level-up">Level Up</option>
             <option value="machine">Machine</option>
