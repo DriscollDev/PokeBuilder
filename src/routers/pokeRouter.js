@@ -23,7 +23,6 @@ router.post('/select-slot', async (req, res) => {
             slotNumber: req.body.slotNumber,
             generation: generationNumber
         };
-        
         // If it's a JSON request, send JSON response
         if (req.headers['content-type'] === 'application/json') {
             res.json({ success: true });
@@ -184,6 +183,7 @@ router.get('/fullview/:pokemonName/:generation?', async(req,res) => {
         res.render('fullpokemonview', { 
             pokemon: data, 
             matchups: matchups, 
+            selectedTeam: req.session.selectedTeam || null,
             generation: req.params.generation,
             userTeams: userTeams
         });
