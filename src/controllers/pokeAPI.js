@@ -154,7 +154,26 @@ const pokeAPI = {
         };
     },
 
+    getMoveSet: async (pokemonName,generation) => {
+        try{
+            const versionGroups = await P.getGenerationByName(generation).then(gen => gen.version_groups.map(vg => vg.name));
+            const pokeResponse = await P.getPokemonByName(pokemonName);
+            
+            const moves = pokeResponse.moves
+                .filter(move => move.version_group_details.some(detail => versionGroups.includes(detail.version_group.name)))
+                    .map(move => ({
+                        name: move.move.name,
+                        learned_by: move.version_group_details.find(detail => versionGroups.includes(detail.version_group.name)).move_learn_method.name,
+                        level_at: move.version_group_details.find(detail => versionGroups.includes(detail.version_group.name)).level_learned_at
+                    }));
+            return moves;
     
+        }
+        catch(error){
+            console.log('Pokemon Fetch Error :', error);
+            return null;
+        }
+    },
     getFullPokemonByName: async (pokemonName,generation) =>{
         try{
             //const speciesResponse = await P.getPokemonSpeciesByName(pokemonName);

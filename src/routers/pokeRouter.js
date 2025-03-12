@@ -1,6 +1,7 @@
 import express from 'express';
 import pokeAPI from '../controllers/pokeAPI.js';
 import pool from '../controllers/db.js'; 
+import teamController from '../controllers/teamController.js';
 
 const router = express.Router();
 
@@ -23,7 +24,6 @@ router.post('/select-slot', async (req, res) => {
             slotNumber: req.body.slotNumber,
             generation: generationNumber
         };
-        
         // If it's a JSON request, send JSON response
         if (req.headers['content-type'] === 'application/json') {
             res.json({ success: true });
@@ -137,9 +137,92 @@ router.get('/dex/:generation?', async (req, res) => {
 router.get('/mon/:name/:generation?', pokeAPI.getFormattedPokemonByName);
 
 
-router.get('/editpokemon/:pokemonID', async(req,res) => {
-    res.render('editpokemon')
-})
+router.post('/editpokemon', async(req,res) => {
+    try {
+        const pokemonID = req.body.pokemonID;
+        //console.log(`Pokemon ID: ${pokemonID}`);
+        const conn = await pool.getConnection();
+        const [pokemon] = await Promise.all([teamController.getPokemonData(pokemonID)]);
+        //console.log("Pokemon Gotten");
+        conn.release();
+        const matchups = await pokeAPI.getTypeMatchups(pokemon.types[0],pokemon.types[1],pokemon.generation);
+        const moveSet = await pokeAPI.getMoveSet(pokemon.name,pokemon.generation);
+
+        res.render('editpokemon', { 
+            pokemon: pokemon, 
+            matchups: matchups, 
+            generation: pokemon.generation,
+            teamID: req.body.teamID,
+            moveSet: moveSet
+        });
+
+    } catch (error) {
+        console.log('Error fetching Pokémon data:', error);
+    }
+});
+
+// Add route for updating Pokemon
+router.post('/update-pokemon', async (req, res) => {
+    try {
+        const conn = await pool.getConnection();
+        const { pokemonID, moves, stats } = req.body;
+
+        // Get the current Pokemon data to get the necessary IDs
+        const [pokemonData] = await conn.execute(
+            'SELECT choiceDataID, moveSetID FROM pokemon WHERE pokemonID = ?',
+            [pokemonID]
+        );
+
+        if (!pokemonData[0]) {
+            throw new Error('Pokemon not found');
+        }
+
+        await conn.beginTransaction();
+        try {
+            // Update moves
+            await conn.execute(
+                'UPDATE poke_moveset SET move1 = ?, move2 = ?, move3 = ?, move4 = ? WHERE moveSetID = ?',
+                [...moves, pokemonData[0].moveSetID]
+            );
+
+            // Get stat IDs
+            const [choiceData] = await conn.execute(
+                'SELECT statEV, statIV, statTotal FROM poke_choice_data WHERE choiceID = ?',
+                [pokemonData[0].choiceDataID]
+            );
+
+            // Update EVs
+            await conn.execute(
+                'UPDATE stat_list SET sHealth = ?, sAtk = ?, sDef = ?, sSpAtk = ?, sSpDef = ?, sSpd = ? WHERE statID = ?',
+                [stats.evs.hp, stats.evs.attack, stats.evs.defense, stats.evs.specialAttack, stats.evs.specialDefense, stats.evs.speed, choiceData[0].statEV]
+            );
+
+            // Update IVs
+            await conn.execute(
+                'UPDATE stat_list SET sHealth = ?, sAtk = ?, sDef = ?, sSpAtk = ?, sSpDef = ?, sSpd = ? WHERE statID = ?',
+                [stats.ivs.hp, stats.ivs.attack, stats.ivs.defense, stats.ivs.specialAttack, stats.ivs.specialDefense, stats.ivs.speed, choiceData[0].statIV]
+            );
+
+            // Update total stats
+            await conn.execute(
+                'UPDATE stat_list SET sHealth = ?, sAtk = ?, sDef = ?, sSpAtk = ?, sSpDef = ?, sSpd = ? WHERE statID = ?',
+                [stats.total.hp, stats.total.attack, stats.total.defense, stats.total.specialAttack, stats.total.specialDefense, stats.total.speed, choiceData[0].statTotal]
+            );
+
+            await conn.commit();
+            res.json({ success: true, message: 'Pokemon updated successfully' });
+        } catch (error) {
+            await conn.rollback();
+            throw error;
+        } finally {
+            conn.release();
+        }
+    } catch (error) {
+        console.error('Error updating Pokemon:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 router.get('/fullview/:pokemonName/:generation?', async(req,res) => {
     try {
         const data = await pokeAPI.getFullPokemonByName(req.params.pokemonName,req.params.generation);
@@ -184,6 +267,7 @@ router.get('/fullview/:pokemonName/:generation?', async(req,res) => {
         res.render('fullpokemonview', { 
             pokemon: data, 
             matchups: matchups, 
+            selectedTeam: req.session.selectedTeam || null,
             generation: req.params.generation,
             userTeams: userTeams
         });
@@ -285,8 +369,15 @@ async function createPokemonStats(conn, pokemonData) {
     );
 
     const [totalStats] = await conn.execute(
-        'INSERT INTO stat_list (statType, sHealth, sDef, sSpDef, sAtk, sSpAtk, sSpd) VALUES (?, 0, 0, 0, 0, 0, 0)',
-        ['total']
+        'INSERT INTO stat_list (statType, sHealth, sDef, sSpDef, sAtk, sSpAtk, sSpd) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        ['total',
+            pokemonData.stats.find(s => s.name === 'hp').base_stat,
+            pokemonData.stats.find(s => s.name === 'defense').base_stat,
+            pokemonData.stats.find(s => s.name === 'special-defense').base_stat,
+            pokemonData.stats.find(s => s.name === 'attack').base_stat,
+            pokemonData.stats.find(s => s.name === 'special-attack').base_stat,
+            pokemonData.stats.find(s => s.name === 'speed').base_stat
+        ]
     );
 
     return {

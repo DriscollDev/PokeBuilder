@@ -131,6 +131,120 @@ const teamController = {
         }
     },
 
+
+    // Function to fetch complete Pokemon data
+    getPokemonData: async (pokemonId) => {
+        if (!pokemonId) return null;
+        //console.log(`Pokemon ID: ${pokemonId}`);
+        const [pokemonData] = await pool.query(`
+            SELECT 
+                p.generation, p.pokemonID,
+                pbd.name, pbd.dexNum, pbd.spriteURL,
+                tr1.typeName as typeMain,
+                tr2.typeName as typeSecond,
+                pcd.gender, pcd.shiny, pcd.nature, 
+                pcd.friendship, pcd.ability,
+                pm.move1, pm.move2, pm.move3, pm.move4,
+                bs.sHealth as baseHP, bs.sAtk as baseAtk, 
+                bs.sDef as baseDef, bs.sSpAtk as baseSpAtk,
+                bs.sSpDef as baseSpDef, bs.sSpd as baseSpd,
+                ev.sHealth as evHP, ev.sAtk as evAtk,
+                ev.sDef as evDef, ev.sSpAtk as evSpAtk,
+                ev.sSpDef as evSpDef, ev.sSpd as evSpd,
+                iv.sHealth as ivHP, iv.sAtk as ivAtk,
+                iv.sDef as ivDef, iv.sSpAtk as ivSpAtk,
+                iv.sSpDef as ivSpDef, iv.sSpd as ivSpd,
+                total.sHealth as totalHP, total.sAtk as totalAtk,
+                total.sDef as totalDef, total.sSpAtk as totalSpAtk,
+                total.sSpDef as totalSpDef, total.sSpd as totalSpd
+            FROM pokemon p
+            JOIN poke_base_data pbd ON p.baseDataID = pbd.baseID
+            JOIN type_ref tr1 ON pbd.typeMain = tr1.typeID
+            LEFT JOIN type_ref tr2 ON pbd.typeSecond = tr2.typeID
+            JOIN poke_choice_data pcd ON p.choiceDataID = pcd.choiceID
+            JOIN poke_moveset pm ON p.moveSetID = pm.moveSetID
+            JOIN stat_list bs ON pbd.baseStatID = bs.statID
+            JOIN stat_list ev ON pcd.statEV = ev.statID
+            JOIN stat_list iv ON pcd.statIV = iv.statID
+            JOIN stat_list total ON pcd.statTotal = total.statID
+            WHERE p.pokemonID = ?`,
+            [pokemonId]
+        );
+
+        if (!pokemonData[0]) return null;
+
+        const formattedData = {
+            ...pokemonData[0],
+            types: [
+                pokemonData[0].typeMain,
+                pokemonData[0].typeSecond
+            ].filter(Boolean),
+            moves: [
+                pokemonData[0].move1,
+                pokemonData[0].move2, 
+                pokemonData[0].move3,
+                pokemonData[0].move4
+            ].filter(Boolean),
+            baseStats: {
+                hp: pokemonData[0].baseHP,
+                attack: pokemonData[0].baseAtk,
+                defense: pokemonData[0].baseDef,
+                specialAttack: pokemonData[0].baseSpAtk,
+                specialDefense: pokemonData[0].baseSpDef,
+                speed: pokemonData[0].baseSpd
+            },
+            evs: {
+                hp: pokemonData[0].evHP,
+                attack: pokemonData[0].evAtk,
+                defense: pokemonData[0].evDef,
+                specialAttack: pokemonData[0].evSpAtk,
+                specialDefense: pokemonData[0].evSpDef,
+                speed: pokemonData[0].evSpd
+            },
+            ivs: {
+                hp: pokemonData[0].ivHP,
+                attack: pokemonData[0].ivAtk,
+                defense: pokemonData[0].ivDef,
+                specialAttack: pokemonData[0].ivSpAtk,
+                specialDefense: pokemonData[0].ivSpDef,
+                speed: pokemonData[0].ivSpd
+            },
+            totalStats: {
+                hp: pokemonData[0].totalHP,
+                attack: pokemonData[0].totalAtk,
+                defense: pokemonData[0].totalDef,
+                specialAttack: pokemonData[0].totalSpAtk,
+                specialDefense: pokemonData[0].totalSpDef,
+                speed: pokemonData[0].totalSpd
+            },
+            statNames: {
+                hp: 'HP',
+                attack: 'Attack',
+                defense: 'Defense',
+                specialAttack: 'Sp. Atk',
+                specialDefense: 'Sp. Def',
+                speed: 'Speed'
+            }
+        };
+
+        // Clean up by removing the individual fields that are now in objects
+        delete formattedData.typeMain;
+        delete formattedData.typeSecond;
+        delete formattedData.move1;
+        delete formattedData.move2;
+        delete formattedData.move3;
+        delete formattedData.move4;
+        
+        // Delete all individual stat fields
+        ['baseHP', 'baseAtk', 'baseDef', 'baseSpAtk', 'baseSpDef', 'baseSpd',
+         'evHP', 'evAtk', 'evDef', 'evSpAtk', 'evSpDef', 'evSpd',
+         'ivHP', 'ivAtk', 'ivDef', 'ivSpAtk', 'ivSpDef', 'ivSpd',
+         'totalHP', 'totalAtk', 'totalDef', 'totalSpAtk', 'totalSpDef', 'totalSpd'
+        ].forEach(field => delete formattedData[field]);
+
+        return formattedData;
+    },
+
     // Get a specific team by ID with all related data
     getTeamById: async (teamID) => {
         try {
@@ -149,56 +263,14 @@ const teamController = {
 
             const team = teamRows[0];
             
-            // Function to fetch complete Pokemon data
-            const getPokemonData = async (pokemonId) => {
-                if (!pokemonId) return null;
-                
-                const [pokemonData] = await pool.query(`
-                    SELECT 
-                        p.generation,
-                        pbd.name, pbd.dexNum, pbd.spriteURL,
-                        tr1.typeName as typeMain,
-                        tr2.typeName as typeSecond,
-                        pcd.gender, pcd.shiny, pcd.nature, 
-                        pcd.friendship, pcd.ability,
-                        pm.move1, pm.move2, pm.move3, pm.move4,
-                        bs.sHealth as baseHP, bs.sAtk as baseAtk, 
-                        bs.sDef as baseDef, bs.sSpAtk as baseSpAtk,
-                        bs.sSpDef as baseSpDef, bs.sSpd as baseSpd,
-                        ev.sHealth as evHP, ev.sAtk as evAtk,
-                        ev.sDef as evDef, ev.sSpAtk as evSpAtk,
-                        ev.sSpDef as evSpDef, ev.sSpd as evSpd,
-                        iv.sHealth as ivHP, iv.sAtk as ivAtk,
-                        iv.sDef as ivDef, iv.sSpAtk as ivSpAtk,
-                        iv.sSpDef as ivSpDef, iv.sSpd as ivSpd,
-                        total.sHealth as totalHP, total.sAtk as totalAtk,
-                        total.sDef as totalDef, total.sSpAtk as totalSpAtk,
-                        total.sSpDef as totalSpDef, total.sSpd as totalSpd
-                    FROM pokemon p
-                    JOIN poke_base_data pbd ON p.baseDataID = pbd.baseID
-                    JOIN type_ref tr1 ON pbd.typeMain = tr1.typeID
-                    LEFT JOIN type_ref tr2 ON pbd.typeSecond = tr2.typeID
-                    JOIN poke_choice_data pcd ON p.choiceDataID = pcd.choiceID
-                    JOIN poke_moveset pm ON p.moveSetID = pm.moveSetID
-                    JOIN stat_list bs ON pbd.baseStatID = bs.statID
-                    JOIN stat_list ev ON pcd.statEV = ev.statID
-                    JOIN stat_list iv ON pcd.statIV = iv.statID
-                    JOIN stat_list total ON pcd.statTotal = total.statID
-                    WHERE p.pokemonID = ?`,
-                    [pokemonId]
-                );
-                
-                return pokemonData[0] || null;
-            };
-
             // Fetch data for all Pokemon in the team
             team.pokemon = await Promise.all([
-                getPokemonData(team.pokemon1),
-                getPokemonData(team.pokemon2),
-                getPokemonData(team.pokemon3),
-                getPokemonData(team.pokemon4),
-                getPokemonData(team.pokemon5),
-                getPokemonData(team.pokemon6)
+                teamController.getPokemonData(team.pokemon1),
+                teamController.getPokemonData(team.pokemon2),
+                teamController.getPokemonData(team.pokemon3),
+                teamController.getPokemonData(team.pokemon4),
+                teamController.getPokemonData(team.pokemon5),
+                teamController.getPokemonData(team.pokemon6)
             ]);
 
             // Clean up the response by removing the individual pokemon fields
