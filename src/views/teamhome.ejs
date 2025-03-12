@@ -89,7 +89,7 @@
       class="hidden fixed inset-5 bg-gray-900 bg-opacity-50 flex justify-center items-center"
     >
       <form
-        class="bg-gray-300 p-6 rounded-lg shadow-lg w-[90%] max-w-md"
+        class="bg-gray-300 p-6 border-8 border-red-500 rounded-xl shadow-lg w-[90%] max-w-md"
         action="/team/builder/create"
         method="POST"
       >
@@ -138,6 +138,7 @@
         <div class="flex justify-between">
           <button
             id="closeBtn"
+            type="button"
             class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
           >
             Cancel
@@ -174,8 +175,10 @@
 
       // Close form
       //When the closeBtn is clicked triggering the eventlistener, the function ADDS the "hidden" class from teamform, making it dissappear.
-      closeBtn.addEventListener("click", () => {
-        teamform.classList.add("hidden");
+      // Close form without submitting
+      closeBtn.addEventListener("click", (event) => {
+        event.preventDefault(); // Prevents form submission
+        teamform.classList.add("hidden"); // Hides the modal
       });
 
       //NEW Search functionality for teams
