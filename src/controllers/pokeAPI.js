@@ -527,6 +527,6 @@ async function testTypeMatchups(type1, type2, generation){
         'Damage Modifier': m.damage_mod,
         'Generation': m.generation
 })));
-}
+} 
 //testTypeMatchups('steel',null,6);
 export default pokeAPI;
