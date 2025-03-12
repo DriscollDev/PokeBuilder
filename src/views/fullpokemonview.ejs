@@ -173,7 +173,42 @@
         </div>
       </div>
     </div>
+    
 
+    <!-- Team Selection Modal -->
+    <div id="teamSelectionModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 hidden">
+        <div class="bg-gray-300 border-8 border-red-500 rounded-xl shadow-lg p-6 w-[90%] sm:w-[60%] lg:w-[40%] relative">
+            <button id="closeTeamSelection" class="absolute top-3 right-3 text-gray-700 hover:text-red-600 text-2xl font-bold">&times;</button>
+            
+            <h2 class="text-xl font-bold text-center mb-4">Select Team and Slot</h2>
+            
+            <!-- Team Selection -->
+            <div class="mb-4">
+                <label for="teamSelect" class="block text-gray-700 text-sm font-bold mb-2">Select Team:</label>
+                <select id="teamSelect" name="teamSelect" class="w-full p-2 border rounded-md">
+                    <option value="">Choose a team...</option>
+                    <% userTeams.filter(team => team.generation == generation).forEach(team => { %>
+                        <option value="<%= team.teamID %>"><%= team.teamname %></option>
+                    <% }); %>
+                </select>
+            </div>
+            
+            <!-- Slot Selection -->
+            <div class="mb-6">
+                <label for="slotSelect" class="block text-gray-700 text-sm font-bold mb-2">Select Slot:</label>
+                <select id="slotSelect" name="slotSelect" class="w-full p-2 border rounded-md">
+                    <option value="">Choose a slot...</option>
+                </select>
+            </div>
+            
+            <div class="flex justify-center">
+                <button id="confirmTeamSelection" class="bg-green-500 text-white py-2 px-4 rounded-lg font-semibold shadow-md hover:bg-green-600 transition">
+                    Confirm Selection
+                </button>
+            </div>
+        </div>
+    </div>
+    
   </div>
   <script>
 

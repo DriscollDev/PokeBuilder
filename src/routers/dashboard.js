@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
 import teamController from '../controllers/teamController.js';
+import userController from '../controllers/userController.js';
 const router = Router();
 
 
@@ -25,8 +26,9 @@ router.get('/build', function(req, res, next) {
 })
 
 
-router.get('/user', function(req, res, next) {
-  res.render("account", { title: 'Account Info' , user: req.user});
+router.get('/user',async function(req, res, next) {
+  const userData = await userController.getUserData(req);
+  res.render("account", { title: 'Account Info' , user: userData});
   });
 
 
