@@ -2,6 +2,7 @@
 font-family: 'Quantico';
 display: flex;
 width: 300px;
+min-width: 320px;
 height: 300px;
 padding: 20px;
 flex-direction: column;
@@ -36,7 +37,7 @@ height: 170px;
 flex-shrink: 0;
 }
 .pokedexname{
-display: flex;
+display: inline-block;
 height: 37px;
 flex-direction: column;
 justify-content: center;
@@ -44,11 +45,18 @@ flex: 1 0 0;
 color: #000;
 text-align: center;
 font-family: Quantico;
-font-size: 40px;
+font-size: clamp(18px, 4vw, 32px);
 font-style: normal;
 font-weight: 400;
 line-height: normal;
 text-transform: capitalize;
+overflow-wrap: break-word;
+text-align: center;
+overflow-wrap: break-word; /* Ensures it doesn't overflow */
+text-overflow: ellipsis; /* Adds "..." if it’s too long */
+white-space: normal;
+max-width: 90%; /* Ensures it fits within the box */
+display: block; /* Keeps text on one line */
 }
 
 .pokedextypingdiv{
@@ -195,20 +203,38 @@ body{
   }
   
 
-.spcontainer{
-  display: flex;
-width: 493px;
-height: 940px;
-padding: 0px 34px;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-gap: 10px;
-flex-shrink: 0;
-border-radius: 20px;
-border: 3px solid #000;
-background: #D9D9D9;
-}
+  .spcontainer {
+    display: flex;
+    width: 100%;
+    max-width: 500px;
+    height: 940px;
+    max-height: 110vh; 
+    padding: 0px 34px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    border: 3px solid #000;
+    background: #D9D9D9;
+  }
+/* 
+  .spcontainer {
+    display: flex;
+    width: 100%;
+    max-width: 500px; 
+    max-height: 85vh; 
+    padding: 20px;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    overflow-y: auto; 
+    border-radius: 20px;
+    border: 3px solid #000;
+    background: #D9D9D9;
+  } */
 
 .spimg{
   width: 400px;
