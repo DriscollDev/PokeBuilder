@@ -157,26 +157,26 @@ const typeColors = {
   steel: "#B7B7CE", fairy: "#D685AD"
 };
 
-// Function to Populate STAB Matchups with Color
 function populateMatchups(containerId, matchups) {
   const container = document.getElementById(containerId);
   container.innerHTML = "";
+  container.className = "flex flex-col justify-center items-center gap-5 w-full h-full";
 
   Object.entries(matchups).forEach(([multiplier, types]) => {
     if (types.length > 0) {
       const row = document.createElement("div");
-      row.className = "flex flex-wrap justify-center gap-3 text-lg";
+      row.className = "flex flex-wrap justify-center items-center gap-x-4 gap-y-3 w-full";
 
       // Effectiveness Multiplier Label
       const multiplierSpan = document.createElement("span");
-      multiplierSpan.className = "font-bold";
+      multiplierSpan.className = "font-bold text-xl";
       multiplierSpan.innerText = `${multiplier}`;
       row.appendChild(multiplierSpan);
 
-      // Type Labels with Background Colors
+      // Type Labels 
       types.forEach(type => {
         const typeBadge = document.createElement("span");
-        typeBadge.className = `px-2 py-1 rounded-lg text-white text-sm font-semibold`;
+        typeBadge.className = `px-4 py-2 rounded-lg text-white text-md font-semibold shadow-md min-w-[80px] text-center`;
         typeBadge.style.backgroundColor = typeColors[type.toLowerCase()] || "#777";
         typeBadge.innerText = type;
         row.appendChild(typeBadge);
