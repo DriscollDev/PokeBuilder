@@ -19,8 +19,8 @@
     <div class="bg-gray-200 p-6 rounded-2xl w-full h-full max-screen grid grid-cols-1 md:grid-cols-3 gap-6" >
       <!-- Left Column: Pokémon Details -->
       <div class="spcontainer w-full fontResize h-full">
-        <img id="pokemonImage" class="w-full" src="<%= pokemon.sprite_url %>" alt="<%= pokemon.name %> sprite">
-        <h1 id="pokemonName" class="font-bold mt-3" style="font-size: larger;"><%= pokemon.name %></h1>
+        <img id="pokemonImage" class="w-full" src="<%= pokemon.sprite_url %>" alt="<%= pokemon.name.toUpperCase() %> sprite">
+        <h1 id="pokemonName" class="font-bold mt-3" style="font-size: larger;"><%= pokemon.name.toUpperCase() %></h1>
         <p id="pokedexNumber" class="text-gray-700">#<%= pokemon.id %></p>
 
         <div id="typeContainer" class="flex gap-4 mt-3">

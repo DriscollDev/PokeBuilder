@@ -2,171 +2,464 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Pokémon Edit: Garchomp</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Pokémon Details</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link rel="stylesheet" href="/stylesheets/pokestyle.css" />
     <link
       rel="icon"
       type="image/x-icon"
       href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
     />
+    
   </head>
-  <body
-    class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex justify-center items-center p-6"
-  >
+
+  <body class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex justify-center items-center p-6">
     <!-- Main Card Container -->
-    <div
-      class="bg-gray-200 p-6 rounded-2xl w-full h-full max-screen grid grid-cols-1 md:grid-cols-3 gap-6"
-    >
+    <div class="bg-gray-200 p-6 rounded-2xl w-full h-full max-screen grid grid-cols-1 md:grid-cols-3 gap-6" >
       <!-- Left Column: Pokémon Details -->
-      <div
-        class="flex flex-col justify-center items-center text-center bg-white p-6 rounded-xl shadow-md border-2 border-gray-800 h-full"
-      >
-        <img
-          id="pokemonImage"
-          class="w-70 h-70 object-contain"
-          src=""
-          alt="Pokemon Image"
-        />
-        <h1 id="pokemonName" class="font-bold text-2xl mt-3"></h1>
-        <p id="pokedexNumber" class="text-black text-lg"></p>
+      <div class="spcontainer w-full fontResize h-full">
+        <img id="pokemonImage" class="w-full" src="<%= pokemon.spriteURL %>" alt="<%= pokemon.name.toUpperCase() %> sprite">
+        <h1 id="pokemonName" class="font-bold mt-3" style="font-size: larger;"><%= pokemon.name.toUpperCase() %></h1>
+        <p id="pokedexNumber" class="text-gray-700">#<%= pokemon.dexNum %></p>
 
-        <!-- Type Badges -->
-        <div id="typeContainer" class="flex gap-3 mt-3"></div>
+        <div id="typeContainer" class="flex gap-4 mt-3">
+          <% pokemon.types.forEach(type => { %>
+            <span class="px-3 py-1 rounded text-white <%= type.toLowerCase() %>"><%= type.toUpperCase() %></span>
+          <% }); %>
+        </div>
 
-        <!-- Additional Info -->
-        <p id="abilities" class="mt-3 text-gray-600 text-sm"></p>
-        <p id="generation" class="text-gray-600 text-sm"></p>
-        <p id="weight" class="text-gray-600 text-sm"></p>
-        <p id="height" class="text-gray-600 text-sm"></p>
+        <p id="abilities" class="mt-3 text-gray-600">Ability: <%= pokemon.ability%></p>
       </div>
 
-      <!-- Middle Column: Type Matchups -->
-      <div class="flex flex-col gap-6">
-        <!-- Defensive Matchups -->
-        <div
-          class="border-2 border-gray-800 shadow-md p-4 rounded-xl bg-white h-full flex flex-col"
-        >
-          <h2 class="font-bold text-lg text-center mb-3">
-            Defensive Type Match Ups
-          </h2>
-
-          <div
-            class="bg-gray-100 p-3 rounded-lg flex flex-col justify-center items-center h-full"
-          >
-            <div
-              id="weaknessContainer"
-              class="flex flex-col items-center gap-4 w-full"
-            ></div>
-          </div>
-        </div>
-
-        <!-- STAB Matchups -->
-        <div class="border-2 border-gray-800 shadow-md p-4 rounded-xl bg-white">
-          <h2 class="font-bold text-lg text-center mb-3">
-            STAB Type Match Ups
-          </h2>
-
-          <!-- Inner Styled Box -->
-          <div class="bg-gray-100 p-3 rounded-lg">
-            <div
-              id="stabContainer"
-              class="flex flex-col gap-2 text-center"
-            ></div>
-          </div>
-        </div>
-
-        <!-- Buttons -->
-        <div class="flex justify-center gap-6 mt-6">
-          <a
-            class="bg-red-500 hover:bg-red-600 text-white text-center px-6 py-3 rounded-lg font-semibold transition"
-            href="/poke/dex"
-            >Return to Pokédex</a
-          >
-          <a
-            class="bg-red-500 hover:bg-red-600 text-white text-center px-6 py-3 rounded-lg font-semibold transition"
-            href="/team/"
-            >Add Pokémon to Team</a
-          >
+    <!-- Middle Column all stab and type matchups-->
+    <div class="flex flex-col gap-6">
+      <div class="outerStabContainer border-4 border-red-700 shadow-lg p-2">
+        <h2 class="font-bold text-center mb-2">Defensive Type Match Ups</h2>
+        <div id="weaknessContainer" class="innerStabContainer">
+          <% 
+            // Group matchups by damage modifier
+            const damageGroups = {
+              4: [],
+              2: [],
+              0.5: [],
+              0.25: [],
+              0: []
+            };
+            
+            matchups.defensive.forEach(match => {
+              damageGroups[match.damage_mod] = damageGroups[match.damage_mod] || [];
+              damageGroups[match.damage_mod].push(match.attacking_type);
+            });
+          %>
+          
+          <% const modifierLabels = {
+            4: '4x damage',
+            2: '2x damage',
+            0.5: '0.5x damage',
+            0.25: '0.25x damage',
+            0: 'Immune'
+          }; %>
+          
+          <% [4, 2, 0.5, 0.25, 0].forEach(modifier => { 
+            if (damageGroups[modifier] && damageGroups[modifier].length > 0) { %>
+              <div class="mb-2">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="font-bold text-lg"><%= modifierLabels[modifier] %>:</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <% damageGroups[modifier].forEach(type => { %>
+                    <span class="<%= type.toLowerCase() %> px-3 py-1 rounded text-white"><%= type.toUpperCase() %></span>
+                  <% }); %>
+                </div>
+              </div>
+            <% } %>
+          <% }); %>
         </div>
       </div>
-
-      <!-- Right Column: Stats & Move Pool -->
-      <div class="flex flex-col gap-6">
-        <div
-          class="bg-gray-200 p-5 rounded-xl shadow-md border-2 border-gray-800 flex-grow"
-        >
-          <h2 class="font-bold text-lg text-center mb-2">Base Stats</h2>
-          <div id="stats"></div>
-        </div>
-        <div class="box-container p-2 margin-top-4">
-          <h2 class="box-title text-center">Move Pool</h2>
-          <div id="moveSlotsContainer" class="flex flex-col mt-4"></div>
+      <div class="outerStabContainer border-4 border-red-700 shadow-lg p-2">
+        <h2 class="font-bold text-center mb-2">STAB Type Match Ups</h2>
+        <div id="stabContainer" class="innerStabContainer grid grid-cols-<%= pokemon.types.length %> gap-4">
+          <% pokemon.types.forEach(type => { %>
+            <div class="border-2 border-gray-300 rounded-lg p-3">
+              <h3 class="text-center font-bold mb-3 <%= type.toLowerCase() %> text-white rounded py-1"><%= type.toUpperCase() %></h3>
+              <% 
+                // Group matchups by damage modifier
+                const typeMatchups = matchups.offensive.filter(m => m.attacking_type.toUpperCase() === type.toUpperCase());
+                const offensiveGroups = {
+                  2: [],
+                  0.5: [],
+                  0: []
+                };
+                
+                typeMatchups.forEach(match => {
+                  offensiveGroups[match.damage_mod] = offensiveGroups[match.damage_mod] || [];
+                  offensiveGroups[match.damage_mod].push(match.defending_type);
+                });
+              %>
+              <% [2, 0.5, 0].forEach(modifier => { 
+                if (offensiveGroups[modifier] && offensiveGroups[modifier].length > 0) { %>
+                  <div class="mb-2">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="font-bold"><%= modifierLabels[modifier] %>:</span>
+                    </div>
+                    <div class="flex flex-wrap gap-1">
+                      <% offensiveGroups[modifier].forEach(defType => { %>
+                        <span class="<%= defType.toLowerCase() %> px-2 py-1 rounded text-white text-sm"><%= defType.toUpperCase() %></span>
+                      <% }); %>
+                    </div>
+                  </div>
+                <% } %>
+              <% }); %>
+            </div>
+          <% }); %>
         </div>
       </div>
-    </div>
-
-    <!--  MOVE MODAL  -->
-    <div class="modal-backdrop" id="moveModalBackdrop">
-      <div class="modal-content">
-        <h3 class="modal-title">Select a Move</h3>
-        <ul id="moveList" class="modal-list"></ul>
-        <div class="modal-buttons">
-          <button class="modal-button" onclick="closeMoveModal()">
+      <div class="flex justify-center gap-6 mt-4">
+        <form action="/team/builder" method="POST" class="m-0">
+          <input type="hidden" name="teamID" value="<%= teamID %>" />
+          <button type="submit" class="bg-red-500 text-white px-6 py-3 rounded-lg">
             Cancel
           </button>
+        </form>
+        <button class="bg-green-500 text-white px-6 py-3 rounded-lg" onclick="updatePokemon()">Update</button>
+      </div>
+    </div>
+    
+    <!-- Right Column base stats and moves-->
+    <div class="flex flex-col gap-6 w-full">
+      <div class="bg-white p-6 rounded-lg shadow-md w-full statsChart">
+        <h2 class="font-bold text-center mb-2">Stats</h2>
+        <div id="stats">
+          <% Object.entries(pokemon.totalStats).forEach(([stat, value]) => { %>
+            <div class="stat-container">
+              <span class="stat-name"><%= pokemon.statNames[stat] %></span>
+              <div class="stat-bar-container">
+                <div class="stat-bar" data-value="<%= value %>" data-width="<%= (value / 255) * 100 %>"></div>
+              </div>
+              <span class="stat-value"><%= value %></span>
+              <input type="hidden" class="base-stat" value="<%= pokemon.baseStats[stat] %>">
+              <input type="hidden" class="iv-value" value="31">
+              <input type="hidden" class="ev-value" value="0">
+            </div>
+          <% }); %>
+        </div>
+      </div>
+
+      <!-- Stats Edit Modal -->
+      <div id="statsModal" class="modal-backdrop">
+        <div class="modal-content">
+          <h2 class="modal-title">Edit Stats</h2>
+          <div class="stats-edit-container">
+            <% Object.entries(pokemon.totalStats).forEach(([stat, value]) => { %>
+              <div class="stat-edit-row">
+                <span class="stat-edit-name"><%= pokemon.statNames[stat] %></span>
+                <div class="stat-edit-controls">
+                  <label>
+                    IV (0-31):
+                    <input type="number" class="iv-input" min="0" max="31" value="31" data-stat="<%= stat %>">
+                  </label>
+                  <label>
+                    EV (0-255):
+                    <input type="range" class="ev-slider" min="0" max="255" value="0" data-stat="<%= stat %>">
+                    <span class="ev-value">0</span>
+                  </label>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+          <div class="modal-buttons">
+            <button class="modal-button" onclick="closeStatsModal()">Close</button>
+            <button class="modal-button" onclick="applyStats()">Apply</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-lg shadow-md w-full h-full">
+        <h2 class="font-bold text-center mb-2">Moves</h2>
+        <div id="moveSlots" class="grid grid-cols-1 gap-4">
+          <% for(let i = 0; i < 4; i++) { %>
+            <button 
+              class="move-slot bg-gray-100 hover:bg-gray-200 p-4 rounded-lg border-2 border-gray-300 text-center font-semibold transition-colors"
+              onclick="openMoveSelector(`<%= i %>`)"
+              data-slot="<%= i %>"
+            >
+              <%= pokemon.moves[i] == "-" ? 'Select Move' : pokemon.moves[i]?.toUpperCase() %>
+            </button>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Move Selection Modal -->
+      <div id="moveSelectionModal" class="modal-backdrop">
+        <div class="modal-content">
+          <h2 class="modal-title">Select Move</h2>
+          <div class="mb-4">
+            <select id="moveFilter" class="w-full p-2 border rounded">
+              <option value="all">All Methods</option>
+              <option value="level-up">Level Up</option>
+              <option value="machine">Machine</option>
+              <option value="egg">Egg</option>
+              <option value="tutor">Tutor</option>
+            </select>
+          </div>
+          <div class="move-list-container overflow-y-auto max-h-[400px]">
+            <table class="w-full text-left border-collapse">
+              <thead class="sticky top-0 bg-gray-200">
+                <tr>
+                  <th class="border px-4 py-2">Move</th>
+                  <th class="border px-4 py-2">Learned By</th>
+                </tr>
+              </thead>
+              <tbody id="moveTableBody">
+                <% moveSet.forEach(move => { %>
+                  <tr class="move-row cursor-pointer hover:bg-gray-100" 
+                      data-learn-method="<%= move.learned_by %>"
+                      data-move-name="<%= move.name %>"
+                      onclick="selectMove('<%= move.name %>')">
+                    <td class="border px-4 py-2"><%= move.name.replace(/-/g, ' ').toUpperCase() %></td>
+                    <% if (move.level_at > 0) { %>
+                      <td class="border px-4 py-2"><%= move.learned_by.replace(/-/g, ' ').toUpperCase() + " : " + move.level_at %></td>
+                    <% } else { %>
+                      <td class="border px-4 py-2"><%= move.learned_by.replace(/-/g, ' ').toUpperCase() %></td>
+                    <% } %>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-buttons">
+            <button class="modal-button" onclick="closeMoveSelector()">Cancel</button>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+  <script>
+  // Functions
+  let currentMoveSlot = 0;
 
-    <!--  STAT MODAL  -->
-    <div class="modal-backdrop" id="statModalBackdrop">
-      <div class="modal-content">
-        <h3 id="statModalTitle" class="modal-title">Adjust Stat</h3>
+  function openMoveSelector(slotIndex) {
+    currentMoveSlot = slotIndex;
+    document.getElementById('moveSelectionModal').classList.add('active');
+  }
 
-        <div class="modal-field">
-          <span class="modal-label">Base Value:</span>
-          <span id="baseValueDisplay"></span>
-        </div>
+  function closeMoveSelector() {
+    document.getElementById('moveSelectionModal').classList.remove('active');
+  }
 
-        <div class="modal-field">
-          <label class="modal-label">IV (0–31):</label>
-          <input
-            type="number"
-            id="ivInput"
-            min="0"
-            max="31"
-            oninput="recalcStat()"
-          />
-        </div>
+  function selectMove(moveName) {
+    const moveSlots = document.querySelectorAll('.move-slot');
+    moveSlots[currentMoveSlot].textContent = moveName.replace(/-/g, ' ').toUpperCase();
+    closeMoveSelector();
+  }
 
-        <div class="modal-field">
-          <label class="modal-label">EV (0–252):</label>
-          <input
-            type="range"
-            id="evRange"
-            min="0"
-            max="252"
-            oninput="recalcStat()"
-          />
-          <span id="evValueDisplay">0</span>
-        </div>
+  // Move filtering function
+  document.getElementById('moveFilter').addEventListener('change', function() {
+    const selectedMethod = this.value;
+    const moveRows = document.querySelectorAll('.move-row');
+    
+    moveRows.forEach(row => {
+      const learnMethod = row.getAttribute('data-learn-method');
+      if (selectedMethod === 'all' || learnMethod === selectedMethod) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
 
-        <div class="modal-field">
-          <span class="modal-label">Final Stat:</span>
-          <span id="finalStatDisplay"></span>
-        </div>
+  function colorStats() {
+    const statBars = document.querySelectorAll('.stat-bar');
+    
+    statBars.forEach(bar => {
+      const value = parseInt(bar.dataset.value);
+      const width = bar.dataset.width;
+      let barColor = "#FB2323";  // default red for low stats
+      if (value >= 40)  barColor = "#F4902C";  // orange for below average
+      if (value >= 70)  barColor = "#D2F700";  // yellow for average
+      if (value >= 100) barColor = "#4FE71D";  // light green for good
+      if (value >= 120) barColor = "#4ECB73";  // green for very good
+      if (value >= 150) barColor = "#37D0D6";  // blue for excellent
+      
+      bar.style.backgroundColor = barColor;
+      bar.style.width = width + '%';
+    });
+  }
 
-        <div class="modal-buttons">
-          <button class="modal-button" onclick="saveStatChanges()">Save</button>
-          <button class="modal-button" onclick="closeStatModal()">
-            Cancel
-          </button>
-        </div>
-      </div>
-    </div>
+  function calculateStats() {
+    const stats = document.querySelectorAll('.stat-container');
+    stats.forEach(stat => {
+      const statName = stat.querySelector('.stat-name').textContent;
+      const baseValue = parseInt(stat.querySelector('.base-stat').value);
+      const evValue = parseInt(stat.querySelector('.ev-value').value);
+      const ivValue = parseInt(stat.querySelector('.iv-value').value);
+      const level = 50; // Default level
+      
+      let totalValue;
+      if (statName === 'HP') {
+        totalValue = Math.floor(((2 * baseValue + ivValue + Math.floor(evValue/4)) * level) / 100) + level + 10;
+      } else {
+        totalValue = Math.floor(((2 * baseValue + ivValue + Math.floor(evValue/4)) * level) / 100) + 5;
+      }
 
-    <script src="/scripts/update.js"></script>
-  </body>
+      const statBar = stat.querySelector('.stat-bar');
+      const statBarWidth = Math.min((totalValue / 255) * 100, 100); // Cap at 100%
+      
+      // Update both the style and data attributes
+      statBar.style.width = statBarWidth + '%';
+      statBar.dataset.width = statBarWidth;
+      statBar.dataset.value = totalValue;
+      stat.querySelector('.stat-value').textContent = totalValue;
+
+      // Update the color immediately
+      let barColor = "#FB2323";  // default red for low stats
+      if (totalValue >= 40)  barColor = "#F4902C";  // orange for below average
+      if (totalValue >= 70)  barColor = "#D2F700";  // yellow for average
+      if (totalValue >= 100) barColor = "#4FE71D";  // light green for good
+      if (totalValue >= 120) barColor = "#4ECB73";  // green for very good
+      if (totalValue >= 150) barColor = "#37D0D6";  // blue for excellent
+      
+      statBar.style.backgroundColor = barColor;
+    });
+  }
+
+  // Stats Modal Functions
+  function openStatsModal() {
+    const stats = document.querySelectorAll('.stat-container');
+    const ivInputs = document.querySelectorAll('.iv-input');
+    const evSliders = document.querySelectorAll('.ev-slider');
+
+    // Set initial values in modal from hidden inputs
+    stats.forEach((stat, index) => {
+      const ivValue = stat.querySelector('.iv-value').value;
+      const evValue = stat.querySelector('.ev-value').value;
+      
+      ivInputs[index].value = ivValue;
+      evSliders[index].value = evValue;
+      evSliders[index].parentElement.querySelector('.ev-value').textContent = evValue;
+    });
+
+    document.getElementById('statsModal').classList.add('active');
+  }
+
+  function closeStatsModal() {
+    document.getElementById('statsModal').classList.remove('active');
+  }
+
+  function updateEVValue(slider) {
+    const valueDisplay = slider.parentElement.querySelector('.ev-value');
+    valueDisplay.textContent = slider.value;
+  }
+
+  function applyStats() {
+    const stats = document.querySelectorAll('.stat-container');
+    const ivInputs = document.querySelectorAll('.iv-input');
+    const evSliders = document.querySelectorAll('.ev-slider');
+
+    stats.forEach((stat, index) => {
+      // Update hidden input values
+      stat.querySelector('.iv-value').value = ivInputs[index].value;
+      stat.querySelector('.ev-value').value = evSliders[index].value;
+    });
+
+    calculateStats();
+    closeStatsModal();
+  }
+
+  // Event Listeners
+  document.addEventListener('DOMContentLoaded', () => {
+    colorStats();
+    calculateStats();
+
+    // Add click handler to stats chart
+    document.querySelector('.statsChart').addEventListener('click', openStatsModal);
+
+    // Add change handlers to EV sliders
+    document.querySelectorAll('.ev-slider').forEach(slider => {
+      slider.addEventListener('input', () => updateEVValue(slider));
+    });
+
+    // Add input validation for IV inputs
+    document.querySelectorAll('.iv-input').forEach(input => {
+      input.addEventListener('input', () => {
+        let value = parseInt(input.value);
+        if (isNaN(value)) value = 0;
+        if (value < 0) value = 0;
+        if (value > 31) value = 31;
+        input.value = value;
+      });
+    });
+  });
+
+  async function updatePokemon() {
+    // Collect moves
+    const moveSlots = document.querySelectorAll('.move-slot');
+    const moves = Array.from(moveSlots).map(slot => {
+      const moveName = slot.textContent.trim();
+      return moveName === 'Select Move' ? '-' : moveName;
+    });
+
+    // Collect stats
+    const stats = {
+      evs: {},
+      ivs: {},
+      total: {}
+    };
+
+    const statContainers = document.querySelectorAll('.stat-container');
+    statContainers.forEach(container => {
+      const statName = container.querySelector('.stat-name').textContent;
+      const statKey = statName === 'HP' ? 'hp' :
+                     statName === 'Attack' ? 'attack' :
+                     statName === 'Defense' ? 'defense' :
+                     statName === 'Sp. Atk' ? 'specialAttack' :
+                     statName === 'Sp. Def' ? 'specialDefense' :
+                     'speed';
+
+      stats.evs[statKey] = parseInt(container.querySelector('.ev-value').value);
+      stats.ivs[statKey] = parseInt(container.querySelector('.iv-value').value);
+      stats.total[statKey] = parseInt(container.querySelector('.stat-value').textContent);
+    });
+
+    try {
+      const response = await fetch('/poke/update-pokemon', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          pokemonID: '<%- pokemon.pokemonID %>',
+          moves: moves,
+          stats: stats
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        // Create a form and submit it programmatically to return to the team builder
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/team/builder';
+        
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'teamID';
+        input.value = '<%- teamID %>';
+        
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+      } else {
+        alert('Error updating Pokemon: ' + data.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error updating Pokemon');
+    }
+  }
+  </script>
+</body>
+
 </html>

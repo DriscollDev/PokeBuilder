@@ -25,7 +25,7 @@ router.post('/builder', async function(req, res, next) {
       team: team
     });
   } catch (error) {
-    console.error('Error loading team:', error);
+    console.log('Error loading team:', error);
     res.status(500).send('Error loading team');
   }
 });

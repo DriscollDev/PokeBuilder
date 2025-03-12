@@ -109,7 +109,7 @@
             <% if (team && team.pokemon && team.pokemon[i]) { %>
               <!-- Loading existing Pokémon -->
               <div class="w-40 h-40 bg-gray-400 rounded-md text-gray-700 text-lg font-bold px-4 py-2 text-center">
-                <img src="<%= team.pokemon[i].spriteURL %>" alt="<%= team.pokemon[i].name %>" class="w-full h-full object-contain">
+                <img src="<%= team.pokemon[i].spriteURL %>" alt="<%= team.pokemon[i].name.toUpperCase() %>" class="w-full h-full object-contain">
               </div>
             <% } else { %>
               <!-- Empty slot -->
@@ -123,7 +123,7 @@
               <!-- Pokemon Name / Moves Title -->
               <h2 class="text-black text-lg font-bold mb-2 text-center">
                 <% if (team && team.pokemon && team.pokemon[i]) { %>
-                  <%= team.pokemon[i].name %>
+                  <%= team.pokemon[i].name.toUpperCase() %>
                 <% } else { %>
                   Pokemon
                 <% } %>
@@ -132,18 +132,12 @@
               <!-- Moves (2x2 Grid) -->
               <div class="grid grid-cols-2 gap-3">
                 <% if (team && team.pokemon && team.pokemon[i]) { %>
-                  <div class="w-full h-8 bg-gray-400 rounded flex items-center justify-center">
-                    <%= team.pokemon[i].move1 || '-' %>
-                  </div>
-                  <div class="w-full h-8 bg-gray-400 rounded flex items-center justify-center">
-                    <%= team.pokemon[i].move2 || '-' %>
-                  </div>
-                  <div class="w-full h-8 bg-gray-400 rounded flex items-center justify-center">
-                    <%= team.pokemon[i].move3 || '-' %>
-                  </div>
-                  <div class="w-full h-8 bg-gray-400 rounded flex items-center justify-center">
-                    <%= team.pokemon[i].move4 || '-' %>
-                  </div>
+                  <% team.pokemon[i].moves.forEach(move => { %>
+                    <div class="w-full h-8 bg-gray-400 rounded flex items-center justify-center">
+                      <%= move %>
+                    </div>
+                  <% }); %> 
+
                 <% } else { %>
                   <!-- Empty move slots -->
                   <div class="w-full h-8 bg-gray-400 rounded opacity-50 flex items-center justify-center">-</div>
@@ -156,11 +150,13 @@
               <!-- Buttons -->
               <div class="flex gap-3 mt-3">
                 <% if (team && team.pokemon && team.pokemon[i]) { %>
-                <a class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"
-                href="/poke/editpokemon/<%= team.pokemon[i].name %>"
-                >
-                  Edit
-                </a>
+                <form action="/poke/editpokemon" method="POST" class="w-full">
+                  <input type="hidden" name="teamID" value="<%= team.teamID %>">
+                  <input type="hidden" name="pokemonID" value="<%= team.pokemon[i].pokemonID %>">
+                  <button type="submit" class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold">
+                    Edit
+                  </button>
+                </form>
                 <% } else {%>
                   <div class="w-full h-8 bg-blue-500 rounded-xl text-center text-white font-bold"></div>
                 <% } %>
