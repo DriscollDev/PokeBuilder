@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Trainer Profile</title>
-    <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
+    />
   </head>
- <body
+  <body
     class="bg-gray-700 text-white font-sans min-h-screen flex items-center justify-center"
   >
     <!-- Return to Dashboard Button -->
@@ -19,64 +23,135 @@
         Return to Dashboard
       </a>
     </nav>
-
+    <div class="fixed top-4 right-4 p-1 z-50 group">
+      <form action="/auth/logout" method="POST">
+        <button
+          type="submit"
+          class="relative w-10 h-10 flex items-center justify-center bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg transition"
+        >
+          <!-- Logout Icon (SVG) -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-5 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h6a2 2 0 012 2v1"
+            />
+          </svg>
+          <!-- "Tooltip" on right-->
+          <span
+            class="absolute left ml-2 px-2 py-1 text-sm text-white bg-gray-800 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+          >
+            Logout
+          </span>
+        </button>
+      </form>
+    </div>
+    
     <main
       class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6"
     >
-      <img src="/images/Trainer.gif" alt="Trainer N" class=" bg-gray-200 h-32 w-32 rounded-full shadow-lg border-4 border-red-600 mb-4" />
+      <img
+        src="/images/Trainer.gif"
+        alt="Trainer N"
+        class="bg-gray-200 h-32 w-32 rounded-full shadow-lg border-4 border-red-600 mb-4"
+      />
       <h1 class="text-3xl font-semibold">Trainer: <%= user.username %></h1>
-      <p class="text-gray-300 mt-2">Account Created: <%= user.date_created.toString().slice(4,10) %></p>
+      <p class="text-gray-300 mt-2">
+        Account Created: <%= user.date_created.toString().slice(4,10) %>
+      </p>
 
       <!-- Buttons -->
       <div class="mt-6 space-y-3">
-        <button onclick="openPasswordModal()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition">Update Password</button>
-        <button onclick="confirmDelete()" class="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg transition">Delete Account</button>
+        <button
+          onclick="openPasswordModal()"
+          class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition"
+        >
+          Update Password
+        </button>
+        <button
+          onclick="confirmDelete()"
+          class="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg transition"
+        >
+          Delete Account
+        </button>
       </div>
     </main>
 
     <!-- Password Update Modal -->
-    <div id="passwordModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div
+      id="passwordModal"
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden"
+    >
       <div class="bg-white p-6 rounded-lg text-black w-full max-w-sm">
         <h2 class="text-xl font-bold mb-4">Change Password</h2>
         <form id="passwordForm">
-          <input type="password" id="newPassword" placeholder="New Password" class="w-full px-4 py-2 border rounded mb-4" required />
-          <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition">Update Password</button>
+          <input
+            type="password"
+            id="newPassword"
+            placeholder="New Password"
+            class="w-full px-4 py-2 border rounded mb-4"
+            required
+          />
+          <button
+            type="submit"
+            class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition"
+          >
+            Update Password
+          </button>
         </form>
-        <button onclick="closePasswordModal()" class="mt-4 w-full bg-gray-300 hover:bg-gray-400 text-black py-2 rounded-lg transition">Cancel</button>
+        <button
+          onclick="closePasswordModal()"
+          class="mt-4 w-full bg-gray-300 hover:bg-gray-400 text-black py-2 rounded-lg transition"
+        >
+          Cancel
+        </button>
       </div>
     </div>
 
     <script>
       function openPasswordModal() {
-        document.getElementById('passwordModal').classList.remove('hidden');
+        document.getElementById("passwordModal").classList.remove("hidden");
       }
       function closePasswordModal() {
-        document.getElementById('passwordModal').classList.add('hidden');
+        document.getElementById("passwordModal").classList.add("hidden");
       }
       function confirmDelete() {
-        if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
-          fetch('/auth/delete-account', { method: 'POST' }).then(() => {
-            window.location.href = '/auth/login';
+        if (
+          confirm(
+            "Are you sure you want to delete your account? This action cannot be undone."
+          )
+        ) {
+          fetch("/auth/delete-account", { method: "POST" }).then(() => {
+            window.location.href = "/auth/login";
           });
         }
       }
 
-      document.getElementById("passwordForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        const newPassword = document.getElementById("newPassword").value;
-        fetch("/auth/update-password", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ password: newPassword })
-        }).then(response => {
-          if (response.ok) {
-            alert("Password updated successfully!");
-            closePasswordModal();
-          } else {
-            alert("Error updating password.");
-          }
+      document
+        .getElementById("passwordForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const newPassword = document.getElementById("newPassword").value;
+          fetch("/auth/update-password", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password: newPassword }),
+          }).then((response) => {
+            if (response.ok) {
+              alert("Password updated successfully!");
+              closePasswordModal();
+            } else {
+              alert("Error updating password.");
+            }
+          });
         });
-      });
     </script>
   </body>
 </html>
