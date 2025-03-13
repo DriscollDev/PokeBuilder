@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/pokestyle.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;700&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Login</title>
@@ -61,9 +64,15 @@
                 >
                     Login
                 </button>
+                <p class="text-gray-300 mt-2 text-sm"  style="font-family: kode-mono;">
+                    Don’t have an account? <a href="/auth/register" class="text-blue-400 underline">Sign-Up</a>
+                  </p>
             </form>
+            
 
         </div>
+        
+
     </main>
 
     <!-- Prevent Form Resubmission on Refresh -->
