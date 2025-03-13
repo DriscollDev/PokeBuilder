@@ -9,9 +9,11 @@ router.get('/',passport.authenticate('session'), async function(req, res, next) 
   //req.session.regenerate((err) => {
     //if (err) next(err);
     const teams = await teamController.getTeamsByCurrentUser(req);
+    const badges = teamController.checkBadges(teams)
     res.render("dashboard", { 
       title: 'Dashboard',
-      teams: teams
+      teams: teams,
+      badges: badges
 
     });
   //});

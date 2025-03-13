@@ -72,38 +72,27 @@
           <div
             class="grid grid-cols-2 gap-20 py-10 flex-grow items-center justify-center"
           >
-            <img
-              src="./images/badges/pngwing.com.png"
-              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-            />
-            <img
-              src="./images/badges/pngwing.com_1.png"
-              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-            />
-            <img
-              src="./images/badges/pngwing.com_2.png"
-              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-            />
-            <img
-              src="./images/badges/pngwing.com_3.png"
-              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-            />
-            <img
-              src="./images/badges/pngwing.com_4.png"
-              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-            />
-            <img
-              src="./images/badges/pngwing.com_5.png"
-              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-            />
-            <img
-              src="./images/badges/pngwing.com_6.png"
-              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-            />
-            <img
-              src="./images/badges/pngwing.com_8.png"
-              class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
-            />
+            <div class="group relative">
+              <img
+                src="./images/badges/pngwing.com.png"
+                class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+              />
+              <span class="absolute left-full ml-2 px-2 py-1 text-sm text-white bg-gray-800 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                Account Creation Badge
+              </span>
+            </div>
+            <% if (badges) {badges.forEach(function(badge) { %>
+              <div class="group ">
+                <img
+                  src="./images/badges/pngwing.com_<%=badge%>.png"
+                  class="w-16 h-16 hover:scale-105 hover:brightness-110 transition-transform duration-200"
+                />
+                <span class="absolute left-full ml-2 px-2 py-1 text-sm text-white bg-gray-800 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                  Badge: <%= badge %>
+                </span>
+              </div>
+            <% }); } %>
+            
           </div>
         </div>
       </div>

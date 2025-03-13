@@ -115,6 +115,43 @@ const teamController = {
         }
     },
 
+    checkBadges: (teams) => {
+    /*  Badge 1- have 1 team
+        Badge 2- have 3 teams
+        Badge 3- have 5 teams
+        Badge 4- have 7 teams
+        Badge 5- have 10 teams
+        Badge 6- have 15 team 
+        Badge 7- have 20 team 
+        Badge 8- have 25 teams*/
+        let badges = [];
+        if (teams.length >= 1){
+            badges.push(1);
+        }
+        if (teams.length >= 3){
+            badges.push(2);
+        }
+        if (teams.length >= 5){
+            badges.push(3);
+        }
+        if (teams.length >= 7){
+            badges.push(4);
+        }
+        if (teams.length >= 10){
+            badges.push(5);
+        }
+        if (teams.length >= 15){
+            badges.push(6);
+        }
+        if (teams.length >= 20){
+            badges.push(7);
+        }
+        if (teams.length >= 25){
+            badges.push(8);
+        }
+        return badges
+    },
+
     getTeamsByCurrentUser: async (req) => {
         try {
             const ownerID = req.session.passport.user.userID;
