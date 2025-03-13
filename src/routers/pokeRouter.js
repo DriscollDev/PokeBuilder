@@ -147,7 +147,7 @@ router.post('/editpokemon', async(req,res) => {
         conn.release();
         const matchups = await pokeAPI.getTypeMatchups(pokemon.types[0],pokemon.types[1],pokemon.generation);
         const moveSet = await pokeAPI.getMoveSet(pokemon.name,pokemon.generation);
-
+        //console.log(pokemon.evs)
         res.render('editpokemon', { 
             pokemon: pokemon, 
             matchups: matchups, 
@@ -285,7 +285,7 @@ router.post('/swap-slot', async (req, res) => {
             SELECT generation FROM teams WHERE teamID = ?
         `, [req.body.teamID]);
         conn.release();
-        console.log(teamData);
+        //console.log(teamData);
         // Get the generation number directly
         const generationNumber = teamData[0]?.generation || '1';
 

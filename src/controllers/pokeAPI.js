@@ -252,7 +252,7 @@ const pokeAPI = {
                     base_stat: stat.base_stat
                 }))
             };
-            console.log("Sending Pokemon");
+            //console.log("Sending Pokemon");
             res.json(formattedResponse);
 
 

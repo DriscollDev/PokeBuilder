@@ -139,8 +139,8 @@
               </div>
               <span class="stat-value"><%= value %></span>
               <input type="hidden" class="base-stat" value="<%= pokemon.baseStats[stat] %>">
-              <input type="hidden" class="iv-value" value="31">
-              <input type="hidden" class="ev-value" value="0">
+              <input type="hidden" class="iv-value" value="<%= pokemon.ivs[stat] %>">
+              <input type="hidden" class="ev-value" value="<%= pokemon.evs[stat] %>">
             </div>
           <% }); %>
         </div>
@@ -151,18 +151,18 @@
         <div class="modal-content">
           <h2 class="modal-title">Edit Stats</h2>
           <div class="stats-edit-container">
-            <% Object.entries(pokemon.totalStats).forEach(([stat, value]) => { %>
+            <% Object.entries(pokemon.statNames).forEach(([stat, value]) => { %>
               <div class="stat-edit-row">
-                <span class="stat-edit-name"><%= pokemon.statNames[stat] %></span>
+                <span class="stat-edit-name"><%= value %></span>
                 <div class="stat-edit-controls">
                   <label>
                     IV (0-31):
-                    <input type="number" class="iv-input" min="0" max="31" value="31" data-stat="<%= stat %>">
+                    <input type="number" class="iv-input" min="0" max="31" value="<%= pokemon.ivs[stat]%>" data-stat="<%= stat %>">
                   </label>
                   <label>
                     EV (0-255):
-                    <input type="range" class="ev-slider" min="0" max="255" value="0" data-stat="<%= stat %>">
-                    <span class="ev-value">0</span>
+                    <input type="range" class="ev-slider" min="0" max="255" value="<%= pokemon.evs[stat]%>" data-stat="<%= stat %>">
+                    <span class="ev-value"><%= pokemon.evs[stat]%></span>
                   </label>
                 </div>
               </div>
@@ -422,6 +422,7 @@
       stats.total[statKey] = parseInt(container.querySelector('.stat-value').textContent);
     });
 
+    //console.log(`Stats: ${JSON.stringify(stats)}`);
     try {
       const response = await fetch('/poke/update-pokemon', {
         method: 'POST',

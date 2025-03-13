@@ -7,7 +7,7 @@ import teamController from '../controllers/teamController.js';
 // Get teams by user ID
 router.get('/', async function (req, res, next) {
   const teams = await teamController.getTeamsByCurrentUser(req);
-  console.log(teams)
+  //console.log(teams)
   res.render("teamhome", {
     title: 'Team View',
     teams: teams
