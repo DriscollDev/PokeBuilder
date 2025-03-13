@@ -4,14 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Trainer Info</title>
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
-    />
+    <title>Trainer Profile</title>
+    <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" />
   </head>
-  <body
+ <body
     class="bg-gray-700 text-white font-sans min-h-screen flex items-center justify-center"
   >
     <!-- Return to Dashboard Button -->
@@ -27,33 +23,60 @@
     <main
       class="bg-gray-600 border-8 border-red-600 shadow-xl w-full h-screen flex flex-col justify-center items-center p-6"
     >
-      <!-- Content Wrapper -->
-      <div class="flex flex-col md:flex-row items-center justify-between w-full max-w-4xl">
-        
-        <!-- Expanded Form Section -->
-        <div class="bg-gray-300 p-10 rounded-lg text-black w-full md:w-3/5">
-          <p class="text-2xl font-bold mb-6">Trainer Name: <%= user.username %> </p>
-          <p class="">Account Creation Date: <%= user.date_created.toString().slice(4,10) %></p>
-          <!-- <p class="text-2xl font-bold mb-6">Password: </p>
-          <p class="text-xl font-bold mb-4">Change Password</p> -->
-          <!-- <input
-            type="password"
-            placeholder="New Password"
-            class="w-full px-5 py-3 mb-6 text-black rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-lg"
-          /> -->
-          <!-- <button
-            type="submit"
-            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg transition text-lg"
-          >
-            Update Password
-          </button> -->
-        </div>
+      <img src="/images/Trainer.gif" alt="Trainer N" class=" bg-gray-200 h-32 w-32 rounded-full shadow-lg border-4 border-red-600 mb-4" />
+      <h1 class="text-3xl font-semibold">Trainer: <%= user.username %></h1>
+      <p class="text-gray-300 mt-2">Account Created: <%= user.date_created.toString().slice(4,10) %></p>
 
-        <!-- Trainer Character Image -->
-        <div class="w-full md:w-2/5 flex justify-center mt-8 md:mt-0">
-          <img src="/images/n-pokemon.gif" alt="Trainer N" class="h-64" />
-        </div>
+      <!-- Buttons -->
+      <div class="mt-6 space-y-3">
+        <button onclick="openPasswordModal()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition">Update Password</button>
+        <button onclick="confirmDelete()" class="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg transition">Delete Account</button>
       </div>
     </main>
+
+    <!-- Password Update Modal -->
+    <div id="passwordModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+      <div class="bg-white p-6 rounded-lg text-black w-full max-w-sm">
+        <h2 class="text-xl font-bold mb-4">Change Password</h2>
+        <form id="passwordForm">
+          <input type="password" id="newPassword" placeholder="New Password" class="w-full px-4 py-2 border rounded mb-4" required />
+          <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition">Update Password</button>
+        </form>
+        <button onclick="closePasswordModal()" class="mt-4 w-full bg-gray-300 hover:bg-gray-400 text-black py-2 rounded-lg transition">Cancel</button>
+      </div>
+    </div>
+
+    <script>
+      function openPasswordModal() {
+        document.getElementById('passwordModal').classList.remove('hidden');
+      }
+      function closePasswordModal() {
+        document.getElementById('passwordModal').classList.add('hidden');
+      }
+      function confirmDelete() {
+        if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+          fetch('/auth/delete-account', { method: 'POST' }).then(() => {
+            window.location.href = '/auth/login';
+          });
+        }
+      }
+
+      document.getElementById("passwordForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const newPassword = document.getElementById("newPassword").value;
+        fetch("/auth/update-password", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password: newPassword })
+        }).then(response => {
+          if (response.ok) {
+            alert("Password updated successfully!");
+            closePasswordModal();
+          } else {
+            alert("Error updating password.");
+          }
+        });
+      });
+    </script>
   </body>
 </html>
