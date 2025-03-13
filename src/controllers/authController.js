@@ -107,6 +107,43 @@ const authController = {
             });
         }
     },
+    updatePass: async (req, res, next) => {
+
+        // Input validation
+        if (!password) {
+           console.log("Password is required");
+        }
+        else{
+
+        
+        /*
+        if (password !== password_confirm) {
+            return res.status(400).json({ error: 'Passwords do not match' });
+        }
+        */
+        try {
+            const conn = await pool.getConnection();
+
+            // Hash password and create user
+            const hash = await bcrypt.hash(req.body.password, 10);
+            await conn.query(
+               "UPDATE user SET password = ? WHERE userID = ?",
+                [hash, req.session.passport.user.userID] 
+            );
+            pool.releaseConnection(conn);
+            
+            // Redirect to login after successful registration
+            return res.redirect("/dash");
+
+        } catch (err) {
+            console.log('Registration error:', err);
+            return res.render("signup", { 
+                title: "Sign Up",
+                errorMessage: "Internal server error. Please try again." 
+            });
+        }
+    }
+    },
 
     loginUser: async (req, res, next) => {
         passport.authenticate("local", (err, user, info) => {
