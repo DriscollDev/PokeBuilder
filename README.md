@@ -35,21 +35,21 @@ PokéBuilder is a web application that allows users to create, save, and manage 
 
 ### Creating an Account
 1. Navigate to the Sign Up page
-2. Fill in your username, email, and password
+2. Fill in your username and password
 3. Click "Create Account"
 
 ### Building a Team
 1. Log in to your account
-2. Go to the "Create Team" page
-3. Search for Pokémon using the search bar or filters
-4. Click on a Pokémon to view its details
-5. Add the Pokémon to your team
-6. After adding up to six Pokémon, save your team with a custom name
+2. Click on the Teambuilder page and Create New team
+3. Click Add a Pokemon
+4. Search for Pokémon using the search bar or filters
+5. Click on a Pokémon to view its details
+6. Add the Pokémon to your team
 
 ### Managing Teams
-1. Navigate to "My Teams" page
+1. Navigate to "My Teams" page or Use the Dashboard View
 2. View all your saved teams
-3. Edit teams by adding/removing Pokémon or changing team name
+3. Select a Team to Edit it by adding/removing Pokémon
 4. Delete teams you no longer want
 
 ## Technologies Used
