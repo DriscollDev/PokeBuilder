@@ -285,7 +285,7 @@ const pokeAPI = {
             const pokemon = await P.getPokemonByName(req.params.name);
             res.json(pokemon);
         } catch (error) {
-            // VULN FHE: previously did not catch errors from the external API, which could cause unhandled rejections.
+            // VULN FHE: previously did not catch errors from the external API
             console.log('Pokemon Fetch Error :', error);
             next(error);
         }
@@ -363,7 +363,7 @@ const pokeAPI = {
                         species_name: speciesData.name,
                     };
                 } catch (error) {
-                    // VULN TMI: previously logged only error.message, which can omit context; keep details in logs but do not send to clients.
+                    // VULN TMI: previously logged only error.message
                     console.log(`Error fetching data for ${entry.pokemon_species.name}:`, error);
                     return null;
                 }
@@ -428,7 +428,6 @@ const pokeAPI = {
                         };
                 } catch (error) {
                         const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${pokemon.name}`;
-                        // VULN TMI: previously logged only error.message; this now logs the full error object for internal debugging.
                         console.log(`Error fetching details for ${pokemon.name}:`, error);
                         console.log(`Species URL: ${speciesUrl}`);
                         console.log(`Varieties attempted: ${speciesData?.varieties.map(v => v.pokemon.name).join(', ')}`);
@@ -550,7 +549,7 @@ const pokeAPI = {
 
             res.json(pokemonData);
         } catch (error) {
-            // VULN FHE: previously swallowed the error without responding, leaving clients without a clear failure signal.
+            // VULN FHE: previously swallowed the error without responding
             console.error('Error fetching Pokémon data', error);
             next(error);
         }

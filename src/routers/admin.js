@@ -210,7 +210,7 @@ router.post('/update-auth-level', async (req, res) => {
         console.error('Error updating authorization level:', error);
         res.status(500).json({ 
             success: false, 
-            // VULN TMI: previously surfaced error.message from the admin controller, leaking internal details.
+            // VULN TMI: previously surfaced error.message from the admin controller
             error: 'Error updating authorization level' 
         });
     }

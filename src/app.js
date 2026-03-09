@@ -34,7 +34,7 @@ app.use(express.static(path.join(dirname(import.meta), "../", 'public')));
 
 let checkAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) { 
-    // VULN TMI: previously logged the entire session object, which could expose sensitive data in logs.
+    // VULN TMI: previously logged the entire session object
     console.log(`Authenticated user ID: ${req.session?.passport?.user?.userID}`);
     return next(); 
   }

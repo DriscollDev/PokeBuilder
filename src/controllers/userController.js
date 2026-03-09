@@ -22,7 +22,7 @@ const userController = {
     getUserByName: async (req, res, next) => {
         const conn = await pool.getConnection();
         try {
-            // VULN TMI: previously selected all user columns (including password hashes) and returned them directly.
+            // VULN TMI: previously selected all user columns (including password hashes) and returned them directly
             const [rows] = await conn.query(
                 'SELECT userID, username, authorizationLevel, date_created FROM user WHERE username = ?',
                 [req.params.username]
