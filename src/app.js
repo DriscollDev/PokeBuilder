@@ -15,6 +15,7 @@ import authRouter from './routers/auth.js';
 import dashRouter from './routers/dashboard.js';
 import pokeRouter from './routers/pokeRouter.js';
 import teamRouter from './routers/teambuilder.js'
+import adminRouter from './routers/admin.js'
 
 
 // app
@@ -55,6 +56,7 @@ app.use("/auth", authRouter);
 app.use('/dash',checkAuthenticated, dashRouter);
 app.use('/poke', pokeRouter);
 app.use('/team',checkAuthenticated, teamRouter)
+app.use('/admin', adminRouter);
 
 
 export default app;

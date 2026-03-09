@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .admin-header {
+            margin-bottom: 2rem;
+        }
+
+        .admin-header h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .users-table thead {
+            background: #f0f0f0;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .users-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .users-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .users-table tbody tr:hover {
+            background: #f9f9f9;
+        }
+
+        .auth-level {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .auth-level.level-0 {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .auth-level.level-1 {
+            background: #bbdefb;
+            color: #1976d2;
+        }
+
+        .auth-level.level-2 {
+            background: #c8e6c9;
+            color: #388e3c;
+        }
+
+        .auth-level.level-3 {
+            background: #ffe0b2;
+            color: #f57c00;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .btn-edit {
+            background: #2196f3;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #1976d2;
+        }
+
+        .btn-delete {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #da190b;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .modal-body {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-cancel {
+            background: #999;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #777;
+        }
+
+        .btn-confirm {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            background: #45a049;
+        }
+
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Admin Panel</h1>
+            <p>Manage users and authorization levels</p>
+        </div>
+
+        <div id="alertContainer"></div>
+
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Auth Level</th>
+                    <th>Date Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(user => { %>
+                    <tr>
+                        <td><%= user.userID %></td>
+                        <td><%= user.username %></td>
+                        <td>
+                            <span class="auth-level level-<%= user.authorizationLevel %>">
+                                Level <%= user.authorizationLevel %>
+                            </span>
+                        </td>
+                        <td><%= new Date(user.date_created).toLocaleDateString() %></td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn btn-edit" onclick="openEditModal(`<%= user.userID %>`, '<%= user.username %>', `<%= user.authorizationLevel %>`)">Edit</button>
+                                <button class="btn btn-delete" onclick="openDeleteModal(`<%= user.userID %>`, '<%= user.username %>')" id="delete-btn-<%= user.userID %>">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Edit User Authorization</div>
+            <div class="modal-body">
+                <p id="editUsername"></p>
+                <div class="form-group">
+                    <label for="authLevel">Authorization Level:</label>
+                    <select id="authLevel">
+                        <option value="0">Level 0 - User</option>
+                        <option value="1">Level 1 - Moderator</option>
+                        <option value="2">Level 2 - Admin</option>
+                        <option value="3">Level 3 - Owner</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeEditModal()">Cancel</button>
+                <button class="btn btn-confirm" onclick="saveAuthLevel()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Delete User</div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete user <strong id="deleteUsername"></strong>?</p>
+                <p style="color: #f44336; font-weight: 500;">This action cannot be undone and will delete all associated data.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+                <button class="btn btn-delete" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUserID = null;
+        let currentUsername = null;
+
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alertContainer.appendChild(alert);
+
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        function openEditModal(userID, username, authLevel) {
+            currentUserID = userID;
+            currentUsername = username;
+            document.getElementById('editUsername').textContent = `User: ${username}`;
+            document.getElementById('authLevel').value = authLevel;
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+            currentUserID = null;
+            currentUsername = null;
+        }
+
+        function openDeleteModal(userID, username) {
+            currentUserID = userID;
+            currentUsername = username;
+            document.getElementById('deleteUsername').textContent = username;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+            currentUserID = null;
+            currentUsername = null;
+        }
+
+        async function saveAuthLevel() {
+            const authLevel = document.getElementById('authLevel').value;
+
+            try {
+                const response = await fetch('/admin/update-auth-level', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userID: currentUserID,
+                        authorizationLevel: authLevel
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert('Authorization level updated successfully', 'success');
+                    closeEditModal();
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showAlert(data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Error updating authorization level', 'error');
+            }
+        }
+
+        async function confirmDelete() {
+            try {
+                const response = await fetch('/admin/delete-user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userID: currentUserID
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert('User deleted successfully', 'success');
+                    closeDeleteModal();
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showAlert(data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Error deleting user', 'error');
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) closeEditModal();
+        });
+
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDeleteModal();
+        });
+    </script>
+</body>
+</html>

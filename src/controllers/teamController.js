@@ -1,6 +1,11 @@
 import pool from './db.js';
 //import pokeAPI from './pokeAPI.js';
 
+function parsePositiveInt(value) {
+    const parsed = Number.parseInt(value, 10);
+    return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
+}
+
 /*
 -- Stat List Table
 CREATE TABLE stat_list (
@@ -90,14 +95,27 @@ const teamController = {
     // Create a new team
     createTeam: async (req, res) => {
         try {
+            const ownerID = req.session?.passport?.user?.userID;
+            if (!ownerID) {
+                return res.status(401).json({ error: 'Authentication required' });
+            }
+
             const {generation, name, description } = req.body;
-            const ownerID = req.session.passport.user.userID;
+            const generationNumber = Number.parseInt(generation, 10);
             
-            const generationNumber = generation;
+            if (!Number.isInteger(generationNumber) || generationNumber < 1 || generationNumber > 9) {
+                return res.status(400).json({ error: 'Invalid generation' });
+            }
+
+            if (typeof name !== 'string' || name.trim().length === 0 || name.length > 100) {
+                return res.status(400).json({ error: 'Invalid team name' });
+            }
+            
+            const safeDescription = typeof description === 'string' ? description : '';
             
             const [result] = await pool.query(
                 'INSERT INTO teams (ownerID, generation, teamname, description) VALUES (?, ?, ?, ?)',
-                [ownerID, generationNumber, name, description]
+                [ownerID, generationNumber, name.trim(), safeDescription]
             );
             
             req.body.teamID = result.insertId;
@@ -105,8 +123,8 @@ const teamController = {
                 title: 'Team Builder',
                 team: {
                     teamID: result.insertId,
-                    teamname: name,
-                    description: description,
+                    teamname: name.trim(),
+                    description: safeDescription,
                     generation: generationNumber
                 }
             });
@@ -154,7 +172,10 @@ const teamController = {
 
     getTeamsByCurrentUser: async (req) => {
         try {
-            const ownerID = req.session.passport.user.userID;
+            const ownerID = req.session?.passport?.user?.userID;
+            if (!ownerID) {
+                throw new Error('Authentication required');
+            }
             const conn = await pool.getConnection();   
             const [teams] = await conn.execute(
                 'SELECT * FROM teams WHERE ownerID = ? ORDER BY created_at DESC',
@@ -283,16 +304,26 @@ const teamController = {
     },
 
     // Get a specific team by ID with all related data
-    getTeamById: async (teamID) => {
+    getTeamById: async (teamID, ownerID = null) => {
         try {
+            const parsedTeamID = parsePositiveInt(teamID);
+            if (!parsedTeamID) {
+                throw new Error('Invalid team ID');
+            }
+
             // Get the base team data
-            const [teamRows] = await pool.query(`
-                SELECT t.*, u.username as ownerName 
-                FROM teams t
-                JOIN user u ON t.ownerID = u.userID
-                WHERE t.teamID = ?`,
-                [teamID]
-            );
+            const baseQuery = ownerID
+                ? `SELECT t.*, u.username as ownerName
+                   FROM teams t
+                   JOIN user u ON t.ownerID = u.userID
+                   WHERE t.teamID = ? AND t.ownerID = ?`
+                : `SELECT t.*, u.username as ownerName
+                   FROM teams t
+                   JOIN user u ON t.ownerID = u.userID
+                   WHERE t.teamID = ?`;
+
+            const params = ownerID ? [parsedTeamID, ownerID] : [parsedTeamID];
+            const [teamRows] = await pool.query(baseQuery, params);
             
             if (teamRows.length === 0) {
                 throw new Error('Team not found');
@@ -328,18 +359,29 @@ const teamController = {
     // Update a team
     updateTeam: async (req, res) => {
         try {
+            const ownerID = req.session?.passport?.user?.userID;
+            if (!ownerID) {
+                return res.status(401).json({ error: 'Authentication required' });
+            }
+
             const { teamID, generation, teamname, description, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6 } = req.body;
+            const parsedTeamID = parsePositiveInt(teamID);
+            const parsedGeneration = Number.parseInt(generation, 10);
+
+            if (!parsedTeamID || !Number.isInteger(parsedGeneration) || parsedGeneration < 1 || parsedGeneration > 9) {
+                return res.status(400).json({ error: 'Invalid team data' });
+            }
             
             const [result] = await pool.query(
                 `UPDATE teams 
                 SET generation = ?,teamname = ?, description = ?, pokemon1 = ?, pokemon2 = ?, pokemon3 = ?, 
                     pokemon4 = ?, pokemon5 = ?, pokemon6 = ? 
-                WHERE teamID = ?`,
-                [generation, teamname, description, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6, teamID]
+                WHERE teamID = ? AND ownerID = ?`,
+                [parsedGeneration, teamname, description, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6, parsedTeamID, ownerID]
             );
             
             if (result.affectedRows === 0) {
-                return res.status(404).json({ message: 'Team not found' });
+                return res.status(404).json({ message: 'Team not found or unauthorized' });
             }
             
             res.status(200).json({ message: 'Team updated successfully' });
@@ -349,15 +391,23 @@ const teamController = {
     },
 
     // Delete a team
-    deleteTeam: async (teamID) => {
+    deleteTeam: async (teamID, ownerID) => {
         try {
+            const parsedTeamID = parsePositiveInt(teamID);
+            if (!parsedTeamID) {
+                throw new Error('Invalid team ID');
+            }
+            if (!ownerID) {
+                throw new Error('Authentication required');
+            }
+
             const [result] = await pool.query(
-                'DELETE FROM teams WHERE teamID = ?',
-                [teamID]
+                'DELETE FROM teams WHERE teamID = ? AND ownerID = ?',
+                [parsedTeamID, ownerID]
             );
             
             if (result.affectedRows === 0) {
-                throw new Error('Team not found');
+                throw new Error('Team not found or unauthorized');
             }
             
             return result;

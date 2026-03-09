@@ -17,14 +17,28 @@ const pokeAPI = {
 
 
     getTypeMatchups: async (type1, type2, generation) => {
-        const conn = await pool.getConnection();
-        const attackStatements = [`attack_type.typeName = "${type1}"`];
-        const defendStatements = [`defend_type.typeName = "${type1}"`];
-        
-        if (type2) {
-            attackStatements.push(`attack_type.typeName = "${type2}"`);
-            defendStatements.push(`defend_type.typeName = "${type2}"`);
+        const normalizedType1 = String(type1 || '').toLowerCase();
+        const normalizedType2 = type2 ? String(type2).toLowerCase() : null;
+        const generationNumber = Number.parseInt(generation, 10);
+        const validTypePattern = /^[a-z-]+$/;
+
+        if (!validTypePattern.test(normalizedType1)) {
+            throw new Error('Invalid primary type');
         }
+
+        if (normalizedType2 && !validTypePattern.test(normalizedType2)) {
+            throw new Error('Invalid secondary type');
+        }
+
+        if (!Number.isInteger(generationNumber) || generationNumber < 1 || generationNumber > 9) {
+            throw new Error('Invalid generation');
+        }
+
+        const conn = await pool.getConnection();
+        const selectedTypes = normalizedType2 ? [normalizedType1, normalizedType2] : [normalizedType1];
+        const attackPlaceholders = selectedTypes.map(() => '?').join(', ');
+        const defendPlaceholders = selectedTypes.map(() => '?').join(', ');
+
         const attackQuery = `
             WITH LatestTypeMatchups AS (
                 SELECT 
@@ -37,7 +51,7 @@ const pokeAPI = {
                         ORDER BY tr.generation DESC
                     ) as rn
                 FROM type_rel tr
-                WHERE tr.generation <= ${generation}
+                WHERE tr.generation <= ?
             )
             SELECT 
                 attack_type.typeName AS attacking_type,
@@ -51,7 +65,7 @@ const pokeAPI = {
             JOIN
                 type_ref defend_type ON ltm.secondary_type = defend_type.typeID
             WHERE 
-                (${attackStatements.join(` OR `)})
+                attack_type.typeName IN (${attackPlaceholders})
                 AND ltm.rn = 1
             ORDER BY 
                 ltm.damage_mod DESC;
@@ -68,7 +82,7 @@ const pokeAPI = {
                         ORDER BY tr.generation DESC
                     ) as rn
                 FROM type_rel tr
-                WHERE tr.generation <= ${generation}
+                WHERE tr.generation <= ?
             )
             SELECT 
                 attack_type.typeName AS attacking_type,
@@ -82,13 +96,13 @@ const pokeAPI = {
             JOIN
                 type_ref defend_type ON ltm.secondary_type = defend_type.typeID
             WHERE 
-                (${defendStatements.join(` OR `)})
+                defend_type.typeName IN (${defendPlaceholders})
                 AND ltm.rn = 1
             ORDER BY 
                 ltm.damage_mod DESC;
         `;
-        const [attackRows] = await conn.query(attackQuery);
-        const [defendRows] = await conn.query(defendQuery);
+        const [attackRows] = await conn.query(attackQuery, [generationNumber, ...selectedTypes]);
+        const [defendRows] = await conn.query(defendQuery, [generationNumber, ...selectedTypes]);
         conn.release();
         //console.log(defendRows);
 
@@ -381,7 +395,7 @@ const pokeAPI = {
                                 }
                             } catch (varietyError) {
                                 console.log(`Failed to fetch variety ${variety.pokemon.name}:`, varietyError.message);
-                                console.log(`Variety URL: https://pokeapi.co/api/v2/pokemon/${variety.pokemon.name}`);
+                                //console.log(`Variety URL: https://pokeapi.co/api/v2/pokemon/${variety.pokemon.name}`);
                             }
                         }
 
