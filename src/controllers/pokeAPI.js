@@ -281,8 +281,14 @@ const pokeAPI = {
 
 
     getPokemon: async (req, res, next) => {
-        const pokemon = await P.getPokemonByName(req.params.name);
-        res.json(pokemon);
+        try {
+            const pokemon = await P.getPokemonByName(req.params.name);
+            res.json(pokemon);
+        } catch (error) {
+            // VULN FHE: previously did not catch errors from the external API, which could cause unhandled rejections.
+            console.log('Pokemon Fetch Error :', error);
+            next(error);
+        }
     },
 
     testGeneration: async (req, res, next) => {
@@ -357,7 +363,8 @@ const pokeAPI = {
                         species_name: speciesData.name,
                     };
                 } catch (error) {
-                    console.log(`Error fetching data for ${entry.pokemon_species.name}:`, error.message);
+                    // VULN TMI: previously logged only error.message, which can omit context; keep details in logs but do not send to clients.
+                    console.log(`Error fetching data for ${entry.pokemon_species.name}:`, error);
                     return null;
                 }
             });
@@ -419,9 +426,10 @@ const pokeAPI = {
                             species_name: speciesData.name,
                             game_indices: gameIndices
                         };
-                    } catch (error) {
+                } catch (error) {
                         const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${pokemon.name}`;
-                        console.log(`Error fetching details for ${pokemon.name}:`, error.message);
+                        // VULN TMI: previously logged only error.message; this now logs the full error object for internal debugging.
+                        console.log(`Error fetching details for ${pokemon.name}:`, error);
                         console.log(`Species URL: ${speciesUrl}`);
                         console.log(`Varieties attempted: ${speciesData?.varieties.map(v => v.pokemon.name).join(', ')}`);
                         return null;
@@ -542,8 +550,9 @@ const pokeAPI = {
 
             res.json(pokemonData);
         } catch (error) {
+            // VULN FHE: previously swallowed the error without responding, leaving clients without a clear failure signal.
             console.error('Error fetching Pokémon data', error);
-             
+            next(error);
         }
     }
 }

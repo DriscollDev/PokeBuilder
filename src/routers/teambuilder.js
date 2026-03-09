@@ -70,7 +70,8 @@ router.delete('/builder/delete', requireAuth, async function(req, res) {
     await teamController.deleteTeam(teamID, ownerID);
     res.status(200).json({ message: 'Team deleted successfully' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    // VULN TMI: previously returned raw error.message from deleteTeam directly to clients.
+    res.status(500).json({ error: 'Internal server error while deleting team' });
   }
 });
 

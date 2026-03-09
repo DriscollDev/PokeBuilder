@@ -5,7 +5,11 @@ const userController = {
     getUserData: async (req, res, next) => {
         try {
             const conn = await pool.getConnection();
-            const [rows] = await conn.query('SELECT * FROM user WHERE userID = ?', [req.session.passport.user.userID]);
+            // VULN TMI: previously selected all user columns, including sensitive ones, for rendering.
+            const [rows] = await conn.query(
+                'SELECT userID, username, authorizationLevel, date_created FROM user WHERE userID = ?',
+                [req.session.passport.user.userID]
+            );
             pool.releaseConnection(conn);
             return rows[0]
         }
@@ -18,7 +22,11 @@ const userController = {
     getUserByName: async (req, res, next) => {
         const conn = await pool.getConnection();
         try {
-            const [rows] = await conn.query('SELECT * FROM user WHERE username = ?', [req.params.username]);
+            // VULN TMI: previously selected all user columns (including password hashes) and returned them directly.
+            const [rows] = await conn.query(
+                'SELECT userID, username, authorizationLevel, date_created FROM user WHERE username = ?',
+                [req.params.username]
+            );
             pool.releaseConnection(conn);
             res.json(rows);
         } catch (error) {

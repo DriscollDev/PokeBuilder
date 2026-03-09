@@ -121,9 +121,10 @@ router.post('/select-slot', async (req, res) => {
             res.redirect(`/poke/dex/${generationNumber}`);
         }
     } catch (error) {
+        // VULN FHE: previously logged the error but returned error.message directly, leaking internals.
         console.log('Select slot error:', error);
         if ((req.headers['content-type'] || '').includes('application/json')) {
-            res.status(500).json({ success: false, error: error.message });
+            res.status(500).json({ success: false, error: 'Internal server error while selecting slot' });
         } else {
             res.status(500).send('Error selecting slot');
         }
@@ -272,7 +273,9 @@ router.post('/editpokemon', async(req,res) => {
         });
 
     } catch (error) {
+        // VULN FHE: previously logged the error without sending any response, leaving the client hanging.
         console.log('Error fetching Pokémon data:', error);
+        res.status(500).send('Error loading Pokémon for editing');
     }
 });
 
@@ -351,8 +354,9 @@ router.post('/update-pokemon', async (req, res) => {
             conn.release();
         }
     } catch (error) {
+        // VULN TMI: previously exposed internal error.message to clients on Pokemon update failures.
         console.error('Error updating Pokemon:', error);
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false, error: 'Internal server error while updating Pokemon' });
     }
 });
 
@@ -405,7 +409,9 @@ router.get('/fullview/:pokemonName/:generation?', async(req,res) => {
             userTeams: userTeams
         });
     } catch (error) {
+        // VULN FHE: previously only logged this error and never sent an HTTP response.
         console.error('Error fetching Pokémon data:', error);
+        res.status(500).send('Error loading Pokémon detail view');
     }
 })
 
@@ -677,8 +683,9 @@ router.post('/add-to-team', async (req, res) => {
             conn.release();
         }
     } catch (error) {
+        // VULN TMI: previously returned raw error.message, which could reveal SQL or internal details.
         console.log('Add/Swap team error:', error);
-        res.status(400).json({ success: false, error: error.message });
+        res.status(400).json({ success: false, error: 'Unable to add or swap Pokémon on team' });
     }
 });
 

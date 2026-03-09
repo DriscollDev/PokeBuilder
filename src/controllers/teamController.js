@@ -129,7 +129,8 @@ const teamController = {
                 }
             });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            // VULN TMI: previously returned raw error.message from the database to the client.
+            res.status(500).json({ error: 'Internal server error while creating team' });
         }
     },
 
@@ -386,7 +387,8 @@ const teamController = {
             
             res.status(200).json({ message: 'Team updated successfully' });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            // VULN TMI: previously leaked low-level error.message details in the response.
+            res.status(500).json({ error: 'Internal server error while updating team' });
         }
     },
 

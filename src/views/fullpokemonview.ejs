@@ -118,7 +118,12 @@
       </div>
       <div class="flex justify-center gap-6 mt-4">
         <a class="bg-red-500 text-white px-6 py-3 rounded-lg" href="/poke/dex/<%= generation %>">Return to Pokédex</a>
-        <a class="bg-red-500 text-white px-6 py-3 rounded-lg" href="/team/">Add Pokémon to Team</a>
+        <button 
+          type="button" 
+          class="bg-red-500 text-white px-6 py-3 rounded-lg"
+          onclick="addPokemonToTeam()">
+          Add Pokémon to Team
+        </button>
       </div>
     </div>
     
@@ -250,6 +255,138 @@
     // Run when the page loads
     window.onload = colorStats;
 
+  </script>
+  <script>
+    // Precomputed Pokemon payload compatible with /poke/add-to-team validation
+    const pokemonData = <%- JSON.stringify({
+      dex_number: pokemon.id,
+      name: String(pokemon.name || '').toLowerCase(),
+      sprite_url: pokemon.sprite_url,
+      types: pokemon.types,
+      abilities: pokemon.abilities,
+      stats: [
+        { name: 'hp', base_stat: pokemon.stats.hp },
+        { name: 'attack', base_stat: pokemon.stats.attack },
+        { name: 'defense', base_stat: pokemon.stats.defense },
+        { name: 'special-attack', base_stat: pokemon.stats.special_attack },
+        { name: 'special-defense', base_stat: pokemon.stats.special_defense },
+        { name: 'speed', base_stat: pokemon.stats.speed }
+      ]
+    }) %>;
+
+    const initialSelectedTeam = <%- JSON.stringify(selectedTeam || null) %>;
+
+    async function postAddToTeam(teamID, payload) {
+      try {
+        const response = await fetch('/poke/add-to-team', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pokemonData: payload })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = '/team/builder';
+
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = 'teamID';
+          input.value = teamID;
+
+          form.appendChild(input);
+          document.body.appendChild(form);
+          form.submit();
+        } else {
+          alert(data.error || 'Unable to add Pokémon to team');
+        }
+      } catch (error) {
+        console.error(error);
+        alert('Error adding Pokémon to team');
+      }
+    }
+
+    function addPokemonToTeam() {
+      if (initialSelectedTeam && initialSelectedTeam.teamID) {
+        // We already have a selected team/slot in the session from the team builder
+        postAddToTeam(initialSelectedTeam.teamID, pokemonData);
+        return;
+      }
+
+      // No pre-selected team: open the team/slot selection modal
+      const teamSelectionModal = document.getElementById('teamSelectionModal');
+      teamSelectionModal.classList.remove('hidden');
+      window.pendingPokemonData = pokemonData;
+    }
+
+    // Team/slot selection modal wiring (fallback when no initialSelectedTeam)
+    document.addEventListener('DOMContentLoaded', () => {
+      const teamSelectionModal = document.getElementById('teamSelectionModal');
+      const closeTeamSelection = document.getElementById('closeTeamSelection');
+      const confirmTeamSelection = document.getElementById('confirmTeamSelection');
+      const teamSelect = document.getElementById('teamSelect');
+      const slotSelect = document.getElementById('slotSelect');
+
+      if (!teamSelectionModal) return;
+
+      const teamsData = JSON.parse('<%- JSON.stringify(userTeams) %>');
+
+      teamSelect.addEventListener('change', () => {
+        const selected = teamsData.find(team => team.teamID == teamSelect.value);
+        slotSelect.innerHTML = '<option value="">Choose a slot...</option>';
+
+        if (selected) {
+          selected.pokemon.forEach((pokemon, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = `Slot ${index + 1}${pokemon ? ` (Current: ${pokemon})` : ' (Empty)'}`;
+            slotSelect.appendChild(option);
+          });
+        }
+      });
+
+      closeTeamSelection.addEventListener('click', () => {
+        teamSelectionModal.classList.add('hidden');
+        window.pendingPokemonData = null;
+      });
+
+      confirmTeamSelection.addEventListener('click', async () => {
+        const selectedTeamId = teamSelect.value;
+        const selectedSlot = slotSelect.value;
+
+        if (!selectedTeamId || selectedSlot === '') {
+          alert('Please select both a team and a slot');
+          return;
+        }
+
+        try {
+          // Set the selected team and slot in the session
+          const response = await fetch('/poke/select-slot', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              teamID: selectedTeamId,
+              slotNumber: selectedSlot
+            })
+          });
+
+          if (response.ok) {
+            const payload = window.pendingPokemonData || pokemonData;
+            await postAddToTeam(selectedTeamId, payload);
+          } else {
+            alert('Error selecting team and slot');
+          }
+        } catch (error) {
+          console.error(error);
+          alert('Error adding Pokémon to team');
+        }
+
+        teamSelectionModal.classList.add('hidden');
+        window.pendingPokemonData = null;
+      });
+    });
   </script>
 </body>
 

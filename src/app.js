@@ -34,11 +34,12 @@ app.use(express.static(path.join(dirname(import.meta), "../", 'public')));
 
 let checkAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) { 
-    console.log(req.session)
-    return next() 
+    // VULN TMI: previously logged the entire session object, which could expose sensitive data in logs.
+    console.log(`Authenticated user ID: ${req.session?.passport?.user?.userID}`);
+    return next(); 
   }
-  res.redirect("/auth/login")
-}
+  res.redirect("/auth/login");
+};
 
 const sessionStore = new mySqlStore({},pool);
 

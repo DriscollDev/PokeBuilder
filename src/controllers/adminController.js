@@ -1,24 +1,37 @@
 import pool from './db.js';
 
+async function fetchAuthorizationLevel(userID) {
+    const conn = await pool.getConnection();
+    try {
+        const [users] = await conn.execute(
+            'SELECT authorizationLevel FROM user WHERE userID = ?',
+            [userID]
+        );
+
+        if (!users[0]) {
+            return null;
+        }
+
+        return Number.parseInt(users[0].authorizationLevel, 10);
+    } finally {
+        conn.release();
+    }
+}
+
 const adminController = {
-    // Check if user has admin privileges (authorizationLevel 3)
+    // Check if user has admin privileges (authorizationLevel >= 1)
     checkAdminAuth: async (userID) => {
         try {
-            const conn = await pool.getConnection();
-            const [users] = await conn.execute(
-                'SELECT authorizationLevel FROM user WHERE userID = ?',
-                [userID]
-            );
-            conn.release();
-
-            //console.log('Admin auth check for userID:', userID, 'Result:', users[0]);
-
-            return users[0] && parseInt(users[0].authorizationLevel) > 2;
+            const level = await fetchAuthorizationLevel(userID);
+            return level !== null && level >= 1;
         } catch (error) {
             console.error('Admin auth check error:', error);
             throw error;
         }
     },
+
+    // Expose raw authorization level for use in routes
+    getAuthorizationLevel: fetchAuthorizationLevel,
 
     // Get all users
     getAllUsers: async () => {
@@ -41,7 +54,7 @@ const adminController = {
         try {
             const conn = await pool.getConnection();
             const [users] = await conn.execute(
-                'SELECT userID, username, authorizationLevel, createdAt FROM user WHERE userID = ?',
+                'SELECT userID, username, authorizationLevel, date_created FROM user WHERE userID = ?',
                 [userID]
             );
             conn.release();
@@ -91,7 +104,7 @@ const adminController = {
     updateAuthLevel: async (userID, authorizationLevel) => {
         try {
             // Validate authorization level
-            if (![0, 1, 2, 3].includes(parseInt(authorizationLevel))) {
+            if (![0, 1, 2, 3].includes(Number.parseInt(authorizationLevel, 10))) {
                 throw new Error('Invalid authorization level');
             }
 
