@@ -23,6 +23,12 @@ const checkAdminAuth = async (req, res, next) => {
 
         next();
     } catch (error) {
+        // ERR EX: Expanded to distinguish authentication failures from generic admin-auth errors.
+        if (error?.message === 'Authentication required') {
+            console.error('Admin auth check failed (unauthenticated):', error);
+            return res.status(401).send('Authentication required');
+        }
+
         console.error('Admin auth check error:', error);
         res.status(500).send('Error checking admin privileges');
     }
@@ -135,6 +141,23 @@ router.post('/delete-user', async (req, res) => {
         const result = await adminController.deleteUser(userID);
         res.json(result);
     } catch (error) {
+        // ERR EX: Expanded to distinguish permission, not-found, and generic delete failures.
+        if (error?.message === 'Invalid authorization level' || error?.message === 'Insufficient permissions') {
+            console.error('Permission error deleting user:', error);
+            return res.status(403).json({ 
+                success: false, 
+                error: 'Insufficient permissions to delete this user' 
+            });
+        }
+
+        if (error?.message === 'User not found') {
+            console.error('User not found while deleting:', error);
+            return res.status(404).json({ 
+                success: false, 
+                error: 'User not found' 
+            });
+        }
+
         console.error('Error deleting user:', error);
         res.status(500).json({ 
             success: false, 
@@ -207,6 +230,23 @@ router.post('/update-auth-level', async (req, res) => {
         const result = await adminController.updateAuthLevel(userID, authorizationLevel);
         res.json(result);
     } catch (error) {
+        // ERR EX: Expanded to distinguish invalid-level and permission issues from generic update failures.
+        if (error?.message === 'Invalid authorization level') {
+            console.error('Invalid authorization level during update:', error);
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Invalid authorization level' 
+            });
+        }
+
+        if (error?.message?.includes('Insufficient permissions')) {
+            console.error('Permission error updating authorization level:', error);
+            return res.status(403).json({ 
+                success: false, 
+                error: 'Insufficient permissions to change this user\'s level' 
+            });
+        }
+
         console.error('Error updating authorization level:', error);
         res.status(500).json({ 
             success: false, 

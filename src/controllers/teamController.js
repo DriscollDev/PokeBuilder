@@ -129,6 +129,11 @@ const teamController = {
                 }
             });
         } catch (error) {
+            // ERR EX: Expanded to handle duplicate-team conflicts vs generic team creation failures.
+            if (error?.code === 'ER_DUP_ENTRY') {
+                return res.status(409).json({ error: 'A team with this name already exists for this user' });
+            }
+
             // VULN TMI: previously returned raw error.message from the database to the client.
             res.status(500).json({ error: 'Internal server error while creating team' });
         }
@@ -387,6 +392,11 @@ const teamController = {
             
             res.status(200).json({ message: 'Team updated successfully' });
         } catch (error) {
+            // ERR EX: Expanded to handle invalid-foreign-key and generic update failures differently.
+            if (error?.code === 'ER_NO_REFERENCED_ROW_2' || error?.code === 'ER_ROW_IS_REFERENCED_2') {
+                return res.status(400).json({ error: 'Invalid related Pokémon or team data while updating team' });
+            }
+
             // VULN TMI: previously leaked low-level error.message details in the response.
             res.status(500).json({ error: 'Internal server error while updating team' });
         }
@@ -414,6 +424,23 @@ const teamController = {
             
             return result;
         } catch (error) {
+            // ERR EX: Expanded to distinguish missing/unauthorized teams from low-level delete failures.
+            if (error?.message === 'Invalid team ID') {
+                const invalidIdError = new Error('Invalid team ID');
+                invalidIdError.type = 'INVALID_INPUT';
+                throw invalidIdError;
+            }
+            if (error?.message === 'Authentication required') {
+                const authError = new Error('Authentication required');
+                authError.type = 'AUTH_REQUIRED';
+                throw authError;
+            }
+            if (error?.message === 'Team not found or unauthorized') {
+                const notFoundError = new Error('Team not found or unauthorized');
+                notFoundError.type = 'NOT_FOUND_OR_UNAUTHORIZED';
+                throw notFoundError;
+            }
+
             console.error('Error deleting team:', error);
             throw error;
         }

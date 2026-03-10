@@ -100,6 +100,14 @@ const authController = {
             return res.redirect("/auth/login");
 
         } catch (err) {
+            // ERR EX: Expanded to handle duplicate-username conflicts vs generic registration failures.
+            if (err?.code === 'ER_DUP_ENTRY') {
+                return res.render("signup", { 
+                    title: "Sign Up",
+                    errorMessage: "Username already exists." 
+                });
+            }
+
             console.log('Registration error:', err);
             return res.render("signup", { 
                 title: "Sign Up",

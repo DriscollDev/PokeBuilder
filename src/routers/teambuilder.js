@@ -47,6 +47,16 @@ router.post('/builder', requireAuth, async function(req, res, next) {
       team: team
     });
   } catch (error) {
+    // ERR EX: Expanded to distinguish invalid IDs/not-found teams from generic load failures.
+    if (error?.type === 'INVALID_INPUT') {
+      console.log('Invalid team ID while loading builder:', error);
+      return res.status(400).send('Invalid team ID');
+    }
+    if (error?.type === 'NOT_FOUND_OR_UNAUTHORIZED') {
+      console.log('Team not found or unauthorized while loading builder:', error);
+      return res.status(404).send('Team not found or unauthorized');
+    }
+
     console.log('Error loading team:', error);
     res.status(500).send('Error loading team');
   }
@@ -70,6 +80,17 @@ router.delete('/builder/delete', requireAuth, async function(req, res) {
     await teamController.deleteTeam(teamID, ownerID);
     res.status(200).json({ message: 'Team deleted successfully' });
   } catch (error) {
+    // ERR EX: Expanded to distinguish invalid IDs/not-found teams from generic delete failures.
+    if (error?.type === 'INVALID_INPUT') {
+      return res.status(400).json({ error: 'Invalid team ID' });
+    }
+    if (error?.type === 'AUTH_REQUIRED') {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+    if (error?.type === 'NOT_FOUND_OR_UNAUTHORIZED') {
+      return res.status(404).json({ error: 'Team not found or unauthorized' });
+    }
+
     // VULN TMI: previously returned raw error.message
     res.status(500).json({ error: 'Internal server error while deleting team' });
   }
@@ -87,6 +108,20 @@ router.post('/delete', requireAuth, async function(req, res, next) {
     await teamController.deleteTeam(teamID, ownerID);
     res.redirect('/team/'); // Redirect to team home after deletion
   } catch (error) {
+    // ERR EX: Expanded to distinguish invalid IDs/not-found teams from generic delete failures.
+    if (error?.type === 'INVALID_INPUT') {
+      console.error('Invalid team ID while deleting (redirect route):', error);
+      return res.status(400).send('Invalid team ID');
+    }
+    if (error?.type === 'AUTH_REQUIRED') {
+      console.error('Auth required while deleting (redirect route):', error);
+      return res.status(401).send('Authentication required');
+    }
+    if (error?.type === 'NOT_FOUND_OR_UNAUTHORIZED') {
+      console.error('Team not found or unauthorized while deleting (redirect route):', error);
+      return res.status(404).send('Team not found or unauthorized');
+    }
+
     console.error('Error deleting team:', error);
     res.status(500).send('Error deleting team');
   }

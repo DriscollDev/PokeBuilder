@@ -273,6 +273,12 @@ router.post('/editpokemon', async(req,res) => {
         });
 
     } catch (error) {
+        // ERR EX: Expanded to distinguish not-found/unauthorized cases from generic edit failures.
+        if (error?.message === 'Pokemon not found') {
+            console.log('Pokemon not found while editing:', error);
+            return res.status(404).send('Pokemon not found for editing');
+        }
+
         // VULN FHE: previously logged the error without sending any response
         console.log('Error fetching Pokémon data:', error);
         res.status(500).send('Error loading Pokémon for editing');
@@ -354,6 +360,12 @@ router.post('/update-pokemon', async (req, res) => {
             conn.release();
         }
     } catch (error) {
+        // ERR EX: Expanded to distinguish not-found/ownership issues from generic update failures.
+        if (error?.message === 'Pokemon not found') {
+            console.error('Pokemon not found while updating:', error);
+            return res.status(404).json({ success: false, error: 'Pokemon not found or not owned by user' });
+        }
+
         // VULN TMI: previously exposed internal error.message
         console.error('Error updating Pokemon:', error);
         res.status(500).json({ success: false, error: 'Internal server error while updating Pokemon' });
@@ -409,6 +421,12 @@ router.get('/fullview/:pokemonName/:generation?', async(req,res) => {
             userTeams: userTeams
         });
     } catch (error) {
+        // ERR EX: Expanded to distinguish not-found display errors from generic detail view failures.
+        if (error?.message === 'Pokemon not found') {
+            console.error('Pokemon not found for full view:', error);
+            return res.status(404).send('Pokemon not found');
+        }
+
         // VULN FHE: previously only logged this error and never sent an HTTP response
         console.error('Error fetching Pokémon data:', error);
         res.status(500).send('Error loading Pokémon detail view');
@@ -683,9 +701,15 @@ router.post('/add-to-team', async (req, res) => {
             conn.release();
         }
     } catch (error) {
+        // ERR EX: Expanded to distinguish bad client state from internal add/swap failures.
+        if (error?.message === 'No team selected' || error?.message === 'Invalid team selection context' || error?.message === 'Team not found or not owned by user') {
+            console.log('Add/Swap team validation error:', error);
+            return res.status(400).json({ success: false, error: 'Invalid team selection or ownership while adding/swapping Pokémon' });
+        }
+
         // VULN TMI: previously returned raw error.message
         console.log('Add/Swap team error:', error);
-        res.status(400).json({ success: false, error: 'Unable to add or swap Pokémon on team' });
+        res.status(500).json({ success: false, error: 'Internal server error while adding or swapping Pokémon on team' });
     }
 });
 
